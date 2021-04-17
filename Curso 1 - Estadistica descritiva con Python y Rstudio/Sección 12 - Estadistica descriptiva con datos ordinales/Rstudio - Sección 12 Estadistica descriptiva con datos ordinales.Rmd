@@ -1,0 +1,386 @@
+---
+title: "Rstudio - Sección 12 Estadistica descriptiva con datos ordinales"
+author: "Arturo Castro"
+date: "18/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Estadistica descriptiva con datos ordinales
+
+### Datos ordinales
+
+Los `datos ordinales` son parecidos a los cualitativos, en el sentido de que son cualidades de los individuos u objetos.
+
+La diferencia existe entre los datos cualitativos y los ordinales reside en las caracteristicas que expresan. En el caso de los ordinales, éstas tienen un orden natural que permite 'acumular' observaciones.
+
+### Frecuencia acumulada
+
+Al trabajar con datos ordinales, el orden de los niveles de los datos nos permite calcular no solo frecuencias absolutas y relativas, si no tambien `frecuencias acumuladas`.
+
+Es decir, podemos contar cuantas veces hemos observado un dato menor o igual a este.
+
+###### Ejemplo 1
+
+Suponed que tenemos una muestra de 15 estudiantes de los cuales sabes su nota en el examen de estadistica. Clasificamos todos estos resultados en 
+- Suspenso (S)
+- Aprobado (A)
+- Notable (N)
+- Excelente (Ex)
+y consideramos su orden natural S<A<N<Ex
+
+Las notas obtenidas han sido las siguientes:
+$$S,A,N,Ex,S,S,Ex,Ex,N,A,A,A,A,N,S$$
+Como recordaréis, para saber cuantas hay de cada una (su frecuencia absoluta), utilizamos la función `table()
+
+```{r Ejemplo 1 Notas estudiantes}
+notas = ordered(c('S','A','N','Ex','S','S','Ex','Ex','N','A','A','A','A','N','S'),
+                levels= c('S','A','N','Ex'))
+table(notas)
+```
+
+Como podréis observar, hay 4 S, 5 A, 3 N y 3 Ex
+
+En lo referente a frecuencias absolutas acumuladas, hay
+* 4 estudiantes con S o menos. Ello implica que la frecuencia acumulada de S es 4
+* 9 estudiantes que han obtenido A o menos. Entonces, la frecuencia acumulada de A es 0
+* 12 estudiantes los cuales han obtenido N o menos. Así, la frecuencia acumulada de N es 12
+* 15 estudiantes (todos) que han obtenido Ex o menos. De este modo, la frecuencia acumulada de Ex es 15, o sea, el total.
+
+**Frecuencia relativa acumulada**. Es la fracción del total de las observaciones en tanto por 1 que representa su frecuencia absoluta acumulada.
+
+Así, las frecuencias relativas acumuladas respectivas son:
+
+* $\mathbb{S} \ : \frac{4}{15}\approx27$
+
+* $\mathbb{A} \ : \frac{9}{15}\approx6$
+
+* $\mathbb{N} \ : \frac{12}{15}\approx8$
+
+* $\mathbb{EX} \ : \frac{15}{15}=1$
+
+En general, supongamos que realizamos n observaciones
+$$x_1,...,x_n$$
+de un cierto tipod e datos ordinales, cuyos posibles niveles ordenados son
+$$l_1<l_2<...<l_k$$
+Por tanto, cada una de las observaciones $x_j$ es igual a algún $l_i$. Diremos que todas estas observaciones forman una `variable ordinal`. En nuestro ejemplo anterior, los 4 niveles eran
+$$S<A<N<Ex$$
+Además, nuestro $n=15$ y nuestros $x_1,...,x_{15}$ son las calificaciones obtenidas por los alumnos.
+
+De este modo, con estas notaciones
+
+* Las definiciones de frecuencias absolutas $n_j$ y las relativas $f_j$, para cada nivel $l_j$ son las mismas que en una variable cualitativa.
+* Las frecuencias absolutas acumulada del nivel $l_j$ en esta varaible ordinal es el número $N_j$ de observaciones $x_i$ tales que $x_i\leq l_j$. Es decir,
+
+$$N_j=\sum^{j}_{i=1}n_i$$
+* La frecuencia relativa acumulada del nivel $l_j$ en esta variable ordinal es la fracción en tanto por $1 \ f_j$ de observaciones $x_i$ tales que $x_i\leq l_j$. Es decir,
+
+$$F_j= \frac{N_j}{n} = \sum ^j _{i=1} f_i$$
+
+###### Ejemplo 2
+
+En un estudio, a un grupo de clientes de un restaurante se les hizo la siguiente pregunta:
+
+* Estas contento con el trato ofrecido por los trabajadores del establecimiento?
+
+Las posibles respuestas forman una escala ordinal con $1<2<3<4<5$.
+
+Supongamos que se recogieron las siguientes respuestas de 50 técnicos:
+
+```{r Ejemplo 2 nivel de satisfacción de los clientes}
+set.seed(2018)
+clientes = sample(1:5, 
+                  50,
+                  replace = T)
+clientes
+set.seed(NULL)
+```
+
+En este caso tenemos $5$ niveles $(k = 5)$ y $50$ observaciones $(n=50)$ que forman una variable ordinal a la que hemos llamado `clientes`
+
+Hemos calculado todas sus frecuencias (absoluta, relativa, acumulada y relativa acumulada) y las hemos representado en la siguiente tabla.
+
+```{r Ejemplo 2 continuación de nivel de satisfacción de los clientes}
+absoluta = table(clientes)
+absoluta
+relativa = prop.table(absoluta)
+relativa
+acumulada = cumsum(absoluta)
+acumulada
+relativa_Acumulada = cumsum(relativa)
+relativa_Acumulada
+
+x = data.frame(absoluta, relativa, acumulada, relativa_Acumulada)
+x
+```
+
+### Función cumsum()
+
+Recordáis la función **cumsum()**? Pues esta puede ser utilizada a la hora de calcular frecuencias acumuladas.
+
+Retomemos el ejemplo anterior de las notas de los estudiantes y calculemos y representemos en un diagrama de barras las frecuencias acumuladas de la muestra de notas.
+
+```{r Ejemplo 3 notas de estudiantes agregando orden y niveles para calculo de frecuencias}
+notas = ordered(c('S','A','N','Ex','S','S','Ex','Ex','N','A','A','A','A','N','S'),
+                levels= c('S','A','N','Ex'))
+fAbs = table(notas) #Frecuencias absolutas
+cumsum(fAbs) #Frecuencias absolutas acumuladas
+cumsum(prop.table(fAbs)) #Frecuencia relativa acumulada
+
+#Podriamos haber calculado las frecuencias relativas acumuladas de la forma:
+cumsum(table(notas))/length(notas) #Frecuencia relativa acumulada
+
+barplot(fAbs, 
+        main = 'Diagrama de barras de frecuencias absolutas')
+
+barplot(cumsum(fAbs), 
+        main = 'Diagrama de barras de frecuencias absolutas acumuladas')
+
+```
+
+Ejemplo 4
+
+Se ha evaluado el tamaño de los cuellos de 100 jirafas. Los niveles que se han utilizado se les considera ordenados de la siguiente manera:
+
+$$Muy.Corto<Corto<Normal<Largo<Muy.largo$$
+Los valores obtenidos en dicho estudio han sido los siguientes:
+
+
+```{r Sección 12 Función ordered con cuello de jirafas}
+set.seed(2018)
+#Creo la muestra de 100 variables
+longitud = sample(c('Muy.Corto','Corto','Normal','Largo','Muy.largo'), 
+                  100,
+                  replace = T)
+
+#Ordeno la muestra con la denotación de menor a mayor
+t = ordered(longitud,
+            c('Muy.Corto','Corto','Normal','Largo','Muy.largo'))
+#Convierto la muestra en factores para tener los levels definidos
+fac.long = as.factor(t)
+
+str(fac.long) #Verifico
+
+#Frecuencia absoluta
+fr.abs = table(fac.long)
+fr.abs
+
+#Frecuencia relativa 
+Fr.rel = prop.table(fr.abs)
+Fr.rel
+
+#Frecuencia absolutas acumuladas
+Fr.acum = cumsum(fr.abs)
+Fr.acum
+
+#Frecuencias relativas acumuladas
+Fr.relativaAcum = cumsum(Fr.rel)
+Fr.relativaAcum
+
+#La instrucción barplot() produce el siguiente diagrama de barras de frecuencias relativas acumuladas
+
+barplot(Fr.relativaAcum, 
+        main = 'Diagrama de frecuencias relativas acumuladas')
+
+set.seed(NULL)
+```
+
+Para calcular frecuencias acumuladas en una tabla multidimensional, hay que aplicar a la tabla la función **cumsum** mediante la función **apply** que ya explicábamos para matrices. En este caso en concreto, la sintaxis de la instrucción sería
+
+$$apply(tabla, \ MARGIN=..., \ FUN=cumsum)$$
+Donde el valor **MARGIN** ha de ser el de la dimensión en la que queremos acumular las frecuencias: 1 si queremos hacerlo por filas,
+2 para hacerlo por columnas, etc. Lo veremos todo más claro con un ejemplo.
+
+
+Ejemplo 4
+
+Supongamos que en el ejemplo anterior, el de las jirefas, estas provienen de 4 zonas diferentes, $A,B,C,D$, de manera que:
+- 30 son de la zona A
+- 25 son de la zona B
+- 35 de la zona C
+- 10 de la zona D
+
+Nos interesa estudiar la distribución de las longitudes según la zona.
+
+Vamos a organizar todos estos datos en un data frame llamado `jirafas`. Para que nos sea más fácil visualizar la información, es conveniente que las filas de las tablas de frecuencias correspondan a las zonas. Por lo tanto, al definir el data frame, entraremos como primera variable de la mustra las zonas. Así, conseguiremos que éstas aparezcan en las filas al aplicarle la función table.
+
+* **Para calcular la tabla de frecuencias absolutas acumuladas de las longitudes por zonas** y como las zonas definen las filas de la tabla. Debemos utilizar la función `apply` con `MARGIN = 1`
+```{r Jirafas 4 creando un data frame}
+t = sample(c('Muy.Corto','Corto','Normal','Largo','Muy.largo'), 
+                  100,
+                  replace = T)
+
+#Ordeno la muestra con la denotación de menor a mayor
+longitud = ordered(t,
+            c('Muy.Corto','Corto','Normal','Largo','Muy.largo'))
+
+#Genero las nuevas variables para agregar en el data frame con la función rep
+zonas = rep(c('A','B','C','D'),  #Los niveles
+            c(30,25,35,10)) #Cantidad por nivel donde hay 30 en A, 25 en B, 35 en C y 10 en D
+
+#Creo el data frame
+jirafas = data.frame(zonas, #Es un factor no ordenado
+                     longitud)  #Es un factor ordenado porque fue realizado con la función ordered
+str(jirafas)
+head(jirafas)
+
+# Calculando la tabla de frecuencias absolutas acumuladas
+apply(table(jirafas), #Data frame
+      MARGIN = 1, #Para que considere las filas como objeto para aplicar la función
+      FUN = cumsum) #Función para que calcule la tabla de frecuencias acumuladas
+```
+
+
+Fijaos que la tabla se ha transpuesto. Resulta que cuando se aplica `apply` a una table bidimensional, `R` intenta intercambiar, en caso de ser necesario, filas por columnas en el resultado para que la dimensión de la tabla resultante en la que se haya aplicado la función sea la de las columnas.
+
+Con lo cual, para volver a tener las zonas en las filas, hay que transporner el resultado de la función `apply`
+
+```{r Jirafas 4 función apply y transponer}
+# función apply y transponer
+t(apply(table(jirafas), #Data frame
+      MARGIN = 1, #Para que considere las filas como objeto para aplicar la función
+      FUN = cumsum)) #Función para que calcule la tabla de frecuencias acumuladas
+```
+
+Vamos ahora a calcular la tabla de frecuencias relativas acumuladas de las longitudes de cuello por zonas. Para conseguirlo, y en una única instrucción, primero calculamos la tabla de frecuencias relativas por filas, a continuación con las funciones `apply` y `cumsum` las acumulamos y, finalmente, transponemos el resultado.
+
+```{r Jirafas 4 frecuencia relativa acumulada con función apply y transponer}
+#frecuencia relativa acumulada con función apply y transponer
+t(apply(prop.table(table(jirafas),# prop.table del Data frame
+                   margin = 1), #El margin es del prop.table para tener las relativas acumuladas por fila.
+       MARGIN = 1, # El margin es de la función apply - Para que considere las filas como objeto para aplicar la función
+       FUN = cumsum)) #Función Fun es del apply - para que calcule la tabla de frecuencias acumuladas
+```
+
+Vamos ahora a dibujar el diagrama de barras por bloques de esta tabla. Nos interesa que las barras de este diagrama se agrupen por zonas. Entonces, tendremos que aplicar `barplot` a la tabla sin transponer.
+
+Además, vamos a colocar la leyenda en la esquina superior izquierda para que no se superponga a ninguna barra. También reduciremos el tamaño del texto de la leyenda para que quepa completamente.
+
+```{r Jirafas 4 continuación Graficando el ejercicio}
+#Graficando el ejercicio
+Diagrama = apply(prop.table(table(jirafas),# prop.table del Data frame
+                   margin = 1), #El margin es del prop.table para tener las relativas acumuladas por fila.
+       MARGIN = 1, # El margin es de la función apply - Para que considere las filas como objeto para aplicar la función
+       FUN = cumsum) #Función Fun es del apply - para que calcule la tabla de frecuencias acumuladas
+
+#Grafico
+barplot(Diagrama,
+        beside = T,#Para separar las tablas apiladas y la                          convierte por bloques
+        legend = T,
+        main = 'Diagrama de barrasde de \n frecuencias relativas acumuladas de longitudes por zonas',
+        
+#Posicionando la leyenda 
+        args.legend=list(x = 'topleft', #Indica para Colocar las leyendas en la esquina superior izquierda
+                         cex = 0.55) #Tamaño de las letras dentro de la leyenda
+        )
+#Grafico fue realizado con las frecuencias relativas para que sea visible, si se grafica con las frecuencias absolutas las medidas son tan grandes que no va a ser posible hacer un cuadro comparativo.
+```
+
+Ejemplo 5
+Consideremos el data frame datacrab y arreglemos los datos.
+
+```{r DataCrab Ejemplo 5 } 
+# Llamando el fichero desde la web.
+library(RCurl)
+df <- getURL("https://raw.githubusercontent.com/argeus47/r-basic/master/data/datacrab.txt", ssl.verifypeer = FALSE)
+
+crab <- read.csv(textConnection(df), 
+     # stringsAsFactors=FALSE,         
+      header = T, #Para que los nombres de la                                    cabecera aparescan
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal 
+crab <- crab[, #Para que aparezcan todas las filas
+              -1] #Para eliminar la primera columna que es solo un identificador para cada fila.
+str(crab)
+head(crab)
+
+table(crab$weight) 
+```
+
+**Variables del data frame:**
+* color - color del cangrejo de variable tipo entero
+* spine - tipo de espeina que tiene el cangrejo
+* width - anchura del cangrejo
+* satell
+* weigth  - peso del cangrejo
+
+Vamos a convertir a la variable `width` en una variable ordinal que agrupe las entradas de la variable original en niveles.
+
+La manera más sencilla de llevarlo a cabo es utilizando la función 
+* `cut`, que estudiaremos a detalle en lecciones posteriores. Por ahora, basta con saber que la instrucción dividirá el vector numérico `crab$width` en intervalos de extremos 
+* los puntos especificados en el argumento `breaks`. 
+* El parámetro `right = FALSE` sirve para indicar que los puntos de corte pertenencen al intervalo de su derecha e 
+* `inf` indica $\infty$
+
+```{r DataCrab Ejemplo 5 función CUT}
+#Finalidad es convertir las variables numericas en variables ordinales.
+#Va a dividir el vector numero en intervalos que vamos establecer
+intervalos = cut(crab$width,
+                 breaks = c(21,25,29,33,Inf), #Para que funcione deve ir acompaçnada del right = F para que tenga los cortes
+#21 hasta 24, 
+#25 hasta 28, 
+#29 hasta 33, 
+#34 hasta el infinito
+                 right = F, #Indica para no incluir el limite de la derecha. osea del 21 al 25 no va a incluir 25, de 25 hasta 29 no incluye el 29 - NO INCLUYE EL LIMITE DE LA DERECHA 
+                 labels = c('21-25','25-29','29-33','33-...')) #Agrego las etiquetas de los intervalos ya realizados
+```
+
+El resultado de la instrucción es un factor que tiene como niveles estos intervalos, identificados con las etiquetas especificadas en el parámetro `labels`. Como nosotros vamos a usar estos intervalos como niveles de una variable ordinal, además convertiremos este factor en ordenado.
+
+```{r  DataCrab Ejemplo 5 función ordered}
+#weight.rank el nuevo nombre de la etiqueta ya ordenada.
+crab$weight.rank = ordered(intervalos) 
+str(crab)
+```
+
+Nos interesa estudiar la distribución de las anchuras de los cangrejos según el número de colores. Por lo tanto, vamos a calcular las tablas bidimensionales de frecuencias relativas y frecuencias relativas acumuladas de los intervalos de las anchuras en cada nivel de `color` y las representaremos por medio de diagramas de barras.
+
+La tabla de frecuencias absolutas de los pares se puede obtener aplicando `table` al data frame formado por la primera y última columna.
+
+```{r DataCrab Ejemplo 5 Creando tabla bidimensional anchura segun color de cangrejos}
+Tabla = table(crab[, #Toma todas las filas
+                   c(1,6)]) #Toma las columnas de la 1 hasta la 6
+Tabla
+
+# Freciemcoa relativa de la tabla bidimencional
+Frelativa = round(prop.table(Tabla,
+                             margin = 1), #Frecuencia relativa por filas
+                  3) #3 decimales ya que es de la función round
+Frelativa
+
+
+# Freciemcoa relativa acumulada de la tabla bidimencional
+Frelativacumulada = round(apply(prop.table(Tabla,
+                                           margin = 1),#Frecuencia relativa por filas
+                                MARGIN = 1, #Para que sea por columnas el acumulado
+                                FUN = cumsum),
+                          3) #3 decimales ya que es de la función round
+Frelativacumulada
+```
+
+```{r DataCrab Ejemplo 5 Graficando}
+azul = c('cyan','cyan4','cyan1','cyan3')
+#Frecuencia relativa
+barplot(t(Frelativa),
+        beside = T, #coloca las columnas una al lado de la otra
+        legend = T, #Legendas de cada variable
+        ylim = c(0,0.8), #Colocando las medidas de 0 hasta 1
+        col = azul, #Adicionando el color
+        main = 'Diagrama de barras de frecuencias relativas',
+        args.legend = list(x = 'topright', #Colocando la leyenda arriba a la derecha
+                           cex = 0.55)) #Alterando el tamaño para que sea mas pequeño de la leyenda
+
+
+#Frecuencia relativa acumulada
+barplot(Frelativacumulada,
+        beside = T, #coloca las columnas una al lado de la otra
+        legend = T, #Legendas de cada variable
+        col = azul, #Adicionando el color
+        main = 'Diagrama de barras de frecuencias relativas',
+        args.legend = list(x = 'topleft', #Colocando la leyenda arriba a la derecha
+                           cex = 0.50)) #Alterando el tamaño para que sea mas pequeño de la leyenda
+
+```

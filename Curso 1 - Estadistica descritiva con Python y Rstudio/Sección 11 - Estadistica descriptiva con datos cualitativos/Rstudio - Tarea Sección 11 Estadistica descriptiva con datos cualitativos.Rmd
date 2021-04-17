@@ -1,0 +1,174 @@
+---
+title: "Rstudio - Tarea Sección 11 Estadistica descriptiva para datos cualitativos"
+author: "Arturo Castro"
+date: "17/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Utiliza str() y head() para explorar la estructura, y con help(), mirar el significado de cada variable.
+
+```{r Respuesta 1}
+library(MASS)
+x = birthwt
+str(x)
+head(x, 5)
+```
+
+low = indicador de peso
+age = La edad de la madre en años.
+lwt = peso de la madre en libras en el último período menstrual.
+race = raza de la madre (1 = blanco, 2 = negro, 3 = otro).
+smoke = tabaquismo durante el embarazo.
+plt = cantidad de trabajos prematuros previos.
+ht = historia de hipertensión.
+ui = presencia de irritabilidad uterina.
+ftv = cantidad de visitas al médico durante el primer trimestre.
+bwt = peso al nacer en gramos.
+
+Calcula una tabla de frecuencias relativas marginales de los pares (raza de la madre, peso inferior a 2.5 kg o no) que permita ver si la raza de la madre influye en el peso del bebé.
+
+```{r Respuesta 2 Mi forma de hacerlo}
+library(RCurl)
+library(dplyr)
+library(MASS)
+
+x = birthwt
+x <- x %>%
+
+mutate(peso_grupo = ifelse(bwt < 2500, "peso menor", "peso mayor"))
+
+pesomenor = subset(x, peso_grupo == 'peso menor')
+pesomayor = subset(x, peso_grupo == 'peso mayor')
+razamenor = as.factor(pesomenor$race)
+razamayor = as.factor(pesomayor$race)
+
+round(prop.table(table(razamenor))*100,3) #Frecuencia relativa marginal de la raza en relación al peso donde podemos observar que el 42,37% que son las madres de otras razas diferente a la blanca y la negra tienen peso por debajo de 2.5kg
+
+round(prop.table(table(razamayor))*100,3) #Frecuencia relativa marginal de la raza en relación al peso donde podemos observar que el 56,15% que son las madres de raza blanca que tienen hijos con un peso mayor a 2.5kg
+```
+
+Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r Respuesta 3}
+
+library(RCurl)
+library(dplyr)
+library(MASS)
+
+x = birthwt
+x <- x %>%
+
+mutate(peso_grupo = ifelse(bwt < 2500, "peso menor", "peso mayor"))
+
+plot(table(x$race, x$peso_grupo))
+```
+
+Dibuja un diagrama bidimensional de barras, con las barras organizadas en bloques, que permita visualizar la información de los ejercicios anteriores. Aprovecha para nombres adecuados a los bloques, colores a las barras, y añadir una leyenda que explique qué representa cada barra.
+
+```{r Respuesta 4}
+
+library(RCurl)
+library(dplyr)
+library(MASS)
+
+x = birthwt
+x <- x %>%
+
+mutate(peso_grupo = ifelse(bwt < 2500, "peso menor", "peso mayor"))
+
+barplot(table(x$race, x$peso_grupo),
+        col = c('rosybrown2', 'black','chartreuse4'),
+        las = 1,
+        ylim = c(0, 140),
+        legend = c('Blanca', 'Negra', 'Otras'),
+        main = 'Peso de los bebes en relación a la raza de las madres'
+        )
+
+ 
+
+```
+
+¿Se puede obtener alguna conclusión de la tabla y el diagrama de barras anterior? Argumenta tu respuesta
+
+Si. Claro esta que es un cuadro representativo donde observamos la relación peso vs raza de la madre, donde se observa que si influye la raza con respecto al peso mayor a 2.5kg. Se observa la muestra que las madres de raza blanca predominan en el peso mayor siguiendole las madres de otras razas, y en el peso menor no se distingue bien la grafica pero detenidamente se observa que las madres de otras razas son la mayoria en tener hijos de peso menor a 2.5kg
+
+Repite los cuatro ejercicios anteriores para los pares (madre fumadora o no, peso inferior a 2.5 kg o no) y para los pares (madre hipertensa o no, peso inferior a 2.5 kg o no.
+
+```{r Respuesta 6}
+
+library(RCurl)
+library(dplyr)
+library(MASS)
+
+x = birthwt
+x <- x %>%
+
+mutate(peso_grupo = ifelse(bwt < 2500, "peso menor", "peso mayor"))
+
+pesomenor = subset(x, peso_grupo == 'peso menor')
+pesomayor = subset(x, peso_grupo == 'peso mayor')
+
+#Peso en relación a los fumantes
+
+fumante = pesomenor$smoke
+fumante1 = pesomayor$smoke
+
+round(prop.table(table(fumante))*100,3) #Frecuencia relativa marginal del fumante con respecto al peso menor a 2.5kg
+
+round(prop.table(table(fumante1))*100,3)#Frecuencia relativa marginal del fumante con respecto al peso mayorenor a 2.5kg
+
+#Peso en relación a la hipertensión
+
+hipertensa = pesomenor$ht
+hipertensa1 = pesomayor$ht
+
+round(prop.table(table(hipertensa))*100,3)#Frecuencia relativa marginal de la madre hipertensa con respecto al peso menor a 2.5kg
+
+round(prop.table(table(hipertensa1))*100,3)#Frecuencia relativa marginal de la madre hipertensa con respecto al peso mayor a 2.5kg
+
+
+#Graficas
+
+x$smoke = as.factor(x$smoke)
+
+levels(x$smoke)= c("No Fuma", "Fuma")
+
+plot(table(x$peso_grupo, x$smoke ), las = 1, main = 'Grafico mosaico Peso vs Fumantes')
+
+x$ht = as.factor(x$ht)
+levels(x$ht)= c("No hipertensa", "hipertensa")
+
+plot(table(x$peso_grupo, x$ht ), las = 1, main = 'Grafico mosaico Peso vs Hipertensión')
+
+#Madre fumadora o no, peso inferiro a 2.5kg o no
+barplot(table(x$smoke, x$peso_grupo),ylim = c(0,140), main = 'Peso en relación si la madre fuma o no')
+
+# madre hipertensa o no, peso inferior a 2.5kg o no
+barplot(table(x$ht, x$peso_grupo), ylim = c(0,140), legend = c( 'No hipertensa', 'hipertensa'), main = 'Peso en relación si la madre es hipertensa o no')
+
+
+```
+
+Calcula una tabla de **frecuencias relativas marginales** de las ternas 
+(raza de la madre, 
+madre fumadora o no, 
+peso inferior a 2.5 kg o no) 
+que permita ver si la raza de la madre y su condición de fumadora o no fumadora influyen en el peso del bebé.
+
+```{r Respuesta 7}
+
+```
+
+
+
+Dibuja un diagrama de mosaico de la tabla del ejercicio anterior.
+
+```{r Respuesta 8}
+
+```
+
+

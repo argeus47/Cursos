@@ -1,0 +1,498 @@
+---
+title: "Sección9-Introducción a la representación gráfica"
+author: "Arturo Castro"
+date: "06/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Graficos con la función `plot` 
+
+  * **plot (x,y)**: Para dibujar un grafico basico de puntos siendo x,y vectores numericos.
+    -**plot(x)** = plot(1:length(x),x)
+    
+  * **plot(x, funcion)**: para dibujar el grafico de una función
+  
+  Ejemplo1:
+```{r Ejemplo 1}
+alumnos = c(1:10)
+notas = c(2,5,7,9,8,3,5,6,10,7)
+plot(alumnos, notas)
+```
+
+
+  Ejemplo2
+Parametros para graficas:
+`fig.cap = `(Pie de foto)
+`fig.align = center` - Con ese se alinea en el centro el fig.cap
+```{r Ejemplo 2, fig.cap="Grafico basico explicando el pie de foto", fig.align='center'}
+x = c(3,-1,5,4,8,9,12)
+y = c(2,8,9,1,4,5,6)
+plot(x,y)
+```
+    
+Si no incorporamos vector `y`, `R` nos va a tomar el parametro `x` como si fuese el vector de datos `y` : `plot(1:n, x)`
+
+```{r Ejemplo 3, fig.cap= "La grafica interpreta que el primer valor va en 1 y asi..." }
+x = (2^(1:6))
+plot(x)
+## Representa el 1er valor en 1 el segundo valor en 2 el tercer valor en 3
+```
+
+Si queremos representar una función $f(x)$
+
+```{r Ejemplo 4, fig.cap="Grafico de la función Raiz"}
+f <- function(x){ sqrt(x) }
+plot(f)
+```
+
+## Parametros de la función `plot`
+
+  * **Log**: Para indicar que queremos el grafico en la función logaritmica.
+  * **main("Titulo")**: Para poner titulo al grafico, Si en vez de un texto quieres poner una expresión matematica, usar la función `expression()`
+  * **xlab("Etiqueta")**: Para poner un nombre al eje `x`
+  * **ylab("Etiqueta")**: Para poner un nombre al eje `y`
+  * **pch=n**: Para elegir el simbolo de los puntos. n=0,1,.....,25. El valor por defecto es pch = 1.
+  * **cex**: Para elegir el tamaño de los simbolos (Tamaño del pch).
+  * **col="Color en ingles"**: Para elegir el color de los simbolos.
+    
+  
+```{r Ejemplo 5 Escala Logaritmica}
+par(mfrow = c(1,2)) ## Instrucción para poner 2 graficos en la misma linea  donde tiene 1 fila y 2 columnas de graficos 
+
+plot= plot(exp(1:20), 
+           xlab = "Indice", #Titulo en x
+           ylab = expression(e^(1:20)),  #Titulo en y
+           main = "Escala Lineal" ) #Titulo principal arriba del cuadro
+  
+plot= plot(exp(1:20), 
+           log="y", #Pinta solo la escala logaritmica en las ejes de las y
+           xlab = "Indice", 
+           ylab = expression(e^(1:20)), 
+           main = "Escala Logaritmica en el eje `y`" )
+par(mfrow = c(1,1))
+```
+
+###### Párametros
+* **echo = false** (Es para eliminar todas las formulas y solo refleje el resultado)
+* **par(mfrow = c(1,2))** Para colocar 1 fila y 2 columnas de graficos
+
+
+
+```{r Practica de parametros, echo = FALSE, fig.align= 'center' }
+  ## Sucesion de fibonacci
+par(mfrow = c(1,2))
+n = 1:20  
+fn = (1/sqrt(5))*((1+sqrt(5))/2)^n  - (1/sqrt(5))*((1-sqrt(5))/2)^n
+fn
+
+plot(fn, #Grafica de fibonacci
+     xlab = "n", #Titulo del eje x
+     ylab = expression(f[n]), #Titulo del eje y
+     pch = 21, #Figura que quiere (parametro pch - tipos de simbolos)
+     cex= 2, #tamaño de la figura
+     col = "powderblue", #Color del borde
+     bg = "orchid", #Color del interior ou relleno
+     log = "xy",  #Saca la escala logaritmica de xy - se puede hacer de 1 solo si se desea sea bien (x) solo ou (y)
+     main = "Sucesion de fibonacci")
+
+plot(fn, 
+     xlab = "n", 
+     ylab = expression(f[n]), 
+     pch = 21, 
+     cex= 2, 
+     col = "powderblue", 
+     bg = "orchid", 
+     log = "x",  
+     main = "Sucesion de fibonacci")
+
+par(mfrow = c(1,1))  ##Siempre colocar esa función al final
+## la escala log en xy   se puede ver que de 1 a 2 hay cierta distancia y cada vez va siendo menor conforme vai aumentando la cantidad.  
+```
+
+###### Parametros de la función plot()
+
+  * **type**: Para elegir el grafico que queremos.
+      - **p**: Puntos, (Valor por defecto)
+      - **l**: lineas rectas que unen los puntos (dichos puntos no tienen simbolos)
+      - **b**: lineas rectas que unen los puntos (dichos puntos tienen simbolos). Las  lineas no traspasan los puntos
+      - **o**: Como el anterior pero en este caso las lineas si que traspasan los puntos.
+      - **h**: Histogramas de lineas.
+      - **s**: Histogramas de escalones.
+      - **n**: Para no dibujar los puntos.
+  * **lty**: Para especificar el tipo de linea.
+    - **"solid":1**: Linea continua (Valor por defecto) 
+    - **"dashed":2**: Linea continua.
+    - **"dotted":3**: Linea de puntos.
+    - **"dotdashed":4**: Linea que alterna puntos y rayas.
+    
+  * **lwd**: Para especificar el grosor de las lineas.
+  * **xlim**: Para modificar el rango del eje `x`.
+  * **ylim**: Para modificar el rango del eje `y`.
+  * **xaxp**: Para modificar las posiciones de las marcas del eje `x`.
+  * **yaxp**: Para modificar las posiciones de las marcas del eje `y`.
+      
+```{r Tipos de graficos}
+par(mfrow = c(3,2))
+#Defino parametros para grafica
+x = c(50:59)  
+y = c(2,9,25,3,100,77,62,54,19,40)
+#Empiezo a graficar con los diferentes tipos de parametros
+plot(x, y, #Puntos de x e y para la grafica
+     pch=23, #Codigo de la figura 
+     cex=2, #Tamaño del punto
+     col="blue", #Color externo del punto
+     type = "p", #Tipo de grafico P
+     main = "Grafico tipo p") #Titulo principal
+
+plot(x, y, 
+     pch=23, 
+     cex=2, 
+     col="blueviolet",
+     type = "l", 
+     main = "Grafico tipo l")
+
+plot(x, y, pch=23, cex=2, col="gold",type = "b", main = "Grafico tipo b")
+
+plot(x, y, pch=23, cex=2, col="deeppink",type = "o", main = "Grafico tipo o")
+
+plot(x, y, pch=23, cex=2, col="springgreen",type = "h", main = "Grafico tipo h")
+
+plot(x, y, pch=23, cex=2, col="firebrick1",type = "s", main = "Grafico tipo s")
+
+par(mfrow = c(1,1))  
+```
+      
+```{r Ejemplo 6 Parametros}
+
+x = (2*(1:20))
+y = (-1)^(1:20)*5*(1:20)
+plot(x,y, 
+     main= "Ejemplo de parametros", 
+     pch = 8, #Tipo de pontos escogido es el 8
+     cex = 1, #tamaño del punto
+     type = "b", #Tipo de grafico b
+     lty= 4, #Linetype es el 4 que es el .-.-.- que muestra en el grafico como conexión entre puntos
+     lwd = 4, #Anchura de la linea es 4
+     
+     #Para el eje de las x hago:
+     xaxp = c(0,40, #De 0 hasta 40 es el intervalo
+              2),  #Divido el intervalo en divisiones de 2
+     
+     #Para el eje de las y hago:
+     yaxp = c(-100,100,#Intervalo desde -100 hasta 100 en Y
+              8)) #Con una separación de 8
+
+```
+
+###### Añadir elementos al grafico.
+
+* **points(x,y)**: Añade un punto de coordenadas (x,y) a un grafico ya existente.
+* **abline**: Para añadir una recta a un grafico ya existente.
+    - **abline(a,b)**: Añade la recta $y = ax+b$
+    - **abline(v= x0)**: Añade la recta vertical $x = x_{0} \cdot v$ puede estar asignado a un vector.
+    - **abline(v= y0)**: Añade la recta horizontal $y = y_{0} \cdot h$ puede estar asignado a un vector.
+* **text(x,y,labels = "....")**: Añade en el punto de coordenadas (x,y) el texto especificado como argumentos de labels.
+      - **pos**: Permite indicar la posición del texto alrededor de las coordenadas (x,y). Admite los valores siguientes:
+        - **1**: Abajo
+        - **2**: Izquierda
+        - **3**: Arriba
+        - **4**: derecha
+        - **5**: Sin especificar. el texto se situa centrado en el punto (x,y)    
+* **lines(x,y)**: Añade a un grafico existente una linea poligonal que une los puntos $x_{i} , y_{i}$ sucecivos. `x`, `y` son vectores numericos
+    
+* **curve(curva)**: Permite añadir la grafica de una curva a un grafico existente.
+      - **add = TRUE**: Si no, la curva no se añade.
+      - La curva se puede especificar mediante una expresión algebraica con variable x, o mediante su nombre si la hemos definido antes.    
+* **legend(posición, legend = ...)**: Para añadir una leyenda
+    - **Posición**: Indica donde queremos situar una legenda. Puede ser bien las coordenadas de la esquina superior izquierda de nuestra leyenda, o bien una de las palabras siguientes:
+      - "bottom" / "bottomright" / "bottomleft" $= Abajo$
+      - "top" / "topright" / "topleft" $= Arriba$
+      - "center" / "right" / "left" $= En el centro$
+        
+    - **legend**: Contiene el vector de nombres entre comillas con los que queremos identificar las curvas en la leyenda.
+* **segments**: Para añadir segmentos a un grafico existente.
+* **arrows**: Para añadir flechas a un grafico existente.
+* **symbols**: Para añadir simbolos a un grafico existente.
+* **polygon**: Para añadir poligonos cerrados especificando sus vertices a un grafico existente.
+
+```{r Ejemplo 7 marcando un punto y una linea en la grafica}
+
+x = (2*(1:20))
+y = (-1)^(1:20)*5*(1:20)
+#Defino el grafico 
+plot(x,y, 
+     main= "Poniendo un punto rojo en la recta", 
+     pch = 8, 
+     cex = 1, 
+     type = "b", 
+     lty= 4, 
+     lwd = 4, 
+     xaxp = c(0,40,2), 
+     yaxp = c(-100,100,8))
+
+#Adiciono los elementos externos que van a resaltar el grafico
+
+#El punto rojo del centro con points
+points(20,0, #Determino el punto en la coordenada x,y
+       col = "red", #Adiciono el color rojo
+       cex = 4, #Adiciono el tamaño del punto
+       pch = 16) #Adiciono el tipo de imagen este es el punto
+
+#Las lineas de color azul en recta para el eje Y
+abline(h = 0, #Adiciono la altura cuando es h= 0 para que sea el eje de y en altura 0
+       lty = 2, #Adicino el grosor de la linea
+       col = "dodgerblue") #Adiciono el color de la linea
+```
+      
+```{r Ejemplo 8 tipos de lineas}
+
+f <- function(x){
+    x^2 - 2*x + sqrt(abs(x))
+}
+
+plot(f, #Grafico la función
+     xlim= c(-3,3)) #Determino un rango de valores de x desde -3 hasta 3
+
+#Adicionando los puntos en el grafico
+#punto 1 
+points(0,0,pch = 19) # Indica un punto en el eje x=0,y=0
+#punto 2
+points((-3:3), (-3:3)^2, #Coloco una colección de puntos 
+       col = "red" )
+
+#Adicionando las lineas en el grafico
+#Recta 1
+abline(2,3, #Añade una recta de forma y=ax+b donde es una pendiente 2 que pasa por 3 y la recta es infinita. 
+       lty = "dashed", #tipo de linea trazo
+       col = "blue")
+#Recta 2
+abline(v = 2, #Adiciono una recta en el eje x = 2 e y = 0 - Es decir v = AÑADE UNA RECTA VERTICAL EN 2
+       lty = "dotted", #tipo de linea trazo mas corto
+       col = "green")
+#Recta 3
+abline(h = 5, #Adiciono una recta en el eje x = 0 e y = 5 - Es decir v = AÑADE UNA RECTA HORIZONTAL EN 5
+       lty = "dotdash", #tipo de linea trazo y punto
+       col = "gray")
+
+```
+
+```{r Ejemplo 10 rejilla de fondo}
+#Hago una función
+f <- function(x){x^2}
+
+#Grafico con la funcion f
+plot(f, #Función de grafica
+     xlim = c(-3,3), #Limite del eje x
+     col = "red", #color de la linea
+     lwd = 2, #Grosor de la linea
+     ylab = expression(y^2), #Nombre del eje y
+     xlab = "x") #Nombre del eje x
+
+#Hago la rejilla del fondo
+abline(h = 0:9, #Lineas horizontales desde 0 hasta 0
+       v = -3:3, #Lineas verticales desde - hasta 3
+       lty = "dotted", #Tipo de lineas trazo corto
+       col = "grey") #Color de lineas
+  
+```
+
+    
+```{r Ejemplo 11 graficando la tangente}
+#Grafico
+plot(tan, #Función tangente
+     xlim = c(-pi, pi), #limite de x -pi hasta pi
+     ylim = c(-5,5), #Limite de y desde -5 hasta 5
+     col = "blue")
+
+# Grafico la linea vertical 
+abline(v = c(-pi/2, pi/2), #Linea vertical o asintota
+       col = "red")
+
+```
+
+```{r Ejemplo 12 texto y sus posiciones}
+plot(0,0)
+text(0,0, labels = "Debajo", pos = 1)
+text(0,0, labels = "Izquierda", pos = 2)
+text(0,0, labels = "Arriba", pos = 3)
+text(0,0, labels = "Derecha", pos = 4)
+```
+
+```{r Ejemplo 13 Añadiendo texto en puntos determinados}
+#Defino los puntos
+alumnos = c(1:10)
+notas  = c(2,5,7,9,8,3,5,6,10,7)
+
+plot(alumnos, 
+     notas, 
+     main = "Grafico con texto")
+
+text(alumnos, 
+     notas, 
+     labels = c("S", "A", "N", "E", "N", "S", "A", "A", "E", "N"), 
+     
+     #Posición del texto
+     #Recordar que 3 = arriba del punto
+     #Recordar que 1 = abajo del punto
+     pos = c(rep(3, #Repito la posición 3 justo encima de los primeros 8 puntos que son las primeras 8 notas del eje x
+                 times = 8), #Cantidad de notas que quiero que tenga el valor en la posición 3
+             1, #Numero 1 para colocar la letra del 9no punto abajo
+             3) #Y la del ultimo es arriba otra vez por lo que lleva el numero 3
+     
+     )
+
+```
+
+```{r Ejemplo 14 Funcion curve y añadiendo lineas encima de otras lineas}
+
+f <- function(x){x^2} #Hago la función
+
+#Grafica original
+plot(f, #Grafica de función
+     xlim = c(-3,3),  #Limites en x
+     ylim = c(-10,10)) #Limites en y
+
+#Muestra los puntos en la grafica
+points(-3:3, #Puntos desde -3 hasta 3 en x 
+       f(-3:3)*1.5, #Función en Y desde -3 hasta 3 multiplico por 1.5 para separarla un poquito de la original
+       pch = 19 ) #tipo de imagen 
+
+#Hago una linea conectando los puntos que hice antes
+lines(-3:3, #Linea desde -3 hasta 3 en eje x
+      f(-3:3)*1.5, #Función en Y desde -3 hasta 3 multiplico por 1.5 para separarla un poquito de la original
+      lwd = 2, #Grosor de la linea
+      lty = "dotted", #Tipo de linea
+      col = "red") #Limeas rectas entre los puntos  
+
+#Añadiendo una curva a la grafica
+#Curva 1
+curve(x^3, #curva de x^3
+      add = TRUE, #Colocar TRUE para que grafique junta a la linea original
+      lty = "dashed", #Tipo de linea
+      col = "blue")
+#Curva 2
+curve(x^4, add = TRUE, lty = "dashed", col = "purple")
+```
+
+```{r Ejemplo 15 otro ejemplo de lineas y curvas a partir de una función original}
+#Determino una función
+x = c(5*(1:20))
+
+#Esta función pinta los puntos 
+plot(x, #Dertermino los puntos en x
+     c(exp(-x)+(-1)^x*x/2*sin(x)^2)) #Dertermino los puntos en y
+
+#Hago una linea junto con los puntos uniendo con vertices derterminados abajo:
+lines(c(20, 10, 40, 80, 60, 60, 20), #Eje x
+      c(20, 0, -20, -20, 40, 0, 20), #Eje y
+      lwd = 2, #Grosor de la linea
+      col = "darkslategray1") #Color de la linea
+
+#Hago una curva de Seno en la grafica
+curve(20*sin(x), 
+      add = TRUE, 
+      col = "green")
+```
+
+```{r Ejemplo 16 Añadiendo Función legend en las graficas}
+
+x = seq(0, 2*pi, 0.1)
+
+plot(x , #Grafica de x 
+     sin(x), #En y hago el seno
+     type = "l", #Tipo de linea l
+     col = "blue", 
+     lwd = 3, #Grosor de linea
+     xlab = "", ylab = "") #Sin etiquetas en los ejes x e y
+
+lines(x, cos(x), col = "green", lwd = 3)
+
+lines(x, tan(x), col = "purple", lwd = 3)
+
+legend("bottomleft", #Posición de la leyenda
+       col = c("Blue", "green", "purple"), #Representa el color de cada linea que grafica en la leyenda
+       legend = c("Seno", "Coseno", "Tangente"), #Representa el nombre de cada iten de la leyenda
+       lwd = 3, #Grosor de la linea
+       bty = "l") #Tipo de linea
+```
+
+```{r Ejemplo 17 Legenda de la grafica del ejemplo 14}
+f <- function(x){x^2}
+plot(f, xlim = c(-3,3), ylim = c(-10,10))
+points(-3:3, f(-3:3)*1.5, pch = 19 ) #Muestra los puntos de la conexion
+lines(-3:3, f(-3:3)*1.5, lwd = 2, lty = "dotted", col = "red") #Limeas rectas entre los puntos  
+curve(x^3, add = TRUE, lty = "dashed", col = "blue")
+curve(x^4, add = TRUE, lty = "dashed", col = "purple")
+
+#Agregando leyenda
+legend("bottomright", # Legenda en el lado derecho
+       col= c("red", "blue", "purple"), # Color de las lineas
+       lwd = 3, # Tamaño de la linea
+       lty = c("dotted", "dashed", "dashed"), #   Tipo de lineas
+       legend = c(expression(x^2), expression(x^3), expression(x^4)) #Nombre de la legenda
+       )
+```
+
+
+```{r Ejemplo 18 Añadiendo simbolos y poligonos en la grafica}
+x = c(5*(1:10))
+
+plot(x, 
+       c(exp(-x)+(-1)^x*x/2*sin(x)^2), 
+       xlab = "", 
+       ylab = "", 
+       main = "Grafico de elementos")
+
+#Añadiendo un segmento  (Linea crea de dos puntos)
+segments(10, 0, #Coordenada del punta 1 x=10 y = 0
+         40, 0, #Coordenada del punta 2 x=40 y = 0
+         col = "red", 
+         lwd = 4) #Grosor de la linea
+
+#Pintando flechas  
+arrows(10, 0, #Coordenada del punta 1 x=10 y =0
+       40, -10, #Coordenada del punta 2 x=40 y = -10
+       col = "blue", 
+       #Esos 3 parametros indican la forma de la flecha
+       length = 0.5, # longitud de la flecha
+       angle = 5, #Angulo que va a tener la fecha de la linea
+       code = 3) # El codigo 3 significa una flecha que esta en ambos puntos inicio y fin ou doble sentido 
+
+#Añadiendo simbolos 
+#Estrella 1
+symbols(40, 0, #Eje de coordenana original para el simbolo (el centro)
+        #Nombre del simbolo para adicionar
+        stars = cbind(1, .5, 1, .5, 1,
+                      .5, 1, .5, 1, .5), #Cada punta de la estrella, Aqui se determino que es una estrella de 5 puntas
+        add = TRUE, 
+        lwd = 3, #Grosor de la linea
+        inches = 0.5) # Reduce el tamaño de la estrella para 1/2
+
+#Estrella 2 con tamaño normal porque no especifica inches.      
+symbols(40, 0, 
+        stars = cbind(1, .5, 1, .5, 1, .5, 1, .5, 1, .5), 
+        add = TRUE, 
+        lwd = 3)
+
+#Añadiendo un poligono cerrado especificando vertices de un grafico existente.  
+polygon(c(20, 30, 40), #Eje x
+        c(10, -10, 10), #Eje y
+        col = "gold", 
+        density = 3, #Frecuencia de las lineas que va en el interior
+        angle = 90, #Angulo de 90 para indicar lineas verticales
+        lty = 4, # Tipo de linea punto raya
+        lwd = 5 #Grosor de linea
+        )
+#Para saber mas de simbolos hacer ?symbols  
+```
+
+
+
+
+
+
+

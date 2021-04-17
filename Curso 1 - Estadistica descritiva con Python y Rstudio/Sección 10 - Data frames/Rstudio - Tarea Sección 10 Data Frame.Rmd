@@ -1,0 +1,201 @@
+---
+title: "Tarea Sección 10 - Data Frame"
+author: "Arturo Castro"
+date: "10/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tarea sección 10 DATA FRAME Medallas olimpicas
+
+Preguntas de esta tarea
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 1}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+
+tarea$Event.gender = as.factor(tarea$Event.gender)
+
+# 1. ¿Cuantos deportistas aparecen en el data frame?
+X = sum(tarea[, 7]=='X') #No estoy seguro lo que significa pero igual lo puse en el conteo (Puede ser discapacitados o sustitutos)
+M = sum(tarea[, 7]=='M')
+W = sum(tarea[, 7]=='W')
+total = M+W+X
+total
+
+#R. del profesor
+nrow(tarea) #Otra forma de mostrar el resultado
+```
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 2}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+
+tarea$Medal = as.factor(tarea$Medal)
+
+# 2. ¿Cuantos han ganado medallas de oro, cuantos de plata y cuantos de bronce?
+summary(tarea$Medal)
+sum(tarea[, 8]=='Gold')
+sum(tarea[, 8]=='Bronze')
+sum(tarea[, 8]=='Silver')
+  
+#R. del profesor
+nrow(subset(tarea, Medal == "Bronze")) #Cant Medallas de bronze
+nrow(subset(tarea, Medal == "Silver")) #Cant Medallas de Plata
+nrow(subset(tarea, Medal == "Gold")) #Cant Medallas de Oro
+```
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 3}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+tarea$City = as.factor(tarea$City)
+tarea$Discipline = as.factor(tarea$Discipline)
+
+# 3. ¿En cuantos lugares se han hecho olimpiadas de invierno?
+summary(tarea$Discipline)
+    
+# Alpine Skiing
+# Alpine Skiing
+# Freestyle Ski.
+# Ice Hockey
+# Ski Jumping
+# Snowboard
+# Speed skating
+    
+#Extraigo los deportes que son de invierno
+t = tarea[,'Discipline'] %in% c('Alpine Skiing','Alpine Skiing','Freestyle Ski.','Ice Hockey','Ski Jumping','Snowboard','Speed skating')
+t1 = tarea[t, ]
+#t1
+#str(t1)
+summary(t1$Discipline) #Aqui me da 0 las disciplinas que no entran en el conteo. 
+summary(t1$City) #Un total de 17 ciudades donde se efectuaron las olimpiadas de invierno mi respuesta fue la suma manual de cada una de ellas por lo rque esta mal. debo hacer lo siguiente:
+summary(levels(t1$City)) #Da el "resultado"
+  
+#R. del profesor
+length(levels(tarea$City))
+```
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 4}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+
+tarea$Event.gender = as.factor(tarea$Event.gender)
+
+# 4. ¿Cuantos hombres y cuantas mujeres hay?
+summary(tarea$Event.gender)
+sum(tarea[, 7]=='M') #Hombres
+sum(tarea[, 7]=='W') #Mujeres
+  
+# R. del profesor
+nrow(subset(tarea, Event.gender == "M")) #Cant de hombres
+nrow(subset(tarea, Event.gender == "W")) #Cant de mujeres
+nrow(subset(tarea, Event.gender == "X")) #Cant de indefinidos
+```
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 5}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+
+tarea$Year = as.factor(tarea$Year)
+ 
+
+# 5. ¿En qué año participaron más deportistas?
+summary(tarea$Year) 
+sum(tarea[,1] == '2006')
+
+# R. del profesor
+tarea$Year = as.factor(tarea$Year)
+max_freq = max(table(tarea$Year))
+table(tarea$Year)[table(tarea$Year) == max_freq] #El resultado lo muestra al imprimir 
+```
+
+```{r Tarea sección 9 medallas olimpicas Respuesta 6}
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv', ssl.verifypeer = FALSE)
+    
+tarea <- read.csv(textConnection(dftarea), stringsAsFactors=FALSE, header = TRUE) 
+#str(tarea) #Como tengo en caracteres la información que necesito extraer y no es contable para usar el summary voy a cambiarlo a factor usando la funcion as.factor
+
+tarea$Year = as.factor(tarea$Year)
+tarea$NOC = as.factor(tarea$NOC) 
+
+ # 6. El campo NOC indica el país del ganador de la medalla. ¿Qué país puede presumir de haber ganado más medallas de oro en los juegos de invierno entre 1960 y 1996?
+  
+P = t1[,'Medal'] %in% c('Gold')
+p1 = t1[P, ]
+A = p1[,'Year'] %in% c('1960','1964','1968','1972','1976', '1980', '1984','1988','1992','1994')
+a1 = p1[A, ]
+a2 = as.factor(a1$NOC)
+summary(a2)
+
+maximo = max(table(a2))
+maximo #Resultado (Ver como imprimir el pais  )
+
+
+
+
+# R. del profesor
+tarea1 = read.csv("http://winterolympicsmedals.com/medals.csv")
+tarea1 = tarea1[tarea1$Year >= 1960 & tarea1$Year <= 1996,]
+tarea1$NOC = as.factor(tarea1$NOC)
+max_freq = max(table(tarea1$NOC))
+table(tarea1$NOC)[table(tarea1$NOC) == max_freq]
+```
+
+
+
+```{r}
+
+library(RCurl)
+library(dplyr)
+dftarea <- getURL('http://winterolympicsmedals.com/medals.csv',
+                  ssl.verifypeer = FALSE)
+
+tarea <- read.csv(textConnection(dftarea), 
+                       stringsAsFactors=FALSE, 
+                       header = TRUE) 
+
+
+tarea$City = as.factor(tarea$City)
+tarea$Sport = as.factor(tarea$Sport)
+tarea$Discipline = as.factor(tarea$Discipline)
+tarea$Event = as.factor(tarea$Event)
+
+tarea$Year = as.factor(tarea$Year) #Para determinar en que año participaron mas deportistas
+tarea$NOC = as.factor(tarea$NOC) #Para determinar cual pais gano mas medallas de oro entre los periodos 1960 y 1996
+
+tarea$Event.gender = as.factor(tarea$Event.gender) #Para determinar la cantidad de hombres y mujeres
+tarea$Medal = as.factor(tarea$Medal) #Para determinar la cantidad de medallas de oro, plata y bronce 
+par(mfrow = c(2,2)) # Coloco las 4 graficas en una sola hoja en 2x2
+plot(as.factor(tarea$NOC), main = 'Participantes por pais')
+plot(as.factor(tarea$Year), main = 'Participantes por año')
+plot(as.factor(tarea$Event.gender), main = 'Participantes por sexo')
+plot(as.factor(tarea$Medal), main = 'Participantesp por medallas')
+par(mfrow = c(1,1))
+```
+
+

@@ -1,0 +1,21 @@
+---
+title: "Rstudio-TareaSección14"
+author: "Arturo Castro"
+date: "30/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Tarea Sección 14
+
+* Da el algoritmo para reproducir el proceso de generación de clases y sus marcas respectivo para el número de clases obtenido con la regla de la Scott en  Python.
+
+
+* Da el algoritmo para reproducir el proceso de generación de clases y sus marcas respectivo para el número de clases obtenido con la regla de la raíz en R o en Python.
+
+* Da el algoritmo para reproducir el proceso de generación de clases y sus marcas respectivo para el número de clases obtenido con la regla de la Sturges en R o en Python
+
+* Da el algoritmo para reproducir el proceso de generación de clases y sus marcas respectivo para el número de clases obtenido con la regla de  Freedman-Diaconis en R o en Python.
+

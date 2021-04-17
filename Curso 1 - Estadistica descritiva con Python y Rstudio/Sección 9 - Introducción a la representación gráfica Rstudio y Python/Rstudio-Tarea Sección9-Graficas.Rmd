@@ -1,0 +1,90 @@
+---
+title: "Tarea de la sección 9"
+author: "Arturo Castro"
+date: "20/5/2020"
+output:
+  html_document: default
+---
+
+Preguntas de esta tarea
+
+Con una sola instrucción, dibujad el gráfico de la función y=x^2−3x+30 entre −15 y 15. De título, poned “Una parábola”. De etiquetas, en el eje 0X poned, en formato matemático, "x"; y en el eje 0Y, introducid $y=x^2−3x+30$, también en formato matemático. Tenéis que utilizar la función curve()
+  
+
+```{r Ejercicio 1}
+f <- function(x){x^2-3*x+30}
+plot(f, xlim= c(-15,15),main = "Una parábola", ylab = expression(y=x^2-3*x+30), xlab= "x")
+
+
+curve(
+      x^2-3*x+30,
+      xlim = c(-15,15),
+      add = TRUE, 
+      lty = "dashed", 
+      col = "blue"
+      )
+
+```
+
+Considerando lo que habéis obtenido en el ejercicio anterior y siendo y = f(x) = x^2−3x+30 e I = [-15:15], si en vez de utilizar la función curve(), utilizamos la función plot(), ¿es correcta la sentencia plot(f(I)) para representar la curva f en el intervalo I? En otras palabras, dan ambas sentencias la misma gráfica? Obviamente, en la sentencia plot(f(I)) se han omitido el resto de parámetros requeridos en el ejercicio anterior porque no influyen para nada en la curva. Tanto si la respuesta es afirmativa como negativa, cread la función f en R y argumentad vuestra respuesta, considerando todos los parámetros requeridos (título y etiquetas de ambos ejes).
+
+R. = I representa el intervalo de la grafica en el eje X que va desde -15 hasta 15 sabiendo esto, la sentencia plot(f(I)) es incorrecta ya que no es una grafica, no se pueden mezclar parametros. 
+```{r Ejercicio 2}
+f <- function(x){x^2-3*x+30}
+plot(f, xlim= c(-15,15), main = "Una parábola", ylab = expression(y=x^2-3*x+30), 
+      xlab= "x")
+```
+
+
+Dibuja un gráfico semilogarítmico de la función $y = 5\cdot 2^x$ entre -10 y 25. Utilizad la función curve(). Mostrad solo la etiqueta del eje 0Y, que ponga "y = 5\cdot 2^x" en formato matemático.
+
+```{r Ejercicio 3}
+f <- function(x){5*2^x}
+      plot(f, xlim = c(-10,25), ylab = expression("5 * 2"^x))
+
+curve(5*2^x, xlim= c(-10,25), add = TRUE, col = "red")
+          
+
+```
+
+  
+Dibuja el gráfico de la función $y_1 = 3x$ utilizando la función curve(). Añade la curva y_2=-3x, entre -10 y 20. El gráfico no debe mostrar ninguna etiqueta. La primera curva debe ser de color azul y la segunda, de color verde. Ponedle de título "2 rectas" y de subtítulo "Dos rectas con pendiente opuesto". Añadid al gráfico un recuadro (con la esquina superior izquierda en el punto (13,10)) que indique que la función 3x es la azul y la -3x verde.
+
+```{r Ejercicio 4}
+f <- function(x){3*x}
+plot(f, xlim = c(-10,20), ylim = c(0,50), col = "white", main = "2 rectas", ylab = "", xlab = "")
+
+curve(3*x, xlim = c(-10,20), col = "blue", add = TRUE)
+curve(-3*x, xlim = c(-10,20), col = "green", add = TRUE)
+legend(xy.coords(13,10), col = c("Blue", "green"), legend = c("3X", "-3X"), lwd = 3, bty = "l")
+  
+```
+
+
+Dad la instrucción que añada a un gráfico anterior la recta horizontal y = 0 de color rojo con un grosor de 5 puntos.
+
+```{r Ejercicio 5}
+f <- function(x){3*x}
+plot(f, xlim = c(-10,20), ylim = c(0,10), col = "white", main = "2 rectas", ylab = "", xlab = "")
+abline(h = 0, col = "red", lwd = 5) # Recta horizontal en y = 0 con grosor 5
+curve(3*x, xlim = c(-10,20), col = "blue", add = TRUE)
+curve(-3*x, xlim = c(-10,20), col = "green", add = TRUE)
+legend(xy.coords(13,10), col = c("Blue", "green"), legend = c("3X", "-3X"), lwd = 3, bty = "l")
+
+
+```
+
+Dad la instrucción que añada a un gráfico anterior la recta y = 2x+7 de color azul con un grosor de 2 puntos.
+
+```{r Ejercicio 6}
+f <- function(x){2*x+7}
+plot(f, xlim = c(-10,20), ylim = c(0,10), main = "2 rectas", ylab = "", xlab = "", col = "blue", lwd = 2)
+abline(h = 0, col = "red", lwd = 5) # Recta horizontal en y = 0 con grosor 5
+curve(3*x, xlim = c(-10,20), col = "gray", add = TRUE)
+curve(-3*x, xlim = c(-10,20), col = "green", add = TRUE)
+legend(xy.coords(13,10), col = c("gray", "green"), legend = c("3X", "-3X"), lwd = 3, bty = "l")
+```
+
+
+
+

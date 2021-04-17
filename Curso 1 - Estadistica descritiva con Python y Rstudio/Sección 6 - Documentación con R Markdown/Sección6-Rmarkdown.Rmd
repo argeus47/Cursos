@@ -1,0 +1,555 @@
+---
+title: "Sección6-Rmarkdown"
+author: "Arturo Castro"
+date: "27/02/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Markdown
+*R Markdown.* Es un tipo de fichero en el cual podemos intercalar sin problema algun texto, código y fórmulas matemática.
+
+Para la mayor parte de las necesidades de este curso, en lo referente a la creación y composición de este tipo de ficheros, el documento **[Markdown Quick reference](https://wordpress.com/support/markdown-quick-reference/ )** y la **[chuleta](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)** de Rmarkdown deberian ser suficientes.
+
+Sin embargo, a lo largo de este curso iremos ampliando estos contenidos en algunos temas lo creamos necesario.
+
+Nosotros, en este tema, veremos como controlar el comportamiento de los bloques de código **chunks** al compilar el fichero Rmarkdown y como escribir formulas matematicas bien formateadas.
+
+## Como escribir
+
+Para escribir formulas matematicas bien formateadas utilizaremos sintaxis **\LaTeX{}**
+  
+* Para tener ecuaciones o formulas en el mismo parrafo, escribimos nuestro codigo entre 2 simbolos de dolar $Codigo$
+        
+* Si queremos tener ecuaciones o formulas centradas en un parrafo aparte escribimos nuestro codigo entre dos dobles simbolos de dolar: (Deve estar en su propia linea sola, no con otro texto)
+
+$$Codigo$$
+      
+*Cuidado!* Al escribir una formula de la forma indicada anteriormente o simplemente texto en R Markdown, los espacios en blanco son completamente ignorados. Rstudio solamente añade los espacios en blanco a partir del significado logico de los elementos.
+
+## Espacios en blanco
+
+*Ejemplo:*
+Para que veas que Rstudio ignora el exceso de espacios en blanco sigue el ejemplo de espacios innecesarios:
+
+Codigo: Raiz de una ecuación de tercer grado $Ax^3+Bx^2+Cx+D=0$ se encuentran mediante: \textit{Regla de Ruffini}. Por su parte, las raices de las ecuaciones de segundo grado se resuelve de la forma $\alpha x^2+\beta x+\gamma=0$ se encuentra siguiendo la formula: 
+
+$$x=\frac{-\beta\pm\sqrt{\beta^2   -4\alpha\gamma}}{2\alpha}$$
+
+#### Símbolos
+
+Hay muchisimos simbolos matemáticos que puedes escribir con la sintaxis \LaTeX{}. En el ejemplo anterior ya os hemos mostrado unos pocos. En este tema, nosotros solo veremos los mas utilizados.
+
+Para quien quiera ir más allá, aqui os demajos un [documento muy útil](http://www.ptep-online.com/ctan/symbols.pdf) con gran cantidad de simbolos de \LaTeX{}.
+
+Significado  |     Codigo      |   Resultado
+-------------|-----------------|-------------|
+Suma | + | +
+Resta | - | -
+Producto | $\setminus cdot$ | $\cdot$
+Producto | $\setminus times$ | $\times$
+División | $\setminus div$ | $\div$
+Potencia | $\setminus a ^\wedge {\{i\}}$ | $a^{x}$
+Subindice | $\setminus a\_{\{i\}}$ | $a_{i}$
+Fracción | $\setminus frac\{a\}\{b\}$ |$\frac{a}{b}$
+Más menos | $\setminus pm$ | $\pm$
+Raíz n-ésima | $\setminus sqrt[n]\{x\}$ | $\sqrt[n]{x}$
+Unión | $\setminus cup$ | $\cup$
+Intersección | $\setminus cap$ | $\cap$
+Or lógico | $\setminus vee$ | $\vee$
+And lógico | $\setminus wedge$ | $\wedge$
+Igual | $=$ | $=$
+aproximado | $\setminus appox$ | $\approx$
+No igual | $\setminus ne$ | $\ne$
+Mayor que | $>$ | $>$
+Menor que | $<$ | $<$
+Mayor o igual que | $\setminus ge$ | $\ge$
+Menor o igual que | $\setminus le$ | $\le$
+Sumatorio | $\setminus sum \_ \{ i=0 \} ^\wedge \{ n \}$ | $\sum_{i=0}^{n}$
+Productorio | $\setminus pro \_ \{ i=0 \} ^\wedge \{ n \}$ | $\prod_{i=0}^{n}$
+Integral | $\setminus int \_ \{ a \} ^\wedge \{ b \}$ | $\int_{a}^{b}$
+Unión (grande) | $\setminus bigcup$ | $\bigcup$
+Interesección (grande) | $\setminus bigcap$ | $\bigcap$
+Or lógico (grande) |$\setminus bigvee$  | $\bigvee$
+And lógico (grande) | $\setminus bigwedge$ | $\bigwedge$
+Paréntesis |  () | $()$
+Corchetes | [] | $[]$
+Llaves | $\setminus \{ \ \ \ \setminus \}$  | $\{ \}$
+Diamante | $\setminus langle \ \ \setminus rangle$ | $\langle \rangle$
+Parte entera por defecto | $\setminus lfloor \ \ \setminus rfloor$ | $\lfloor \rfloor$
+Parte entera por exceso | $\setminus lceil\ \ \setminus rceil$ | $\lceil \rceil$
+Espacio en blanco | $\setminus hola \ \ \setminus espacio \ \ \setminus hola$ | $hola\ espacio \ hola $
+Alpha | $\setminus alpa$ | $\alpha$
+Beta | $\setminus beta$ | $\beta$
+Gamma | $\setminus gamma \ \ \setminus Gamma$ | $\gamma \ \ \Gamma$
+Delta | $\setminus delta \ \ \setminus Delta$  | $\delta \ \ \Delta$
+Epsilon | $\setminus epsilon \ \ \setminus varepsilon$ | $\epsilon \ \ \varepsilon$
+Zeta | $\setminus zeta$ | $\zeta$
+Eta | $\setminus eta$ |  $\eta$
+theta | $\setminus theta \ \ \setminus Theta$ | $\theta \ \ \Theta$
+kappa | $\setminus kappa$ | $\kappa$
+Lambda | $\setminus lambda \ \ \setminus Lambda$ | $\lambda \ \ \Lambda$
+Mu | $\setminus mu$ | $\mu$
+Nu | $\setminus nu$ | $\nu$
+Xi | $\setminus xi \ \ \setminus Xi$ | $\xi \ \ \Xi$
+Pi | $\setminus pi \ \ \setminus Pi$ | $\pi \ \ \Pi$
+Rho | $\setminus rho$ | $\rho$
+Sigma | $\setminus sigma \ \ \setminus Sigma$ | $\sigma \ \ \Sigma$
+Tau | $\setminus tau$ | $\tau$
+Upsilon | $\setminus upsilon \ \ \setminus Upsilon$ | $\upsilon \ \ \Upsilon$
+Phi | $\setminus phi \ \ \setminus Phi \ \ \setminus varphi$ | $\phi \ \ \Phi \ \ \varphi$
+Chi | $\setminus chi$ | $chi$
+Psi | $\setminus psi \ \ \setminus Psi$ | $\psi \ \ \Psi$
+Omega | $\setminus omega \ \ \setminus Omega$ | $\omega \ \ \Omega$
+Gorrito | $\setminus hat \{ x \} \ \ \setminus widehat \{ xyz \}$ | $\hat{x} \ \ \widehat{xyz}$
+Barra | $\setminus bar \{ x \} \ \ \setminus overline \{ xyz \}$ | $\bar{x} \ \ \overline{xyz}$
+Punto 1 | $\setminus dot \{ x \}$ | $\dot{x}$
+Punto 2 | $\setminus ddot \{ x \}$ | $\ddot{x}$
+Punto 3 | $\setminus dddot \{ x \}$ | $\dddot{x}$
+Tilde | $\setminus tilde \{ x \} \ \ \setminus widetilde \{ xyz \}$ | $\tilde{x} \ \ \widetilde{xyz}$
+Vector | $\setminus vec \{ x \} \ \ \setminus overrightarrow \{ xyz \}$ | $\vec{x} \ \ \overrightarrow{xyz}$
+Subrallado | $\setminus underline \{ xyz \}$ | $\underline{xyz}$
+Llave superior | $\setminus overbrace \{ xyz \}$ | $\overbrace{xyz}$
+Llave inferior | $\setminus underbrace \{ xyz \}$ | $\underbrace{xyz}$
+Simple | $\setminus leftarrow \ \ \setminus rightarrow$ | $\leftarrow \ \ \rightarrow$
+Doble | $\setminus Leftarrow \ \ \setminus Rightarrow$ | $\Leftarrow \ \ \Rightarrow$
+Simple larga | $\setminus longleftarrow \ \ \setminus longrightarrow$ | $\longleftarrow \ \ \longrightarrow$
+Doble larga | $\setminus Longleftarrow \ \ \setminus Longrightarrow$ | $\Longleftarrow \ \ \Longrightarrow$
+Doble sentido simple | $\setminus leftrightarrow$ | $\leftrightarrow$
+Doble sentido larga simple | $\setminus longleftrightarrow$ | $\longleftrightarrow$
+Doble sentido doble | $\setminus Leftrightarrow$ | $\Leftrightarrow$
+Doble sentido larga doble | $\setminus Longleftrightarrow$ | $\Longleftrightarrow$
+Mapea | $\setminus mapsto$ | $\mapsto$
+Arriba | $\setminus uparrow$ | $\uparrow$
+Abajo | $\setminus downarrow$ | $\downarrow$
+Seno | $\setminus sin$ | $\sin$
+Coseno | $\setminus cos$ | $\cos$
+Tangente | $\setminus tan$ | $\tan$
+Arcoseno | $\setminus arcsin$ | $\arcsin$
+Arcocoseno | $\setminus arccos$ | $\arccos$
+Arcotangente | $\setminus arctan$ | $\arctan$
+Exponencial | $\setminus exp$ | $\exp$
+Logaritmo | $\setminus log$ | $\log$
+Logaritmo neperiano | $\setminus ln$ | $\ln$
+Máximo | $\setminus max$ | $\max$
+Mínimo | $\setminus min$ | $\min$
+Límite | $\setminus lim$ | $\lim$
+Supremo | $\setminus sup$ | $\sup$
+Ínfimo | $\setminus inf$ | $\inf$
+Determinante | $\setminus det$ | $\det$
+Argumento | $\setminus arg$ | $\arg$
+Puntos suspensivos bajos | $\setminus ldots$ | $\ldots$
+Puntos suspensivos centrados | $\setminus cdots$ | $\cdots$
+Puntos suspensivos verticales | $\setminus vdots$ | $\vdots$
+Puntos suspensivos diagonales | $\setminus ddots$ | $\ddots$
+Cuantificador existencial | $\setminus exists$ | $\exists$
+Cuantificador universal | $\setminus forall$ | $\forall$
+Infinito | $\setminus infty$ | $\infty$
+Aleph | $\setminus aleph$ | $\aleph$
+Conjunto vacío |  $\setminus emptyset$ | $\emptyset$
+Negación |  $\setminus neg$ | $\neg$
+Barra invertida | $\setminus backslash$ | $\backslash$
+Dollar |  $\setminus \$$ | $\$$
+Porcentaje | $\setminus \%$  | $\%$
+Parcial | $\setminus partial$ | $\partial$
+Negrita | $\setminus mathbf \{palabra\}$ | $\mathbf{palabra}$
+Negrita cursiva | $\setminus boldsymbol \{palabra\}$ | $\boldsymbol{palabra}$
+Negrita de pizarra | $\setminus mathbb \{PALABRA\}$ | $\mathbb{PALABRA}$
+Caligráfica | $\setminus mathcal \{PALABRA\}$ | $\mathcal{PALABRA}$
+Gótica | $\setminus mathfrak \{PALABRA\}$ | $\mathfrak{PALABRA}$
+
+#### Observaciones 
+* A la hora de componer en el interior de un parrafo una fraccion, existen dos formas: adaptada al tamaño del texto, $\frac{a}{b}$ fracción pequeña, ou pode ser outro tamanho $\dfrac{a}{b}$ fracción grande.
+  
+* Podemos especificar que los delimitadores se adapten a la altura de la expresión que envuelven utilizando $\setminus left$ y $\setminus right$. observe el cambio en el siguiente texto:
+$(\dfrac{a}{b})$ y $\left(\dfrac{a}{b}\right)$ 
+
+* Para poder ajustar al tamaño del contenido sea fracción ou otro tenemos el `\left` y `\rceil`
+- El `\left` antes de la función que queremos agrandar
+- El `\right` despues de la ultima funcíón que queremos agrandar
+
+Ejemplo:
+
+$$k=\left\lceil 
+\frac{mac(x)-min(x)}{A_s}  
+\right\rceil$$
+
+Si no agregamos esas 2 funciones quedaria de la siguiente manera:
+
+$$k=\lceil \frac{mac(x)-min(x)}{A_s}  \rceil $$
+
+* Para terner un conjutnod e datos en 1 linea y psar una parte para la segunda linea es suficiente con escribir `\\` y automaticamente la pasara Ejemplo:
+
+$$[20.95,22.25),[22.25,23.55),[23.55,24.85),[24.85,26.15),
+\\
+  [26.15 27.45),[7.45,28.75),[28.75,30.05),[30.05,31.35),
+\\  
+  [31.35,32.65),[32.65 33.95)$$
+
+#### Matrices 
+
+*Función matrix:*
+$$\begin{matrix} 
+                a_{11} & a_{12} & a_{13}
+                \\ 
+                a_{21} & a_{22} & a_{23} 
+\end{matrix}$$
+
+*Función pmatrix:*
+$$\begin{pmatrix} 
+                  a_{11} & a_{12} & a_{13}
+                  \\ 
+                  a_{21} & a_{22} & a_{23}
+\end{pmatrix}$$
+
+*Función vmatrix:*
+$$\begin{vmatrix} 
+                  a_{11} & a_{12} & a_{13}
+                  \\ 
+                  a_{21} & a_{22} & a_{23} 
+\end{vmatrix}$$
+
+*Función bmatrix:*
+$$\begin{bmatrix} 
+                a_{11} & a_{12} & a_{13}
+                \\ 
+                a_{21} & a_{22} & a_{23} 
+\end{bmatrix}$$
+  
+*Función Bmatrix:*
+$$\begin{Bmatrix} 
+                  a_{11} & a_{12} & a_{13}
+                  \\ 
+                  a_{21} & a_{22} & a_{23} 
+\end{Bmatrix}$$      
+  
+*Función Vmatrix:*
+$$\begin{Vmatrix} 
+                  a_{11} & a_{12} & a_{13}
+                  \\ 
+                  a_{21} & a_{22} & a_{23} 
+\end{Vmatrix}$$
+
+#### Sistema de ecuaciones
+$\setminus\ begin \{ array\} \{l\} \ \setminus end\{array\}$ = produce una tabla alineada a la izquierda.
+Es importante saber:
+
+* *(l)* Todo aliniado a la izquierda
+* *(lr)* Uno aliniado a la izquierda y otro a la derecha
+* *(rr)* para que las dos queden aliniadas a la derecha
+* *(cr)* Para aliniarlo en el centro
+
+El hecho de introducir el codigo $\setminus left. \ \ \setminus right.$. Hace que el delimitador respectivo no aparezca.
+
+$$\left.\begin{array}{l} 
+                        ax+by=c
+                        \\ 
+                        ex-fy=g 
+\end{array}\right\}$$
+  
+$$|x| = 
+\left\{\begin{array}{l}
+                        ax+by=c
+                        \\
+                        ex-fy=g
+\end{array}\right.$$  
+
+
+Para este codigo use el *rr* para aliniarlo todo a la derecha y evitar que salga un error si solo dejo *l*
+$$|x|=
+\left\{\begin{array}{rr}
+                        -x & \text{si }x\le 0
+                        \\
+                        x & \text{si }x\ge 0
+\end{array}\right.$$
+Uso el punto para que no tenga nada al finalizar el right
+
+
+$$|x|=
+\left\{\begin{array}{rr}
+                        -x & \text{si }x\le 0
+                        \\
+                        x & \text{si }x\ge 0
+\end{array}\right)$$
+Uso el $)$ al finalizar el right
+
+$$|x|=
+\left\{\begin{array}{rr}
+                        -x & \text{si }x\le 0
+                        \\
+                        x & \text{si }x\ge 0
+\end{array}\right]$$
+Uso el $]$ al finalizar el right
+
+La funcion $text\{\}$ nos permite introducir textos en formulas matematicas
+
+
+## Parametros de los chuncks en R
+
+Del lado derecho aparece el comando Insert (tienes las opciones de R, bash, D3, python, Rcpp, sql, stan). Solo escoger aguna de ellas para abrir el parametro chunks
+
+Ejemplo 1 de chunks:
+Vamos a calcular $\sqrt{2} - e^{-2}$
+
+```{r Ejemplo 1 de chunks}
+sqrt(2) - exp(-2)
+```
+## Parametros chuncks en R
+
+La parte entre llaves también pueden contener diversos parámetros, separados por comas entre ellos y separados de la etiqueta (o de r, si hemos decidido no poner ninguna).
+
+Estos parámetros determinan el comportamiento del bloque al compilar el documento pulsando el boton *knit* situado en la barra superior del área de trabajo.
+
+Código    | Significado
+----------|------------|
+*echo*    | Si lo igualamos a **TRUE**, que es el valor por defecto, estaremos diciendo que queremos que se muestre el código fuente del chunk, En cambio, igualado a **FALSE** no se mostrara.
+          |
+*eval*    | Si igualamos a TRUE, que es el valor por defecto, estaremos diciendo que queremos que se evalúe el código. En cambio, igualao a **FALSE** no se evaluara
+          |
+*message* | Nos permite indicar si queremos que se muestren los mensajes que R produce al ejecutar código. Igualado a **TRUE** se muestran, igualado a **FALSE** no
+          |
+*comment = NA* | Hace que se eliminen los ## que van al inicio de los mensajes impresos. 
+          |
+*warning* | Nos permite indicar si queremos que se muestren los mensajes de advertencia que producen algunas funciones al ejecutarse. Igualado a **TRUE** se muestran, igualado a **FALSE** no.
+
+###### Ejemplo del caso de echo:
+
+$\sqrt{2} - e^{-2}$
+*Con echo = TRUE muestra la formula y el resultado, tambien tiene el comment = NA para que no tenga los ## al inicio*
+```{r parametros 1, echo = TRUE, comment = NA}
+sqrt(2) - exp(-2)
+```
+
+
+$\sqrt{2} - e^{-2}$
+*Con echo = FALSE no muestra la formula, solo el resultado*
+```{r parametros 2, echo = FALSE}
+sqrt(2) - exp(-2)
+```
+
+
+Significado  | Código  | Resultados
+-------------|---------|-----------|
+*results*    | markup  | Valor por defecto. Nos muestra los resultados en el documento final linea a linea, encabezados por ##
+             |         |
+*results*    | hide    | No se nos muestra el resultado en el documento final
+             |         |
+*results*    | asis    | Nos devuelve los resultados linea a linea de manera literal en el documento final y el programa con el que se abre el documento final os interpreta como teto y formatea adecuadamente
+             |         |
+*results*    | hold    | Muestra todos los resultados al final del bloque de código.
+
+###### Ejemplo de hold
+
+$\sqrt{2} - e^{-2}$
+Con la instrucción de hold muestra todos los resultados del calculo.
+```{r parametros 3, echo = TRUE, results='hold'}
+sqrt(2) - exp(-2)
+x = 5
+sqrt(x)
+```
+
+###### Los chunks en modo línea
+
+Con lo explicado hasta ahora, solamente hemos generado resultados en la linea aparte.
+
+Para introducir una parte de código dentro de un párrafo y que se ejecute al copilarse el documento mostrando así el resultado final, hay que hacerlo utilizando $^\backprime \ \mathrm{r} \ \dots ^\backprime$
+
+###### Ejemplo de chunck en linea:
+
+  La raiz cuadrada de 64 es `r sqrt(64)` o lo que viene siendo lo mismo, $\sqrt{64}=$ `r sqrt(64)`
+
+* En *\LaTeX{}* $=\sqrt{2}$ 
+* En `R` haciendo `r sqrt(2)`
+* La Frase completa $\sqrt{2}=$  `r sqrt(2)`
+
+#### Documentación de textos usando RMarkdown
+
+# Titulo 1
+
+## Titulo 2
+
+### Titulo 3
+
+#### Titulo 4
+
+##### Titulo 5
+
+###### Titulo 6
+
+Tipos de letra:
+
+* *Cursiva*
+
+* _Cursiva_
+
+* **Negrita**
+
+* __Negrita__
+
+* **Superindice** = x^2^ el valor tiene que estar dentro de los 2 sombreritos.
+
+* ~~Palabras tachadas estan dentro de la doble tilde~~
+
+* endash: -- Inicio de un texto: ...
+
+* emdash: ... --- final del texto.
+
+* Para hacer una barra divisiora se hace con 3 astreriscos `***` sigue:
+
+***
+
+* Para hacer una cita dentro de un bloque `>` ejemplo:
+
+> Este es el espacio para el inicio de un nuevo parrafo o documento que esta dentro de un bloque.
+
+
+###### Listas no ordenadas
+
+* Item 1
+* Item 2
+* Item 3
+  + Sub item 3.1
+  + Sub item 3.2
+  + Sub item n....
+* Iten n....
+
+
+###### Listas ordenadas
+
+1. Item A
+2. Item B
+    + Sub item B.1
+    + Sub item B.2
+1. Item C
+1. Item D mismo asi colocando 1 va a continuar contando
+
+
+###### Para hacer una tabla se hace de la siguiente manera:
+
+A           |          B
+------------|-------------
+parte 1     |         50
+parte 2     |         60
+parte 3     |         70
+
+## Libreria reticulate para combinar python con Rstudio
+
+Sirve para trabajar modulos, clases, funciones de python en Rstudio.
+
+Aqui tenemos que instalar la libreria con `install.packages("reticulate")` y activarla
+
+```{r reticulate, echo =TRUE}
+library(reticulate)
+use_python('../../../anaconda3/bin/python3') #Aqui instale todo lo de python 3, 
+#al hace ese comando ya podre usar todas las librerias de python aqui en Rstudio
+
+#Puedo instalar paquetes usando py_install('Nombre del paquete')
+
+#Si quiero usar funciones de R y python lo hago de la siguiente manera:
+#Importar una libreria de python y guardar en una variable de R en este caso es la 
+#OS = sistema operativo. 
+
+os <-import("os")
+os$listdir(".")
+```
+**Se puede imprimir en HTML por si tiene errores con el PDF**
+
+Crear una libreria se hace de la siguiente manera.
+Creo un script de python, nombre del el es suma x+y que esta dentro de la carpeta seccion 6
+
+```{r Ejemplo de llamar script de python creado, echo=TRUE, comment=NA}
+source_python("Reticulate-ScripdeEjemplo-suma-resta.py")
+print('El resultado de 3 + 4 es:')
+add(3,4)
+
+```
+
+###### Conversión de objetos de un lenguaje a otro
+
+
+```{r conversión de objetos}
+library(reticulate)
+np <- import("numpy", convert = FALSE) #Esto indica que no se va a hacer una conversión de objetos python para objetos a R directa, vamos es a estar trabajando com objetos nativos de python por comodidad
+
+a <- np$array(c(1:4)) #Esto es un array que tiene numeros de 1 hasta 4
+sum <- a$cumsum() #Esto es un acumulador que esta en el paquete numpy de python
+print(sum) #Es una lista con corchetes que se refiere a objeto de python
+
+py_to_r(sum) #Para hacer una conversión de objeto python para objeto r donde se muestra que esta con 2 ## que es tipico de R y aparece [1] que significa que es una lista en R
+```
+
+```{r Ayuda de python en R}
+os <-import("os")
+os$listdir(".")
+py_help(os$chdir) 
+help(py_to_r)
+
+```
+###### Arrays
+
+Es posible crear arrays en R por la función np = numpy
+```{r Creando un array}
+
+a <- np_array(
+              c(1:8), 
+              dtype='float16', 
+              order = 'C' 
+              ) #Crea el objeto de python desde R
+a
+```
+
+```{r mi primer data frame llamando iris}
+datos <- iris
+head(datos) #Al abrir se sabe que es de R porque comienza con 1
+datos_py <- r_to_py(datos) #Convierto un objeto de R para un objeto de python 
+```
+
+```{python}
+import numpy as np
+import pandas as pd
+#Voy a llamar el objeto nuevo creado de iris que esta en datos_py
+# uso el r despues el nombre (datos_py) y por ultimo la opcion de ver que en este caso es head()
+r.datos_py.head() #Data frame de pandas porque comienza desde 0
+```
+
+###### Sparse Matrix 
+
+```{r matrix}
+library(reticulate)
+library(Matrix)
+
+N <- 6
+set.seed(123)
+sparse_mat <- sparseMatrix(
+  i = sample(N, N, replace = F), #Muestra aleatoria entre 1 y N, con replace = false para que complete 1 solo por fila
+  j = sample(N, N, replace = F),
+  x = runif(N), #Numero aleatorio de 0 hasta 1
+  dims = c(N, N) #Indico la dimensión que es N filas con N columnas
+)
+sparse_mat
+sparse_mat_py <- r_to_py(sparse_mat) #se trata de un objeto de python
+```
+    
+Con esta chunk abierta de python puedo invocar la matrix generada en la chunk pasada
+    
+```{python2}
+r.sparse_mat_py #Con esto puedo hacer todas las operaciones que quisiera
+
+```
+
+Puedo llamarla nuevamente en R por si hice alguna modificación en la chunk pasada de python y con eso me quedo con el archivo modificado. 
+
+```{r invocando la chunk de python2}
+py_to_r(sparse_mat_py)
+```
+
+
+
+
+

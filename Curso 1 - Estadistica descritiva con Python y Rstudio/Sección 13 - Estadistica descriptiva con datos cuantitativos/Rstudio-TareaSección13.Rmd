@@ -1,0 +1,128 @@
+---
+title: "Rstudio-TareaSección13"
+author: "Arturo Castro"
+date: "21/03/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tarea Sección 13
+
+### Estudio de las notas según la carrera
+
+Vamos a hacer un polémico estudio sobre quien saca mejores notas en la carrera: matemáticos, ingenieros industriales
+
+Carga el conjunto de datos de la carpeta data llamado grades.txt en R y responde a las siguientes preguntas
+Preguntas de esta tarea
+
+```{r Cargando el data set grades}
+# Llamando el fichero desde la web.
+library(RCurl)
+df <- getURL("https://raw.githubusercontent.com/argeus47/r-basic/master/data/grades.txt", ssl.verifypeer = FALSE)
+
+grades <- read.csv(textConnection(df), 
+     # stringsAsFactors=FALSE,         
+      header = T, #Para que los nombres de la                                    cabecera aparescan
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal 
+
+str(grades)
+head(grades)
+```
+
+1) Calcula 
+* la media, 
+* la mediana y 
+* la moda 
+redondeada a dos cifras decimales de las notas numéricas de los exámenes tanto de forma conjunta como por estudio universitario. ¿En qué grupo observamos la nota más alta? 
+¿Qué grupo está por encima de la media de estudiantes?
+
+```{r}
+round(mean(grades$nota),2) #Media
+round(median(grades$nota),2) #Mediana 
+round(as.numeric(names(which(table(grades$nota)==max(table(grades$nota))))),2) #Moda 
+
+t <- aggregate(grades$nota~grades$estudio,
+          data = grades,
+          FUN = summary,
+          na.rm = TRUE)
+t #Todos los valores estadistico que deseo saber
+
+#Aqui obtengo de la estudio (carrera industrial) la nota mayor a 10
+i1 <- grades[grades$estudio == 'Industrial' & grades$nota>10, ] #Nivel del factor estudio y la nota, da el valor asi cumple la condicion booleana de lo que necesito
+i2 <- grades[grades$estudio == 'Informatica' & grades$nota>8, ]
+m1 <- grades[grades$estudio == 'Mates' & grades$nota>8.5, ]
+t1 <- grades[grades$estudio == 'Telematica' & grades$nota>9, ]
+
+i1 <- round(as.numeric(i1),2) 
+i1 #Industrial
+i2 #Informatica
+m1 #Mates
+t1 #Telematica
+```
+
+**¿En qué grupo observamos la nota más alta? **
+R. Para saber eso primero tuve que sacar un summary para saber que nota es mas alta para depues acer un filtrado por carrera con valores superiores de 8 en adelante y asi consegui ver que  Industrial es la nota mas alta con `r i1`
+
+**¿Qué grupo está por encima de la media de estudiantes?**
+R. La media global es `r round(mean(grades$nota),2)` por lo que en el cuadro informativo de las medias por grupos de estudiantes el valor que supera es $Mates$ con `4.21`
+
+2) ¿En qué grupo observamos más variación de notas? Justifica tu respuesta
+
+```{r Ver cual grupo tiene mas variación de notas}
+aggregate(nota~estudio,data = grades, FUN = var) #Varianza muestral
+```
+
+Por medio de la varianza muestral observo que la materia de matematicas tuvo mas variabilidad en valores que las otras.
+
+
+3) ¿Hay mucha diferencia entre el grupo que has respondido en el ejercicio 1 y en el ejercicio 2? Intenta dar una explicación objetiva del suceso
+
+
+
+4) Dibuja en un único gráfico los cuatro diagramas de caja, uno para cada grupo. 
+* Añade así mismo la nota media, 
+* pon nombre, 
+* título y 
+* color al gráfico para documentar el gráfico correctamente.
+
+```{r}
+boxplot(nota~estudio,
+        data = grades,
+        col = 'lightblue',
+        main = 'Diagrama de cajas de grupos de estudiantes')
+
+media = aggregate(nota~estudio,data = grades, FUN = mean)
+points(media, #Adiciono el valor calculado antes
+       col = 'red', #Le agrego un color
+       pch = 1) #Tipo de punto en el grafico en este caso es un cuadradito
+
+```
+
+
+5) ¿Observas algunos valores atípicos en el boxplot anterior? ¿A qué grupo pertence? 
+
+Si para industrial, informatica y telematica
+
+6) Indica a partir del boxplot anterior en qué grupo observamos más variedad de notas.
+
+Matematica ya que es la caja mas grande por la que tiene mayor variedad de notas
+
+
+7) En base a todo lo anterior, 
+¿puedes afirmar de forma estadística que el examen de carrera ha ido mejor en algún estudio que en los demás? 
+
+Si. En el grupo de estudio de Industrial ya que tuvieron mejores notas que los otros grupos de estudio.
+
+
+
+
+
+
+
+
+
+

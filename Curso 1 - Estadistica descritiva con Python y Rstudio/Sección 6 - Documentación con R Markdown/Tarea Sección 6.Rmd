@@ -1,0 +1,128 @@
+---
+title: <center> <h>"Ejercicios sobre LaTeX, R y Markdown"</h> </center>
+author: <center> <h>"Arturo Castro"</h> </center>
+date: <center> <h>"3 de Abril del 2020"</h> </center>
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## **Instrucciones**
+
+En primer lugar, debéis reproducir este documento tal cual está. Necesitaréis instalar $MiKTeX$ y Texmaker.
+
+A continuación de cada pregunta, tenéis que redactar vuestras respuestas de manera correcta y argumentada, indicando qué hacéis, por qué, etc. Si se os pide utilizar instrucciones de R, tendréis que mostrarlas todas enchunks.
+
+El objetivo de esta tarea es que os familiaricéis con los documentos Markdown, las fórmulas en \LaTeX{} y los chunks de $R$. $Y$, de lo más importante, que os acostumbréis a explicar lo que hacéis en cada momento.
+
+## **Preguntas**
+#### **Pregunta 1**
+
+Realizad los siguientes productos de matrices siguiente en R:
+$$
+\begin{equation}
+{\begin{matrix} A \cdot B \\ 
+                B \cdot A \\
+                (A \cdot B)^t \\ 
+                B^t \cdot A \\ 
+                (A \cdot B)^{−1} \\ 
+                A^{−1} \cdot  B^t
+\end{matrix}}
+\end{equation}
+$$ 
+
+
+Donde:
+
+$$
+\begin{equation}
+A = 
+\left({\begin{array}{cc} 1&2&3&4\\ 4&3&2&1\\ 0&1&0&2\\ 3&0&4&0 \end{array}}\right)
+\  \  \  \  \  
+B= 
+\left({\begin{array}{cc} 4&3&2&1\\ 0&3&0&4\\ 1&2&3&4\\ 0&1&0&2 \end{array}}\right)
+\end{equation}
+$$ 
+
+Finalmente, escribe haciendo uso de $\LaTeX{}$ el resultado de los dos primeros productos de forma adecuada.
+
+```{r Pregunta 1}
+A = rbind(c(1,2,3,4), c(4,3,2,1), c(0,1,0,2), c(3,0,4,0) )
+B = rbind(c(4,3,2,1), c(0,3,0,4), c(1,2,3,4), c(0,1,0,2) )
+AB = A%*%B
+AB
+BA = B%*%A
+BA
+```
+
+$\LaTeX{}$
+$$
+\begin{equation}
+A \cdot B = 
+\left({\begin{array}{cc} 7&19&11&29\\ 18&26&14&26\\ 0&5&0&8\\ 16&17&18&19 \end{array}}\right)
+\  \  \  \  \  
+B \cdot A= 
+\left({\begin{array}{cc} 19&19&22&23\\ 24&9&22&3\\ 21&11&23&12\\ 10&3&10&1 \end{array}}\right)
+\end{equation}
+$$ 
+
+#### **Pregunta 2**
+Considerad en un vector los números de vuestro DNI y llamadlo dni. Por ejemplo, si vuestro DNI es 54201567K, vuestro vector será
+<center> <hh1> $dni = (5, 4, 2, 0, 1, 5, 6, 7)$ </hh1> </center>
+
+
+Definid el vector en R. Calculad con R el vector dni al cuadrado, la raíz cuadrada del vector dni y, por último, la suma de todas las cifras del vector dni.
+
+Finalmente, escribid todos estos vectores también a $\LaTeX{}$ 
+
+```{r Pregunta 2}
+dni = c(1, 9, 2, 3, 4, 3, 4, 7)
+dni2 = dni^2
+sumadni2 = sum(dni2)
+Modulodni = sqrt(sumadni2)
+Modulodni
+```
+
+$\LaTeX{}$
+
+<center> <hh1>$dni = 1, 9, 2, 3, 4, 3, 4, 7)$</hh1> </center>
+
+<center> <hh1>$\overrightarrow{|dni|} = \sqrt{1^2 + 9^2 + 2^2 + 3^2 + 4^2 + 3^2 + 4^2 + 7^2}$</hh1> </center>
+
+<center> <hh1>$\overrightarrow{|dni|} = \sqrt{185}$</hh1> </center>
+
+<center> <hh1>$\overrightarrow{|dni|} = 13,60$</hh1> </center>
+
+#### **Pregunta 3**
+
+Considerad el vector de las letras de vuestro nombre y apellido. Llamadlo name. Por ejemplo, en mi caso sería
+
+<center> <hh1>$nombre = (M, A, R, I, A, S, A, N, T, O, S)$</hh1> </center>
+
+.
+
+Definid dicho vector en R. Calculad el subvector que solo contenga vuestro nombre. Calculad también el subvector que contenga solo vuestro apellido. Ordenadlo alfabéticamente. Cread una matriz con este vector.
+
+Redactad todos vuestros resultados y utilizad $\LaTeX{}$  cuando pertoque
+
+
+```{r Pregunta 3}
+nombre = c("A", "R", "T", "U", "R", "O", "C", "A", "S", "T", "R", "O")
+Orden = sort(nombre)
+Orden
+matriz = matrix(Orden, nrow = 3, ncol = 4)
+matriz
+```
+
+$\LaTeX{}$
+
+$nombre = (A, R, T, U, R, O, C, A, S, T, R, O)$
+
+$nombre = (A, A, C, O, O, R, R, R, S, T, T, U)$
+
+$$
+\begin{equation}
+nombre = 
+\left({\begin{array}{cc} A&O&R&T\\ A&O&R&T\\ C&R&S&U \end{array}}\right)
+\end{equation}
+$$ 

@@ -1,0 +1,1068 @@
+---
+title: "Sección 11-Estadistica descriptiva con datos cualitativos"
+author: "Arturo Castro"
+date: "13/03/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Anãlisis estadístico de los datos
+
+Cuando tenemos una serie de datos que describen algunos aspectos de un conjunto de individuos queremos llevar a cabo un análisis estadístico. Estos análisis estadísticos se clasifican en:
+
+* **Análisis exploratorio, o descriptivo**: Si nuestro objetivo es resumir, representar y explicar los datos concretos de los que disponemos. La `estadística descriptiva` es el conjunto de técnicas que se usan con este fin.
+
+* **Análisis inferencial**: Si nuestro objetivo es deducir (inferir), a partir de estos datos, información significativa sobre el total de la problación o las poblaciones de interés. Las téctnicas que se usan en este caso forman la `estadística inferencia`
+
+Existe relación entre ambos. Cualquier análisis inferencial se suele empezar explorando los datos que se usarán y asi cómo también muchas técnicas descriptivas permiten estimar propiedades de la problación de la que se ha extraído la muestra.
+
+Ejemplo:
+
+La media aritmética de las alturas de una muestra de individuos nos da un valor representativo de esta muestra, pero tambien estima la media de las alturas del total de la población.
+
+Nos centraremos en entender algunas técnicas básicas de la estadistica desriptiva orientadas al `análisis de datos`.
+
+Estas consistirán en una serie de medidas, graficos y modelos descriptivos que nos permitirán resumir y explorar un conjunto de datos.
+
+**Objetivo final**: Entender los datos lo mejor posible.
+
+## Tipos de datos
+
+Trabajamos con `datos multidimensionales`: Observamos varias características de una serie de individuos.
+
+Se regristran en un archivo de ordenador con un formato preestablecido. Por ejemplo texto simple (codificado en diferentes formatos: `ASCCI. isolatin...`), hojas de cálculo (archivos de `Open Office o Excel`), base de datos, etc..
+
+Una de las maneras básicas de almacenar datos es en forma de tablas de datos. En `R` hacemos uso de data frames.
+
+En una tabla de datos cada columna expresa una variable, mientras que cada fila corresponde a las observaciones de estas variables para un individuo concreto.
+
+* Los datos de una misma columna tiene que ser del mismo tipo, porque corresponden a observaciones de una misma propiedad.
+* Las filas en principio son de naturaleza heterogénea, porque pueden contener datos de diferentes tipos.
+
+Los tipos de datos que consideramos son los siguientes:
+
+* **Datos de tipo atributo, o cualitativos**: Expresan una cualidad del individuo. En `R` guardaremos las listas de datos cualitativos en vectores (habitualmente, de palabras), o en factores si vamos a usarlos para clasificar individuos.
+
+* **Datos ordinales**: Similares a los cualitativos, con la única diferencia de que se pueden ordenar de manera natural. Por ejemplo, las calificaciones en un contro (suspenso, aprobado, notable, sobresaliente). En `R` guardaremos las listas de datos ordinales en factores ordenados.
+
+* **Datos cuantitativos**: Se refieren a medidas, tales como edades, longitudes, etc. En `R` guardaremos las listas de datos cuantitativos en vectores numéricos.
+
+```{r Ejemplo de Tipos de dato}
+#Con el data frame iris observamos que 4 variables son cuantitativas y la ultima Species es cualitativa 
+#Cuantitativas = Sepal.Length, Sepal.Width, Petal.Length y Petal.Width
+#Cualitativa = Species
+head(iris)
+str(iris)
+```
+
+## Que son los datos cualitativos?
+
+Los `datos cualitativos` corresponden a observaciones sobre cualidades de un objeto o individuo.
+
+Suelen codificarse por medio de palabras, pero también se pueden usar números que jueguen el papel de etiquetas.
+
+Ejeplo:
+
+Es habitual representar No (o Falso, Fracaso, Ausente...) con un `0`, y Sí (o Verdadero, Èxito, Presente...) con un `1`
+
+Los `datos cualitativos` son aquellos que pueden ser iguales o diferentes, pero que no admiten ningún otro tipo de comparación significativa.
+
+Es decir, que no tenga ningún sentido preguntarse si uno es más grande que otro, ni efectuar operaciones aritméticas con ellos, aunque estén representados por números.
+
+Por lo tanto, un mismo conjunto de datos puede ser cualitativo o de otro tipo, según el análisis que vayamos a hacer de él.
+
+Ejemplo:
+
+Si hemos anotado durante unos años los días de la semana en lo que ha llovido y queremos contar cuántas veces ha ocurrido en `Lunes`, cuaántas en `Martes`,.. etc.., esta lista de nombres (o números) serán datos cualitativos. Si, en cambio, queremos estudiar cómo se comportan los días de lluvia según avanza la semana, y por lo tanto el orden de los dias es relevante, serán datos ordinales.
+
+**Variable cualitativa**: Lista de observaciones de un tipo de datos cualitativos sobre un conjunto concreto de objetos.
+
+**Niveles**: Diferentes valores que pueden tomar estos datos. Por ejemplo, los dos niveles de una variable Sexo serian `M` (Macho) y `H` (Hembra), o sinónimos.
+
+Con `R` usaremos vectores y factores para representar variables cualitativas. Los factores nos servirán para agrupar las observaciones según los niveles de la variable. De esta manera podremos segmentar la población que representa la variable en grupos o subpoblaciones, asignando un grupo a cada nivel, y podremos comparar el comportamiento de otras variables sobre estos grupos.
+
+## Estudio de frecuencias
+
+Dada una variable cualitativa, para cada uno de sus niveles podemos contar cuántos datos hya en ese nivel (`frecuencia absoluta`) y qué fracción del total representan (`frecuencia relativa`).
+
+Ejemplo.
+
+Supongamos que tenemos un tipo de datos cualitativos con niveles $$l_1, \ l_2, \ \dots, \ l_k$$
+
+Efectuamos n observaciones de este tipo de datos, y denotamos por
+$$x_1, \ x_2, \ \dots, \ x_n$$
+Los resultados que obtenemos con
+$$x_j \ \in \{l_1, \ l_2, \ \dots, \ l_k\}$$
+Estas observaciones forman una variable cualitativa.
+
+Con estas notaciones:
+
+* *La frecuencia absoluta*, $n_j$, del nivel $l_j$ en esta variable cualitativoa es el número de observaciones en las que $x_i$ toma el valor $l_j$
+* *La frecuencia relativa* del nivel $l_j$ en esta variable cualitativa es la fracción
+
+$$f_j = \frac{n_j}{n}$$
+Es decir, la frecuencia relativa del nivel $l_j$ es la fracción (en tanto por uno) de observaciones que corresponden a este nivel.
+
+La `moda` de esta variable cualitativa es su nivel, o niveles, de mayor frecuencia (absoluta o relativa)
+
+Ejemplo.
+
+Supongamos que se ha realizado un seguimiento a 20 personas asistentes a un congreso. Uno de los datos que se hanrecogido sobre estas personas ha si su sexo. El resultado ha sido una variable cualitativa formada por las 20 observaciones siguientes:
+
+$Mujer, Mujer, Hombre, Mujer, Mujer, Mujer, Mujer, Mujer, Hombre, Mujer, Hombre, Hombre, Mujer, Mujer, Hombre, Mujer, Mujer, Mujer, Mujer, Hombre$
+
+Sus dos niveles son `Hombre` y `Mujer` en esta variable hay 14 mujeres y 6 hombres. Éstas son las frecuencias absolutas de estos niveles.
+
+Puesto que en total hay 20 individuos, sus frecuencias relativas son:
+
+$$Frecuencia \ relativa \frac{Frecuencia \ absoluta}{Cantidad \ de \ observaciones} $$
+
+$$Hombre = \frac{6}{20}=0.3, \ \ \ Mujer=\frac{14}{20}=0.7$$
+En este caso $l_1=Hombre$ y $l_2=Mujer$, $n=20$ (el número de obseraciones efectuadas), y $x_1, \ x_2, \ \dots, \ x_{20}$ formarían la muestra de sexos.
+
+La tabla siguiente resume las frecuencias absolutas y relativas de la variable cualitativa del ejemplo anterior, con las notaciones que acabamos de introducir
+
+$Sexo$ | $n_i$ | $f_i$ | $\%$ |
+-------|-------|-------|------|
+Hombre |6      |0.3    |30%   |
+Mujer  |14     |0.7    |70%   |
+Total  |20     |1      |100%  |
+
+Su moda es el nivel `Mujer`
+
+## Tablas de frecuencias unidimensionales
+
+Supongamos que tenemos una variable cualitativa guardada en un vector o un factor como la siguiente.
+
+```{r Frecuencias unidimensionas}
+#Ejemplo de muestra aleatoria con numeros
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+print(x)
+
+print(' ')
+#Ejemplo de muestra aleatoria con letras
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+print(Respuestas)
+```
+
+Con `R`, la tabla de frecuencias absolutas de un vector que representa una variable cualitativa se calcula con la función `table()`
+
+```{r Calculo de frecuencias absolutas usando la función table}
+
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+print(table(x)) #Da como resultado las frecuencias absolutas ou tabla de contigencia
+
+print(' ')
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+print(table(Respuestas))#Da como resultado las frecuencias absolutas ou tabla de contigencia
+```
+
+El resultado de una función `table()` es un objeto de datos de un tipo nuevo: una `tabla de contingencia`, una `table` en el argot de `R`
+
+Al aplicar `table()` a un vector obtenemos una tabla unidimensional formada por una fila con los niveles de la variable y una segunda fila donde, debajo de cada nivel, aparece su frecuencia absoluta en el vector.
+
+Los nombres de las columnas de una tabla unidimensiona se obtienen con la función `names()`
+
+```{r determinar nombres de la tabla de contigencia de la función table}
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+
+print(names(table(x))) #Da como resultado los nombres tabla de contigencia
+
+print(' ')
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+print(names(table(Respuestas)))#Da como resultado los nombres tabla de contigencia
+```
+
+En la `table` de un vector sólo aparecen los nombres de los niveles presentes en el vector. Si el tipo de datos cualitativos usado tenía más niveles y queremos que aparezcan explícitamente en la tabla (con frecuencia 0), hay que transformar el vector en un factor con los niveles deseados.
+
+```{r transformando el vector en un factor con niveles deseados}
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+
+z = factor(x, #Transformo el vector x para factor 
+           levels = 1:7) #Generlo los niveles que quiero del 1 al 7
+table(z)
+```
+
+Podemos pensar que una tabla unidimensional es como un vector de números donde cada entrada está identificada por un nombre: el de su columna. Para referirnos a una entrada de una tabla unidimensional, podemos usar tanto su posición como su nombre (entre comillas, aunque sea un número).
+
+```{r Determinando posiciones especificas de la función table}
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+
+table(x)[3] #Escojo la tercera columna de la table(x)
+
+print(' ')
+
+table(x)['7'] #Escogo la columna con nombre de 7 = Dara NA porque no existe
+
+print(' ')
+
+table(x)['5'] #Escogo la columna con nombre de 5
+
+print(' ')
+
+3*table(x)[2] #Multiplico 3 x el valor de la columna 2
+
+print(' ')
+
+sum(table(x)) #Sumo la cantidad de muestras del vector, es decir me da como resultado la longitud del vector
+
+print(' ')
+
+sqrt(table(Respuestas)) #Calculo la raiz cuadrada de la cantidad de Si y no que tiene la tabla Respuestas
+```
+
+```{r Ejemplo de tablas de contigencias Funciń table}
+
+datos = factor(c('H','M','M','M','H','H','M','M')) #Creo un factor
+
+table(datos) #Determino la tabla de contingencias
+
+print(' ')
+
+table(datos)['M'] #Accesando solo a la tabla de contingencias de mujer
+```
+
+#### Función prop.table
+
+La tabla de `frecuencias relativas` de un vector se puede calcular aplicando la función `prop.table()` a su `table`. El resultado vuelve a ser una tabla de contingencia unidimensional.
+
+```{r Función proptable}
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+
+prop.table(table(x))
+
+print(' ')
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+prop.table(table(Respuestas)) 
+```
+
+**Cuidado!** La función `prop.table()` se tiene que aplicar al resultado de `table`, no al vector original. Si aplicamos `prop.table()` a un vector de palabras o a un factor, dará un error, pero si la aplicamos a un vector de números, nos dará una tabla.
+
+Esta tabla no es la tabla de frecuencias relativas de la variable cualitativa representada por el vector, sino la tabla de frecuencias relativas de una variable que tuviera como tabla de frecuencias absolutas este vector de números, entendiendo que cada entrada del vector representa la frecuencia de un nivel diferente.
+
+```{r proptable sin el table antes da un error}
+x = sample(1:5, #Conjunto de numeros del 1 al 5
+           size = 12, #Cantidad de muestra
+           replace = T) #Hacer posible que los numeros se repitan
+x
+print(' ')
+prop.table(x) #Valor errado = tabla de frecuencias relativas de una variable que tuviera como tabla de frecuencias absolutas este vector de números, entendiendo que cada entrada del vector representa la frecuencia de un nivel diferente
+```
+
+También podemos calcular la tabla de frecuencias relativas de un vector dividiendo el resultado de `table` por el número de observaciones
+
+```{r Calculo de tabla de frecuencias relativas}
+#Calculo de frecuencias relativas
+#Valor de cada tabla / n (longitud de la muestra)
+table(x)/length(x) 
+```
+
+Dados un vector `x` y un número natural `n`, la instrucción
+`names(which(table(x)==n))`
+nos da los niveles que tienen la frecuencia absoluta `n` en `x`
+```{r niveles de frecuencia absoluta n en x}
+#Recordar que aqui tengo en la 1ra linea los niveles
+#En la segunda linea se tienen las frecuencias absolutas que es la cantidad de numeros que se repiten en la muestra de 12 itens
+table(x)
+# 1 se repite 2 vecez
+# 2 se repite 5 vecez
+# 3 se repite 1 vez
+# ... y asi suceviamente hasta llegar al nivel 5
+print(' ')
+names(which(table(x)==1)) #Es decir = R tiene que arrojar como valor el nivel de la frecuencia absula que solo salio 1 vez Para este caso el nivel 1 y 3 salieron 1 vez en la muestra y ese es el resultado.
+#Si coloco 2 (frecuencia absoluta) estoy diciendo que me de el nivel que es 5
+#Si coloco 5 (frecuencia absoluta) estoy diciendo que me de el nivel que es 2
+# Y asi sucesivamente....
+```
+
+En particular, por lo tanto,
+$$names(which(table(x)==max(table(x))))$$
+Nos da los niveles de frecuencia maxima en `x:` es su `moda`
+
+```{r Calculo de moda}
+names(which(table(x)==max(table(x)))) #Calculo de la moda
+#Da como resultado 2 porque es el que aparece con mayor frecuencia
+
+
+names(which(table(Respuestas)==max(table(Respuestas)))) #Calculo de la moda.
+#Da cmo resultado (NO) porque es el que aparece con mayor frecuencia
+```
+
+Ejercicio
+
+Recuperad el ejercicio de los 6 hombres y las 14 mujeres anterior y utilizando R:
+* Calcula su tabla de frecuencias absolutas
+* Calcula su tabla de frecuencias relativas
+* Calcula la moda
+
+Pista: Usad la función `rep()` para no tener que escribir los datos a mano.
+
+$$Frecuencias \ Relativas \ =f_i=\frac{n_i}{n}$$
+
+```{r Ejercicio de frecuencia abosluta relativa y moda}
+data = c(rep("M",14),rep("H",6))
+data
+
+print(' ')
+
+table(data) #frecuencias absolutas
+
+print(' ')
+
+#frecuencias relativas
+prop.table(table(data)) 
+table(data)/length(data)
+100*prop.table(table(data))
+
+print(' ')
+
+names(which(table(data)==6))#Dame los niveles de la tabla de data que aparece 6 veces = Da como resultado hombre
+names(which(table(data)==max(table(data)))) #moda
+
+#Creando una función para calcular la moda automaticamente
+moda <- function(d){
+  names(which(table(d)==max(table(d))))
+}
+m_t = moda(datos) #Adiciono el valor a la variable m_t
+```
+La moda del data frame es `r m_t` da como resultado `M` que es la mujer quien se repite mas veces. 
+
+## Tabla de frecuencias bidimensionales
+
+La función `table()` también permite construir tablas de frecuencias conjuntas de dos o más variables.
+
+Supongamos que el vector `Respuestas` anterior contiene las respuestas a una pregunta dadas por unos individuos cuyos sexos tenemos almacenados en un vector `Sexo` en el mismo orden que sus respuestas. En este caso, podemos construir una tabla que nos diga cuantas personas de cada sexo han dado cada respuesta.
+
+```{r Tablas de frecuencias bidimensionales}
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+#Hago una table de 2 vectores. donde tiene respuestas como fila y sexo como columnas
+table(Respuestas,Sexo)
+```
+
+Ejercicio:
+
+* Comprobad qué ocurre si cambiamos el orden de las columnas en la función `table()`
+* Usad la función `t()` para transponer ambas tablas y comprobad el resultado.
+
+```{r Ejercicio 1Tablas de frecuencias bidimensionales}
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+#Respuesta 1
+table(Sexo,Respuestas)
+
+print(' ')
+
+#Respuesta 2
+t(table(Sexo,Respuestas))
+```
+
+Para referirnos a una entrada de una tabla bidimensional podemos usar el sufijo `[ , ]` como si estuviéramos en una matriz o un data frame. Dentro de los corchetes, tanto podemos usar los índices como los nombres (entre comillas) e los niveles.
+
+```{r Buscando valores dentro de la posición de la fila y la columna}
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+#En la fila 1 y columna 2 quiero saber que valor tiene de la tabla respuestas,sexo
+table(Respuestas, Sexo)[1,2]
+
+print(' ')
+
+#Para determinar la cantidad de mujeres que dijeron NO
+table(Respuestas, Sexo)['No','M']
+
+```
+
+Como en el caso unidimensional, la función `prop.table()` sirve para calcular tablas bidimensionales de frecuencias relativas conjuntas de pares de variables. Pero en el caso bidimensional tenemos dos tipos de frecuecias relativas:
+
+* **Frecuencias relativas globales**: Para cada par de niveles, uno de cada variable, la fracción de individuos que pertenecen a ambos niveles respecto del total de la muestra.
+
+* **Frecuencias relativas marginales**: Dentro de cada nivel de una variable y para cada nivel de la otra, la fracción de individuos que pertenecen al segundo nivel respecto del total de la subpoblción definida por el primer nivel.
+
+Ejemplo:
+
+Dadas dos variables, se pueden calcular dos familias de frecuencias relativas marginales, según cuál sea la variable que defina las subpblaciones en la que calculemos las frecuencias relativas de los niveles de la otra variable; 
+- No es lo mismo la fracción de mujeres que han constestado que `sí` respecto del total de mujeres.
+- Que la fracción de mujeres que han contestado que `sí` respecto del total de personas que han dado esta misma respuesta
+
+
+La tabla de frecuencias relativas globales se calcula aplicando sin más la función `prop.table()` a la `table`.
+
+```{r Calculo de frecuencias relativas globales}
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+              
+prop.table(table(Sexo, Respuestas)) #Calculo de frecuencia relativa                                      global
+```
+
+De este modo, la tabla `prop.table(table(Sexo, Respuestas))` = `r prop.table(table(Sexo, Respuestas))` nos da la fracción del total que representa cada pareja (sexo, respuesta)
+
+Para obtener las marginales, debemos usar el parámetro `margin` al aplicar la función `prop.table()` a la `table()`. 
+- Con `margin=1` obtenemos las frecuencias relativas de las filas.
+- Con `margin=2` obtenemos las frecuencias relativas de las columnas.
+
+```{r Frecuencias relativas por filas y columnas usando margin 1 y 2}
+set.seed(1)
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+#Frecuencias relativas Por filas (Sexo)
+prop.table(table(Sexo, Respuestas), margin = 1)
+
+print(' ')
+
+#Frecuencias relativas Por columnas (Respuestas)
+prop.table(table(Sexo, Respuestas), margin = 2)
+```
+
+###### Frecuencia relativa global por fila (Sexo) - margin = 1
+Sexo/Respuestas  |  No  |  Si |
+-----------------|------|-----|
+H                |0.375 |0.625| 
+M                |0.250 |0.750|
+
+* Del total de *hombres* el 0.375 respondio que `NO` y el 0.625 respondio que `SI`
+* Del total de *mujeres* el 0.250 respondio que `NO` y el 0.750 respondio que `SI`
+
+###### Frecuencia relativa global por columna (Respuestas) - margin = 2
+
+Sexo/Respuestas  |  No  |  Si |
+-----------------|------|-----|
+H                |0.750 |0.625| 
+M                |0.250 |0.375|
+
+* Del total de *NO* el 0.750 fue respondio por `hombres`, mientras que el 0.250 fue por `mujeres`
+* Del total de *SI* el 0.625 fue respondio por `hombres`, mientras que el 0.375 fue por `mujeres`
+
+#### La función CrossTable() - Instalar el paquete gmodels para su uso
+
+La función `CrossTable()` del paquete `gmodels` permite producir (especificando el parámetro `prop.chisq=FALSE`) un resumen de la tabla de frecuencias absolutas y las tres tablas de frecuencias relativas de dos variables en un formato adecuado para su visualización.
+
+La leyenda *Cell Contents* explica los contenidos de cada celda de la tabla: 
+- La frecuencia absoluta 
+- La frecuencia relativa por filas 
+- La frecuencia relativa por columnas 
+- La frecuencia relativa global
+
+Esta función dispone de muchos parámetros que permiten modificar el contenido de las celdas, y que podéis consultar en `help(CrossTable)`
+
+```{r Función CrossTable}
+set.seed(1)
+library(gmodels)
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+
+CrossTable(Sexo, Respuestas, prop.chisq = FALSE)
+```
+
+|Cell Contents |  Observaciones                                   |
+|-------------------------|---------------------------------------|
+|                       N | Frecuencia absoluta
+|           N / Row Total | Frecuencia relativa global por filas ou                             marginal por filas
+|           N / Col Total | Frecuencia relativa global por columnas                             ou marginal por columnas
+|         N / Table Total | Frecuencia relativa global Total
+
+Una `tabla de contingencia bidimensional` es, básicamente, una matriz con algunos atributos extra. En particular, podemos usar sobre estas tablas la mayoría de las funciones para matrices que tengan sentido para tablas:
+
+* **rowSums()** y **colSums()** Se pueden aplicar a una tabla y suman sus filas y sus columnas, respectivamente.
+* También podemos usar sobre una tabla bidimensional (o, en general, multidimensional) la función **apply()** con la misma sintaxis que paa matrices.
+
+```{r funciones rowSumns e colSums y apply}
+set.seed(1)
+
+Respuestas = factor(sample(c('Si','No'), #Conjunto de valore si y                                            no
+                           size = 12, #Cantidad de muestra
+                           replace = T))#Hacer posible que los                                              numeros se repitan
+
+#Genero una muestra aleatoria de sexo
+Sexo = sample(c('H', 'M'), #defino la variable hombre y mujer
+              size = length(Respuestas), #Cantidad de hombres y                                             mujeres que van a dar una                                          respuesta
+              replace = T) #Para que las variables hombre y mujer                              se repitan
+#Frecuencia absoluta
+tt = table(Sexo,Respuestas) #Cree la variable tt como la table de sexo respuestas
+
+print(' ')
+
+#Sumatora de Frecuencia absoluta por fila e columna
+colSums(tt) #Sumatoria de la frecuencia absoluta por columnas que es por respuestas
+rowSums(tt) #Sumatoria de la frecuencia absoluta por filas que es por sexo
+
+print(' ')
+
+#Frecuencias relativas 
+prop.table(tt, margin = 1) #Frecuencia relativa por sexo
+prop.table(tt, margin = 2) #Frecuencia relativa por respuesta
+
+print(' ')
+
+#Sumatora de Frecuencia relativa por fila e columna
+colSums(prop.table(tt)) ##Sumatoria de la frecuencia RELATIVA por columnas que es por respuestas
+
+rowSums(prop.table(tt)) ##Sumatoria de la frecuencia RELATIVA por filas que es por sexo
+
+#Usando apply que toma las variables globales para este caso
+apply(tt, #llamo los vectores
+      FUN = sum, #Aplico la función suma
+      MARGIN = 1) #Se lo aplico a las filas que es sexo
+
+apply(tt, #llamo los vectores
+      FUN = sqrt, #Aplico la función raiz cuadrada
+      MARGIN = c(1,2)) #Determino la función para todas las filas y columnas
+```
+#### Datos multidimensionales
+
+```{r Ejercicio 1 con 3 dimensiones e la funcion ftable e filtrar datos e calculando frecuencias relativas}
+ans = sample(c('Si', 'No'),
+             size = 100,
+             replace = T)
+sex = sample(c('H', 'M'),
+             size = 100,
+             replace = T)
+place = sample(c('San Francisco', 'Barcelona', 'Valencia','Cobija', 'Asturias'),
+               size = 100,
+               replace = T)
+
+table(sex,ans,place) #Datos de sexo y respuestas por lugar, genera una tabla por lugar dando las informaciones
+ftable(sex,ans,place) #Agrupa las informaciones en 1 sola tabla donde se divide los lugares y agrupa el sexo con respuestas
+ftable(sex,ans,place, 
+       col.vars = c('sex','ans')) #Transpongo la tabla anterior. porque coloque como columnas las variables SEX Y ANS
+
+# Filtrando las informaciones
+
+sap = table(sex,ans,place)
+sap['M', #Total de mujeres
+    'Si', #Que dijeron si
+    'San Francisco'] #En san Francisco
+
+sap[,  #Total de hombres y mujeres
+    'Si', #Que dijeron si
+    'Valencia'] #En valencia
+
+sap[, #Total de hombres y mujeres
+    'No', #Que dijeron no
+    ] #En todas las ciudades
+sap['M', #Total de mujeres
+    , #Que dijeron si y no
+    'Cobija'] #En cobija
+
+#Frecuencias relativas
+prop.table(sap) #Frecuencias relativas globales
+
+#frecuencia relativa por ciudad
+prop.table(sap, 
+           margin = 3) #Escojo la 3 porque es la que define las ciudades
+
+#frecuencia relativa por Sexo y ciudad
+prop.table(sap, 
+           margin = c(1,3)) #Escojo la 1 y 3 porque es la que define el sexo y las ciudades
+
+#Agrupando las informaciones de la frecuencia relativa
+ftable(prop.table(sap, margin = 3)) #Frecuencia relativa por ciudad
+
+ftable(prop.table(sap,margin = c(1,3))) #Frecuencia relativa por sexo y ciudad
+```
+
+```{r Ejercicio 2 con data set HairEyeColor}
+#No es un data frame, ya viene como objeto de datos.
+p= HairEyeColor #Llamo el data set que es un dato agregado
+p
+
+total <- sum(p) #Total de individuos de la tabla de datos
+total
+
+#Frecuencias relativas
+prop.table(p, 
+           margin = 3) #Frecuencia relativa por sexo
+
+#Para tener 1 tabla de la frecuencia relativa por sexo
+ftable(prop.table(p, margin = 3))
+
+#Frecuencia relativa agrupada por color de ojos y sexo
+ftable(prop.table(p, margin = c(1,3)))
+
+#Función aperm para cambiar el orden de las columnas
+aperm(p, perm = c('Sex', 'Hair', 'Eye'))
+ftable(aperm(p, perm = c('Sex', 'Hair', 'Eye')))
+```
+
+```{r Continuación del ejercicio 2 usando libreria kableExtra}
+library(kableExtra)
+kable(HairEyeColor) #Convierte en data frame el data set de informaciones.
+
+```
+
+```{r Ejercicio 3 usando libreria xtable solo para tablas de 2 dimensiones, results='asis'}
+library(xtable) #Es una libreria para archivos de PDF que da resultados mejor que en html.
+
+ans = sample(c('Si', 'No'),
+             size = 100,
+             replace = T)
+sex = sample(c('H', 'M'),
+             size = 100,
+             replace = T)
+
+xtable(table(sex,ans)) #Lo da el resultao en formato latex sin arreglarlo. para arreglarloy que pinte la tabla bonita en el titulo se agrega results = 'assis' - el resultado correcto va a ser en el PDF generado.
+```
+
+#### Tablas a partir de data frames de variables cualitativas
+
+Como ya hemos comentado en varias ocasiones, la manera natural de organizar datos multidimensionales en `R` es en forma de data frame.
+
+En esa sección explicaremos algunas instrucciones para calcular tablas de frecuencias absolutas a partir de una data frame de varibles cualitativas.
+
+Para ilustrarla, usaremos el fichero que se encuentra en la carpeta de datos:
+
+$$''data/EnergyDrink''$$
+Este fichero consiste en una tabla de datos con la siguiente información sobre 122 estudiantes de una Universidad de España:
+* Variable **sexo**, el Sexo
+* Variable **estudio**, el estudio en el que estan matriculados
+* Variable **bebe**, Si consumen habitualmente bebidas energéticas para estudiar
+
+```{r Ejercicio 4 data frame EnergyDrink}
+library(RCurl)
+df <- getURL('https://raw.githubusercontent.com/argeus47/r-basic/master/data/EnergyDrink', ssl.verifypeer = FALSE)
+
+df1 <- read.csv(textConnection(df), 
+                stringsAsFactors=T, #Convierto los caracteres que esta por defecto en factores 
+                header = TRUE, #Para que aparescan los titulos
+                sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+                dec = ".") #Puedo quitar el separador decimal
+str(df1)
+head(df1)
+
+```
+
+Aplicando la función `summary()` a un adata frame de variables cualitativas, obtenemos, a modo de resumen, una tabla con las frecuencias absolutas de cada variable.
+
+Esta tabla sólo sirve para ver la información, porque uss entradas son palabras.
+```{r Ejercicio 4 continuación función summary}
+
+summary(df1) #resultado las frecuencias absolutas de todas las variables.
+
+summary(df1)[,2] #al intentar ver alguna información especifica da un valor equivocado. porque son letras. no tiene sentido hacer esa función. - para eso usar la función apply
+```
+
+Para calcular en un solo paso la table de cada variable, podemos usar la función `apply()` de la manera siguiente:
+
+```{r Ejercicio 4 continuación función apply}
+#Consigo determinar la tabla de frecuencias absolutas para cada una de las variables
+apply(df1, #llamo el data frame
+      MARGIN = 2, #Escogo que de resultados por columnas
+      FUN = table) #le pido que me haga una tabla
+
+# Assigno a la función de arriba a una variable.
+x <- apply(df1, MARGIN = 2, FUN = table)
+
+#Sabemos que es una lista porque aparece el simbolo de $ porlo que es posible entrar en cada variable
+
+#Podemos llamarla de 2 formas cada variable
+x$sexo
+table(df1$sexo)
+```
+
+Si aplicamos la función `table()` a un data frame de variables cualitativas, obtenemos su tabla de frecuencias absolutas, con las variables ordenadas tal y como aparecen en el data frame.
+
+```{r Ejercicio 4 continuación función table}
+table(df1)
+#Especificando la información para obtener información de Estudios y sexo
+table(df1[c(1, #columna 1 -Estudio
+             3)]) #Columna 3 - Sexo
+
+ftable(df1) #Lo junto todo en 1 tabla
+```
+
+#### Diagrama de barras
+
+El tipo de gráfico más usado para representar variables cualitativas son los **diagramas de barras**, `bar plots`. Como su nombre indica, un diagrama de barras contiene, para cada nivel de la variable cualitativa, una barra de altura su frecuencia.
+
+La manera más sencilla de dibujar un driagrama de barras de las frecuencias absolutas o relativas de una variable cualitativa es usando la instrucción `barplot()` aplicada a la tabla correspondiente
+
+* **Atención!** Como pasaba con `prop.table()`, el argumento del `barplot` ha de ser una tabla, y, por consiguiente, se ha de aplicar al resultado de `table()` o de `prop.table()`, nunca al vecto de datos original.
+
+```{r Ejercicio 5 Grafica con barplot}
+set.seed(3)
+#Vector
+sex = sample(c('H', 'M'),
+             size = 10,
+             replace = T)
+
+#Grafico
+barplot(table(sex),
+        col = c('lightblue','pink'),
+        main = 'Diagrama de barras de las frecuencias absolutas \n de la variable \'Sexo\'')
+
+ans = sample(c('Si', 'No'),
+             size = 10,
+             replace = T)
+barplot(prop.table(table(ans)),
+        main = 'Diagrama de barras de las frecuencias relativas \n de la variable \'Respuestas\'')
+
+```
+
+Habréis observado que en las funciones `barplot()` anteriores hemos usado el parámetro `main` para poner título a los diagramas; en general, la función `barplot()` admite los parámetros de `plot` que tienen sentido en el contexto de los diagramas de barras:
+  - `xlab`
+  - `ylab`
+  - `main`,..., etc,.
+Los parámetros disponibles se pueden consultar en `help(barplot)`.
+
+```{r Ejercicio 5 continuación 2 graficos en 1 fila}
+set.seed(3)
+#Vector
+sex = sample(c('H', 'M'),
+             size = 10,
+             replace = T)
+ans = sample(c('Si', 'No'),
+             size = 10,
+             replace = T)
+#Grafico
+par(mfrow=c(1,2)) #2 graficos en 1 fila
+
+barplot(table(ans),
+        col = c('green'))
+
+barplot(table(ans),
+        col = c('red','blue'))
+```
+
+```{r Ejercicio 5 grafica en tabla bidimencional haciendo diagrama de barras apilada}
+set.seed(3)
+
+sex = sample(c('H', 'M'),
+             size = 10,
+             replace = T)
+ans = sample(c('Si', 'No'),
+             size = 10,
+             replace = T)
+
+barplot(table(sex,ans),
+        legend.text = T)
+
+```
+
+```{r Ejercicio 5 separando de graficas apiladas para separadas convierte la graficap por bloques} 
+set.seed(3)
+
+sex = sample(c('H', 'M'),
+             size = 10,
+             replace = T)
+ans = sample(c('Si', 'No'),
+             size = 10,
+             replace = T)
+
+barplot(table(sex,ans),
+        beside = T, #Para separar las tablas apiladas y la convierte por bloques
+        names = c('men', 'women'), #Defino el nombre por genero
+        col = c('yellow', 'lightblue'),
+        legend.text = c('no','yes'))
+```
+
+```{r Ejecicio 5 girando el grafico para horizontal}
+set.seed(9)
+flat = sample(c(1:5),
+             size = 100,
+             replace = T)
+
+barplot(table(flat),
+        horiz = T) #Función para poner en horizontal la tabla
+```
+
+#### Diagramas circulares
+
+Un tipo muy popular de representación gráfica de variables cualitativas son los `diagramas circulares`. En un diagrama circular `(pie chart)` se representan los niveles de una variable cualitativa como sectores circulares de un círculo, de manera que el ángulo (o equivalentementen, el área) de cada sector sea proporcional a la frecuencia del nivel al que corresponden.
+
+Con `R` este tipo de diagramas se producen con la instrucción `pie`, de nuevo aplicada a una tabla de frecuencias y no al vector original.
+
+La función `pie` admite muchos parámetros para modificar el resultado: se pueden cambiar los colores con `col`, se pueden cambiar los nombres de los niveles con `names`, se puede poner un título con `main`, etc.; podéis consultar la lista completa de parámetros en `help(pie)`.
+
+```{r Ejemplo 1 Diagrama circular}
+set.seed(2)
+
+vector = sample(c(1:5),
+             size = 100,
+             replace = T)
+
+vector1 = sample(c('Si', 'No'),
+             size = 100,
+             replace = T)
+
+circle = table(vector)
+circle1 = table(vector1)
+
+circle
+circle1
+
+par(mfrow=c(1,2)) #2 graficos en 1 fila
+pie(circle, main = 'Diagrama circular de 
+    la variable circle')
+pie(circle1, main = 'Diagrama circular de 
+    la variable circle1')
+```
+
+Pese a su popularidad, es poco recomendable usar diagramas circulares porque a veces es difícil, a simple vista, comprender las relaciones entre las frecuencias que representan.
+
+#### Gráficos de mosaico
+
+Otra representación de las tablas multidimensionales de frecuencias 
+son los `gráficos de mosaico`. Estos gráficos se obtienen sustituyendo cada entrada de la tabla de frecuencias por una región rectangular de área proporcional de su valor.
+
+En concreto, para obtener el gráfico de mosaico de una tabla bidimensional, se parte de un cuadro de lado 1, primero se divide en barras verticales de amplitudes iguales a las frecuencias relativas de una variable, y luego cada barra se divide, a lo alto, en regiones de alturas proporcionales a las frecuencias relativas marginales de cada nivel de la otra variable, dentro del nivel correspondiente de la primera variable.
+
+Un gráfico de mosaico de una tabla se obtiene con `R` aplicando la función `plot` a la tabla, o también la función `mosaicplot`, Esta última también se puede aplicar a matrices.
+
+```{r Ejercicio graficos de mosaico}
+set.seed(2)
+
+vector = sample(c('H','M'),
+             size = 100,
+             replace = T)
+
+vector1 = sample(c('Si', 'No'),
+             size = 100,
+             replace = T)
+
+mosaic = table(vector,vector1)
+#mosaic1 = table()
+
+plot(mosaic, #Grafico
+     xlab = 'Sexo', #Nombre del eje x
+     ylab = 'Respuestas', #Nombre del eje y
+     main = 'Gráfico de mosaico de las variables \'Sexo\' y \'Respuestas\'')
+
+```
+###### Grafico mosaico de una tabla tridimensional.
+
+* En el gráfico de mosaico de una tabla tridimensional, primero se divide el cuadrado en barras verticales de amplitudes iguales a las frecuencias relativas de una variable.
+
+* Luego cada barra se divide, a lo alto, en regiones de alturas proporcionales a las frecuencias relativas marginales de cada nivel de una segunda variable, dentro del nivel correspondiente de la primera variable.
+
+* Finalmente, cada sector rectangular se vuelve a dividir a lo ancho en regiones de amplitudes proporcionales a las frecuencias relativas marginales de cada nivel de la tercera variable dentro de la combinación correspondiente de niveles de las otras dos.
+
+```{r Ejercicio 1 de Grafico mosaico tridimensional}
+HairEyeColor
+
+plot(HairEyeColor, 
+     main = 'Gráfico de mosaico de la tabla HairEyeColor', 
+     col = c('pink','lightblue'))
+
+```
+
+Además de sus parámetros usuales, la función `plot` admite algunos parámetros especificos cuando se usa para producir el gráfico de mosaico de una tabla. Estos parámetros se pueden consultar en `help(mosaicplot)` 
+
+Los paquetes `vcd` y `vcdExtra` incluyen otras funciones que producen representaciones gráficas interesantes de tablas tridicmensionales. 
+
+* La función `cotabplot` de `vcd` produce un diagrama de mosaico para cada nivel de la tercera variable.
+
+* La función `mosaic3d` de `vcdExtra` produce un diagrama de mosaico tridimensional en una ventana de una aplicación para gráficos 3D interactivos.
+
+```{r Ejercicio 1 VCD y VCDEXTRA}
+#Función para no cargar la libreria. se carga automaticamente
+#Libreria vcd ::
+# llamo la funcion y el objeto de estudio.
+
+vcd::cotabplot(HairEyeColor)
+
+#Grafico interactivo de mosaico 3D, necesita correrlo en la consola o en un script y para eso tiene que tener los paquetes intalados incluyendo el rgl
+
+#vcdExtra::mosaic3d(HairEyeColor, type = 'expected', box = T, col = c('lightblue', 'pink'))
+```
+
+#### Ejemplo final aplicando toda la sección 11
+
+Vamos a llevar a cabo un análisis completo deun ejemplo con lo que hemos aprendido en esta lección y aprovecharemos para aprender algo nuevo.
+
+El objeto de datos `HairEyeColor` que lleva predefinido `R` es una tabla de frecuencias absolutas de tres variables cualitativas: color de cabelo **(Hair)**, color de ojos **(Eye)** y sexo **(Sex)**.
+
+Vamos a extraer de esta tabla una bidimensional de frecuencias absolutas de las variables **(Eye)** y **(Hair)**, sin distinguir según el sexo. La manera más sencilla de obtener esta tabla es sumando las subtablas de frecuencias para hombres y mujeres, y aplicando `as.table()` al resultado para transformarlo en una `table` por si no lo es.
+
+```{r Ejercicio final Sección 11 convertir un data set tridimensional en uno bidimensional}
+# Jutanmos color de ojos y cabello sin distinguir el sexo
+HairEyeColor
+male <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Male']  #aplicado para hombres solamente
+
+female <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Female']  #aplicado para hombres solamente
+
+data <- as.table(male+female)  #Convierto en tabla bidimensional usando solo color de cabello y ojos
+data
+```
+
+Vamos a traducir al castellano los nombres de las variables de esta tabla y de sus niveles. Esto lo podemos llevar a cabo en un solo paso con la función `dimnames()` que ya usamos sobres data frames. El resultado de aplicar esta función a una table es una `list` cuyas componentes son los niveles de cada variable.
+
+```{r Ejercicio final Sección 11 continuación 1 alterar los nombres de las variables de ingles para español }
+data[,1]
+data[1,]
+
+dimnames(data) = list(
+  Cabello = c('Negro', 'Marron', 'Rojo', 'Rubio'), #Color cabello = los nombres de ingles los paso al español
+  Ojos = c('Marron', 'Azul', 'Pardos', 'Verdes') # Color de ojos = los nombres de ingles los paso al español
+                    )
+data
+```
+
+Vamos a dibujar un diagrama de mosaico de esta tabla, para visualizar gráficamente sus entradas.
+
+```{r Ejercicio final Sección 11 continuación 2 graficando una tabla mosaico bidimensional}
+
+plot(data, 
+     main = 'Gráfico de mosaico de la tabla bidimensional de frecuencias', 
+     col = 'lightblue')
+
+```
+
+A continuación, vamos a calcular el número total de individuos representados en esta tabla
+
+```{r Ejercicio final Sección 11 continuación 3 calculando el numero total de muestras}
+sum(data)
+```
+
+Las tablas de frecuencias absolutas y relativas de cada variable.
+
+```{r Ejercicio final Sección 11 continuación 4 Tablas de frecuencias absolutas y relativas}
+colSums(data) #Frecuencias absolutas por color de ojos
+rowSums(data) #Frecuencias absolutas por color de cabello
+print(' ')
+prop.table(colSums(data)) #Frecuencias relativas de ojos
+prop.table(rowSums(data)) #Frecuencias relativas de Cabello
+```
+
+Representaremos estas últimas en sendos diagramas de barras.
+
+```{r Ejercicio final Sección 11 continuación 5 Graficando las frecuencias relativas de ojos y cabellos}
+
+x = prop.table(colSums(data)) #Frecuencias relativas de ojos
+x1 = prop.table(rowSums(data)) #Frecuencias relativas de Cabello
+
+par(mfrow=c(1,2)) #2 graficos en 1 fila
+barplot(x,
+        cex.names = 0.6, #Tamaño de los nombres en el grafico
+        ylim = c(0,0.4),
+        col = c('burlywood', 'lightblue', 'chocolate', 'green'),
+        main = 'Frecuencias relativas \n de colores de ojos')
+
+barplot(x1,
+        cex.names = 0.6, #Tamaño de los nombres en el grafico
+        ylim = c(0,0.5),
+        space=0, #El espacio entre diagramas es 0
+        col = c('black', 'chocolate4', 'red', 'yellow'),
+        main = 'Frecuencias relativas \n de colores de cabello')
+par(mfrow = c(1,1))
+```
+
+En el diagrama anterior vemos que el color dominante de cabellos es el castaño, mientras que en el color de ojos el marrón y el azul están practicamente empatados. Pasamos ahora a calcular las tablas de frecuencias relativas marginales.
+
+```{r Ejercicio final Sección 11 continuación 5 Calculando frecuencias relativas de la tabla y diagramas de barra}
+
+male <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Male']  #aplicado para hombres solamente
+
+female <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Female']  #aplicado para hombres solamente
+
+data <- as.table(male+female)  #Convierto en tabla bidimensional usando solo color de cabello y ojos
+
+dimnames(data) = list(
+  Cabello = c('Negro', 'Marron', 'Rojo', 'Rubio'), #Color cabello = los nombres de ingles los paso al español
+  Ojos = c('Marron', 'Azul', 'Pardos', 'Verdes') # Color de ojos = los nombres de ingles los paso al español
+                    )
+round(ftable(prop.table(data)),3)
+round(prop.table(data, margin = 1), 3) #Por fila donde el % de color de cabello influye con respecto al color de ojos 
+round(prop.table(data, margin = 2), 3) #Por fila donde el % de color de ojos influye con respecto al color de cabello
+
+#Grafico de colores de cabello en cada color de ojos
+
+barplot(prop.table(data, margin = 1),
+        ylim = c(0,0.8),
+        cex.names = 0.6,
+        beside = T,#Para separar las tablas apiladas y la                          convierte por bloques
+        col = c('black', 'chocolate4', 'red', 'yellow'),
+        main = 'Frecuencias relativas \n de colores de cabello para cada color de ojos',
+        legend.tex = T)
+
+barplot(t(prop.table(data, margin = 2)),
+        ylim = c(0,0.6),
+        cex.names = 0.6,
+        beside = T, #Para separar las tablas apiladas y la                         convierte por bloques 
+        col = c('burlywood', 'lightblue', 'chocolate', 'green'),
+        main = 'Frecuencias relativas \n de colores de ojos para cada color de cabello',
+        legend.tex = T)
+
+```
+
+Vemos que entre las personas de ojos azules, los cabellos rubios son los más frecuentes, y que entre las personas castañas el color de ojos más frecuente es el pardo

@@ -1,0 +1,1906 @@
+---
+title: "Rstudio-Scripts y Ejemplos"
+author: "Arturo Castro"
+date: "27/02/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Sección 4 - Trabajando con R
+
+Con alt + Enter = Hace correr el programa en R solo en la linea marcada.
+Instalar paguete y activar Tidyverse
+
+    install.packages('tidyverse', dep = TRUE)
+    library(tidyverse)
+No es necesario colocar las comillas porque sino, la libreria no se activa
+
+####Instalar paguete y activar Magic
+
+    install.packages('magic', dep = TRUE)
+    library(magic) 
+No es necesario colocar las comillas porque sino, la libreria no se activa
+
+    magic(6) 
+Crea un cubo magico 6x6
+
+####Valor de pi
+
+    pi
+
+####Numero mas grande que existe que es infinito = inf
+
+    Inf
+
+####Numero mas pequeño que existe que es infinito = -inf
+
+    -Inf
+
+####Operaciones que no pueden ser realizada da como valor NaN = not-a-number Ejm.
+
+    0/0
+
+#### Para saber que variables tengo en Rstudio
+
+    ls()
+
+####Para eliminar alguna variable que tengo Ejm.
+
+    x = 1
+    rm(x)
+
+####Ejercicio complejo de una función
+
+    ejercicio <- function(a,b){
+    print('suma')
+    print(a+b)
+    print('resta')
+    print(paste(sprintf("%i - %i = ", a,b), a-b))
+    print(paste(sprintf("%i - %i = ", b,a), b-a))
+  
+    print('Multiplicación')
+    print(a*b)
+  
+    print('División')
+    print(paste(sprintf("%i / %i = ", a,b), a/b))
+    print(paste(sprintf("%i / %i = ", b,a), b/a))
+  
+    print('Cociente de la división entera')
+    print(paste(sprintf("%i / %i = ", a,b), a%/%b))
+    print(paste(sprintf("%i / %i = ", b,a), b%/%a))
+  
+    print('Resto de la división entera')
+    print(paste(sprintf("Resto de a/b = "), a%%b))
+    print(paste(sprintf("Resto de b/a = "), b%%a))
+
+    }
+    resultado = ejercicio
+    resultado(5,3)
+
+```{r producto notable}
+pd= function(a,b){
+  a^2+2*a*b+b^2
+  }
+pd(1,2)
+
+print(pd)
+```
+
+####Operación de numeros complejos
+    
+    x = 3+2i
+    class(x)
+    t = x*5
+    t
+    t*x
+    z = t/x
+    z
+
+#### pi + sqrt(2)i
+
+    complex(real = pi, imaginary = sqrt(2))
+
+hace raiz cuadrada de un numero negativo da error pero si usas la función *as.complex* se podra tener el valor con imaginario
+
+    sqrt(-5)  
+Da error
+
+    sqrt(as.complex(-5)) 
+da un resultado con imaginario.
+
+# Sección 6 Documentación con R Markdown
+
+    https://wordpress.com/support/markdown-quick-reference/ 
+Guia rapida de Rmarkdown
+
+Haciendo un parentices grande que abarca una función grande en Rstudio
+
+$$\bar{x}=\left(
+                      \prod^ n_{i=1}x_i
+          \right)^{1/n}$$
+
+
+* Repitiendo un numero 10 veces (puede ser mas) y creando un vecto de 10 variables
+
+```{r vector acumulado sin ciclo for ou while}
+X1 = 21.6 #Variable 1
+A = 1.3 #Constante
+L= c(20.95, 22.25, 23.55, 24.85, 26.15, 27.45, 28.75, 30.05, 31.35, 32.65, 33.95) #Variable 2
+
+X2 = X1 + A*(0:10) #Vector que va desde 1 hasta 10
+X2 # Vector acumulado del 1 al 10
+
+#Otra forma donde L es un vector de 10 datos
+X3 = (L[1:length(L)-1] + L[2:length(L)])/2
+X3
+
+#Es lo mismo que hace:
+# X2 = X1 + A
+# X3 = X2 + A
+# X4 = X3 + A
+# X5 = X4 + A
+# X6 = X5 + A
+# X7 = X6 + A
+# X8 = X7 + A
+# X9 = X8 + A
+# X10 = X9 + A
+# X = c(X1,X2,X3,X4,X5,X6,X7,X8,X9,X10)
+# X
+```
+
+
+# Sección 7 Estrutura de datos en Rstudio
+```{r ejemplo de progresion aritmetica}
+
+## Secuencia de numeros del 1 al 20
+x = 1:20 #genera un vector
+print(x) #Vector de 1 hasta 20
+
+## secuencia creciente
+seq(2,   # comienza de 2
+    20,  #que lleguen hasta 20
+    by = 2) #y saltos de 2 en 2
+
+## secuencia decreciente
+seq(20,   # comienza de 20
+    2,  #que lleguen hasta 2
+    by = -2) #y saltos de -2 en -2
+
+## Primeros 30 numeros que van desde el 17 hasta el 98 mostrando solo 4 cifras significativas
+
+a = 17
+b = 98
+n = 30
+
+z = seq(a, #Numero inicial
+        length.out = n, #Longitud de la secuencia en este caso deve mostrar 30 numeros
+        by = 3) #saltos de 3 en 3
+z
+
+t = seq(a, #Numero inicial
+        b, #Numero final
+        length.out = n) #Cantidad de numeros a mostrar 
+t #Da una secuencia desde 17 hasta 98 con 30 numeros
+signif(t, digits = 6) #Imprime t con las 4 sifras significativas, se coloca 6 porque cuenta desd el entero hasta la 4ta cifra significativa. es decir 00,0000
+
+```
+
+```{r Función diff Calculo de la derivada del vector}
+temp = c(10,1,1,1,1,1,1,2,1,1,1,1,1,1,1,3,10)
+diff(temp)
+# da como resultado  [1] -9  0  0  0  0  0  1 -1  0  0  0  0  0  0  2  7
+#La función calcula las diferencias entre todos los valores consecutivos de un vector. Para su vector de ejemplo, las diferencias son:
+# 1 - 10 = -9
+# 1 -  1 =  0
+# 1 -  1 =  0
+# *
+# *
+# *
+# 3 -  1 =  2
+# 10 -  3 =  7
+
+# Python = np.ptp(temp) = Rstudio = diff(range(temp))
+diff(range(temp)) #Maximo de la función temp = 10, minimo de la función temp = 1, al hacer el diff seria 10-1 = 9
+```
+
+```{r Ejemplo de funciones}
+v = c(1,2,3,4,5,6,7,8,9,10)
+#Aplicando operaciones matematicas al vector
+v + pi #sumo pi al vector
+v * pi #multiplico pi por el vector
+sqrt(v) #Saco la raiz cuadrada del vector
+2^v #Elevo 2 a cada item del vector
+v^2 #Elevo cada iten del vector al cuadrado
+
+#Otras operaciones matematicas para el vector
+v1= c(1,2,3,4,5,6,7,8,9,10)
+max(v1) #Valor maximo de v1
+min(v1) #Valor minimo de v1
+sum(v1) #suma del vector
+prod(v1) #Producto del vector v1
+mean(v1) #Media del vector v1
+sum(v1)/length(v1)#Otra forma de determinar la Media del vector v1
+
+## Calculo  el acumulado de ve donde es 1+2 = 3, 3+3 = 4, ......n+(n-1)
+cumsum(v1) #suma acumulada del vector v1
+diff(v1) #diferencias de 1 numero para otro, el resultado es 1 porque eso es lo que tiene pero si tuviera otras diferencias ejemplo:
+diff(cumsum(v1)) #Corri la posición para 2 y asi aparece ese valor
+
+## Aplicando funciones al vector
+cuadrado = function(x){x^2} #Creo una función para elevar al cuadrado
+sapply(v, FUN= cuadrado) #Aplico la funcion creada de elevar al cuadrado
+```
+
+```{r Ejercicios de Orden}
+v= c(1,9,3,34,0,6,67,34,9,10)
+###### Ordena el valor de v
+t = sort(v) #Orden creciente
+print(t) 
+
+###### Altera el valor del orden de v
+rev(t) #Orden decreciente
+
+t1 = sort(v, decreasing = TRUE) #Otro Orden decreciente
+print(t1)
+
+?sort
+```
+
+```{r Ejemplo de subvectores}
+v = c(1,5,3,2,15,20,13,25)
+
+v[2] ##Da como resultado el vector que esta en la posición 2 que en este caso es *5*
+
+v[-c(3,5)] ## Los vectores que estan en la posición 3 y 5 no van a aparecer cuando llamen esa función
+
+v[v != 15 & v> 13] ##  van a aparecer los vectores mayor que 13 pero quitando el 15 ya que no puede tener ese numero
+```
+
+```{r Operaciones simples de filtrado de vectores y operadores logicos}
+x = seq(3, #Empieza en 3
+        50,  #Termina en 50
+        by = 3.5) #Cada separación de 3,5 en 3,5
+x
+
+#Resultado de la posición 3 y 8 del vector x
+x[3]
+x[8]
+# ver la ultima entrada del vector x
+x[length(x)]
+
+# ver la penultima entrada del vector x
+x[length(x)-1]
+
+#Para eliminar el tercer valor del vector
+x[-3]
+
+#Para solo tener los valores del 4 al 8
+x[4:8]
+
+#Puedo hacer el ejemplo anterior como cuenta regresiva del 8 al 4
+x[8:4]
+
+# Determinar los numeros de posición par
+x[seq(2, #Inicia en 2
+      length(x), #Longitud x
+      by = 2)] #Salto de 2 en 2
+
+# Determinar los numeros de posición impar
+x[seq(1, #Inicia en 1
+      length(x),  #Longitud x
+      by = 2)] #Salto de 2 en 2
+
+# Otra forma de posición impar solo agregar un (-seq) Lo que hace es eliminar los pares 
+    x[-seq(2, 
+      length(x), 
+      by = 2)] 
+
+# Determinar los ultimos 4 elementos del vector
+  x[
+  (length(x)-3) # Cuidar los parentices para que de el valor correcto. (length(x)-3)
+  :
+  length(x)
+  ] 
+
+#Filtrar los valores que estan en la posición 1 , 5 y 6
+x[c(1,5,6)]
+
+#filtrar por condicional
+x[x>30] #Filtra y da como valor los mayores a 30
+x[x>30 & x<40] #Filtra los valores > 30 pero < 40
+x[x!=17 & x !=38] #quita todos los numeros que sean 17 y 38
+x[x<10 | x>40] #Esta funcion separa los valores <10 por un lado y > 40 por otro lado.
+x[x%%2==0] # Para determinar solo los valores pares del vector x Eso es x modulo(%%) 2 == 0 
+x[x%%2==1] # Para determinar solo los valores impares del vector x
+
+# Un ejemplo de la condición booleana para que salga verdadero o false es
+x>30 #Resultado TRUE ou FALSE
+x[x>30] #Con esto me da los valores que cumplen la condición
+
+z = c(1,7,4,2,4,8,9,2,0)
+y = c(5,2,-3,-7,-1,4,-2,7,1)
+
+#Filtro todos los numeros mayor a 0 de Y e me da como resultado los que estan en la posición de Y en Z
+#5 = 1, 2=7, -3 = NADA, -7 = NADA, -1 = NADA, 4 = 8, -2 = NADA, 7 = 2 e finaliza 1 = 0
+print(z[y>0]) ## los numeros que estan en Y son las posiciones y la respuesta es los que estan dentro de Z en este caso en la posición de y5=1, y2=7,y4=8, y7=2 y y1=0
+
+```
+
+```{r Condicionales y operadores logicos e which}
+x1 = c(1,7,4,2,8,9,2,0)
+## El comando which es para saber la posición que estan los numeros. si es la 1,2,3,4,5 del vector.
+which(x1>4) #Da como resultado la posición de los itens mayor a 4
+x1[which(x1>4)] # Da como resultado los valores de los itens que son mayor a 4
+which(x1>2 & x1<8) # Da la posición de los numeros mayor que 2 y menor que 8 que esta dentro del vector x
+
+which(x1<5 | x1%%2==0)## Da la posición de los numeros menor que 5 OU los que son pares
+# Para saber cuales son los numeros se hace la siguiente función:
+x1[which(x1<5 | x1%%2==0)]
+
+which.min(x1) ## Possición que esta el numero mas pequeño
+which.max(x1) ## Possición que esta el numero mas grande
+which(x1==max(x1)) ## Me dira todas las posiciónes en la que estan los numeros grandes en este caso es por si se repiten 
+```
+
+```{r uso de vectores con operaciones aritmeticas y booleanas}
+## Para sumar valores dentro de un vector ejemplo:
+x2= 1:10
+x2[3]=56 #Cambio el valor de la posición 3 para 56
+x2
+
+x2[11] = 30 #Altero el vector de 10 posiciones para 11 y le doy un valor de 30 a esa nueva posición
+x2
+
+x2[2:5]= x2[2:5]+3 ## Con esto veo que desde el 2 hasta el 5 va sumado 3 donde el resultado va a ser [1]  1  **5  6  7  8**  6  7  8  9 10  
+x2
+
+x = 20:45
+x[
+  (length(x)-2):length(x) #Estoy llamando las ultimas 3 posiciones
+  ] = 0 #Convierto en 0 las ulimas 3 posiciones
+x
+```
+
+```{r Operando con NA RM}
+x = 1:10
+x[length(x)+5] = 9
+x #Me da las posiciones despues del 10 como NA
+#No puedo realizar operaciones aritmeticas porque siempre me dara como resultado valores de NA, para poder hacerlas sigue:
+
+sum(x, na.rm = TRUE) #Con esto excluyo los valores de NA para realizar la operación
+mean(x, na.rm = TRUE)
+
+is.na(x) #Devuelve como valor verdadero los indices donde estan los NA
+
+which(is.na(x)) #Da como resultado las posiciones que tiene NA
+x[which(is.na(x))] #Para saber los valores que estan en esas posiciones
+
+x
+x[is.na(x)]
+x[!is.na(x)] #Aqui usando el ! elimina los NA ou los cambia automaticamente por 0, de este forma se pueden hacer operaciones aritmeticas despues.
+
+#En estadistica generalmente cuando hay estos casos los cambio por el valor de la media aritmetica 
+
+y = x #Hago una copia
+y[is.na(y)] = mean(y, na.rm=TRUE) #Cambie los valores de na por la media del vector, ES IMPORTANTE USAR NA.RM=TRUE para que lo haga.
+y
+na.omit(x) #Con esta funcion se pueden excluir definitivamente las posiciones con los valores NA. En estadistica no es recomendable por la falla de resultados que puede generar despues.
+
+```
+
+```{r Factores con letras}
+letras = c("a", "b", "t", "o", "p", "s", "a", "z", "z", "z")
+# Lo convierto en factores con
+letras #Es un vector
+letras.factor = factor(letras) #Lo convierto a factor
+letras.factor 
+# ahota si llamo el parametro **letras.factor** me va a aparecer lo siguiente: 
+# [1] a b t o p s a z z z
+# Levels: a b o p s t z Con eso puedo añadirle informaciones que yo quiera.
+
+# nueva variable sexo
+sexo = c("H", "H", "M", "M", "M", "H", "H", "H", "H", "M")
+sexo.factor = as.factor(sexo) #Otra forma de pasar a factor
+
+## Para añadir niveles se hace de la siguiente manera: 
+sexo.factor = factor(sexo, levels = c("H", "M", "B"))
+
+## Para darle nombre a cada nivel lo hago de la siguiente manera:
+sexo.factor = factor(sexo, levels = c("H", "M", "B"), labels = c("Hombre", "Mujer", "Bisexual"))
+sexo.factor
+levels(sexo.factor) #Da como resultado los niveles del factor
+levels(sexo.factor) = c('femenino','masculino','nodefinido') #Cambiando los nombres de los levels
+sexo.factor
+```
+
+```{r Factores con numeros}
+#Ejemplo con notas
+notas = c(1,4,3,2,3,2,4,3,1,2,3,4,2,3,4)
+notas.factor = factor(notas) #Convierto en factores
+notas.factor
+levels(notas.factor) #Veo los niveles
+levels(notas.factor) = c('suspendido', 'suficiente', 'notable', 'excelente') #Cambio el nombre de los niveles
+notas.factor
+
+#Puedo agrupar valores si tengo mismos nombres
+levels(notas.factor) = c('suspendido', 'aprobado', 'aprobado', 'aprobado')
+notas.factor #Aqui cambia de tener 4 levels para tener solo 2
+
+#Ordenando los valores de los levels
+notas1 = ordered(notas, labels = c('S','A','N','E'))
+notas1 #aqui me aparece el orden de los valores.
+```
+
+```{r Lista ejemplo}
+x = c(1,5,-2,6,-7,8,-3,4,-9)
+L = list(nombre = "Temperaturas", datos = x, Media = mean(x), suma_acumulada = cumsum(x))
+L
+# Para lllamar algun componente de la lista hago **L$**  y me apareceram las opciones y asi consigo llamr el componente que me importa    
+
+#Para obtener los valores tambien puedo llamarlos asi:
+L$nombre
+L$datos
+L[[1]] #Otra forma de llamar las informaciones de la lista en este caso en la posición 1 que es de nombre
+
+str(L) #obtengo todas las informaciones de valores que estan en la lista 
+names(L) #Obtengo todos los titulos de la lista
+
+# Ejemplo de abajo es para poder hacer operaciones matematicas, siempre usar 2 corchetes
+datos2 = 3*L[[2]]
+datos2
+```
+
+```{r Matrices}
+M = matrix(1:12, nrow = 4) #Por defecto el byrow es falso por lo que da la secuencia de numeros en vertical
+M
+
+M1 = matrix(1:12, #Cantidad de numeros que va a tener la matriz
+            nrow = 4, #Cantidad de Filas (horizontal) que va a atener la matriz
+            byrow = TRUE) #Que la secuencia de numeros sea en horizontal en el orden de las filas
+M1
+
+#Matriz con solo valores de 1, es necesario especificar filas y columnas
+matrix(1, #Una matriz con solo 1 valor
+       nrow = 4, #4 filas
+       ncol = 6) # 6 Columnas
+```
+
+```{r ejemplos de Rbind Cbind y diag}
+M = matrix(1:12, nrow = 4)
+
+#Aqui añado 2 filas mas con los valores
+rbind(M, c(1,2,3), #Añado una fila con esos valores
+      c(-3,-8,-4)) #Añado otra fila con esos valores
+
+#Puedo crear una matriz con 2 filas
+rbind(c(1,2,3), 
+      c(-3,-8,-4))
+
+#Puedo crear una matriz con 2 columnas
+cbind(c(1,2,3), 
+      c(-3,-8,-4))
+
+#Creando una matriz diagonal
+diag(c(1,2,3,4)) #Diagonal de 4x4 con 1,2,3,4 en la diagonal
+diag(c(5)) #Diagonal de 5x5 con 1 en la diagonal
+#Diagonal de 2x6 con 3 en la diagonal
+diag(3, #Valor que va a estar dentro de la matriz
+     6, #Cantidad de filas
+     2)  #cantidad de columnas
+
+```
+
+```{r llamando valores de una matriz creando submatrices}
+M = matrix(1:12, nrow = 4)
+M
+#Para llamar los valores que esta en la fila 2 y columna 3 es:
+M[2,3]
+M[2,] #Para tener todos los valores de la fila 2 solamente
+M[,3] #Para tener todos los valores de la columna 3 solamente
+
+M[c(2,3,4), #Valores de las filas 2,3 y 4
+  1:2]  #Valores de las columnas 1 y 2
+
+```
+
+## Bucle For
+
+```{r bucle for simple}
+i <- NULL #Es el indice
+aux <- NULL #Una variable auxiliar, va a asumir un resultado
+r <- NULL # Vector resultante que va a acumular resultados 
+#que se van obteniendo de la variable aux
+
+#Para i asumiendo el valor 1,2 y 3
+for (i in 1:3){
+  #La variable aux va asumir 10*1, 10*2, 10*3
+  aux <- 10^i;  #Si lo dejo aqui la variable aux no se
+                  #Va a guardar en ningun lugar por lo que
+  #Creamos la variable r para que guarde la variable aux
+  
+  r<-c(r, #El primer valor es nulo
+       aux)} #Se combina con el valor aux entonces el 1er valor
+#Se considera el 1ro que  da aux
+aux
+r
+```
+
+```{r bucle for almacenando en una tabla}
+i <- NULL #Es el indice
+aux <- NULL #Una variable auxiliar, va a asumir un resultado
+r <- NULL # Vector resultante que va a acumular resultados 
+#que se van obteniendo de la variable aux
+b <- 10
+#Para i asumiendo el valor 1,2 y 3
+for (i in 0:3){
+  #La variable aux va asumir 10*1, 10*2, 10*3
+  aux <- data.frame(base = b, #Base del logaritmo
+                    exp = i, #Exponente
+                    expporlogaritmo = log(10^i, base = b),
+                    potencia = 10^i)  #Si lo dejo aqui la variable aux no se Va a guardar en ningun lugar por lo que
+  #Creamos la variable r para que guarde la variable aux
+  
+  r<- rbind(r, #El primer valor es nulo
+       aux)} #Se combina con el valor aux entonces el 1er valor
+#Se considera el 1ro que  da aux
+aux #Ultimo resultado
+r #Primer resultado
+```
+
+
+
+###### **Funciones para tener valores de una matriz**
+
+* **diag(matriz)**: Resultado una diagonal de la matriz.
+* **nrow(matriz)**: Resultado numero de filas de la matriz.
+* **ncol(matriz)**: Resultado numero de columnas de la matriz.
+* **dim(matriz)**: Resultado las dimensiones de la matriz. (Si es 2x2 3x4 y asi...)
+* **sum(matriz)**: Resultado la suma de todas las entradas de la matriz.
+* **prod(matriz)**: Resultado el producto (multriplicación) de todas las entradas de la matriz
+* **mean(matriz)**: Resultado la media aritmetica de todas las entradas de la matriz.
+* **colSums(matriz)**: Obtenemos la suma por columnas
+* **rowSums(matriz)**: Obtenemos la suma por filas
+* **colMeans(matriz)**: Obtenemos la media por columnas
+* **rowMeans(matriz)**: Obtenemos la media por filas
+  
+```{r función apply}
+M = matrix(1:12, nrow = 4)
+
+apply(M, MARGIN = 1, # hace la suma de cada fila con margin = 1
+      FUN = sum) #fun = sum para tener la suma de cada fila
+
+apply(M, MARGIN = 2, # hace la suma de cada columna con margin = 2
+      FUN = sum) #fun = sum para tener la suma de cada columna
+
+apply(M, MARGIN = c(1,2), # hace la suma sea para cada elemento, todas las filas y columnas donde deve tener margin = c(1,2)
+      FUN = function(x){x^2}) #fun = x^2 para tener el cuadrado de cada fila y columna de la matriz
+```
+
+**Operaciones para matriz**
+
+* `t(matriz)`: Para obtener la transpuesta de la matriz
+* `+`: Para sumar matrices
+* `*`: Para el producto de un escalar (Un numero cualquiera) por una matriz recordando que deve tener las mismas dimensiones
+* `%*%`: Para multriplicar matrices
+* `mtx.exp(matriz,n)`: Para elevar la matriz $a \ \ n$
+  - Del paquete `Biodem`
+      - No calcula las potencias exactas, las aproxima
+* `%%`: para elevar matrices
+  - Del paquete $expm$
+      - No calcula las potencias exactas, las aproxima.
+* **det(matriz)**: Para calcular el determinante de la matriz, tiene que ser cuadrada
+* **qr(matriz)$rank**: Para calcular el rango de la matriz
+* **solve(matriz)**: Para calcular la inversa de una matriz invertible, tiene que ser cuadrada.
+  - Tambien sirve para resolver sistema de ecuaciones lineales. Para ello introducimos **solve(matriz, b)** donde *b* es el vector de terminos independientes
+  
+```{r ejercicio de operaciones de una matriz}
+library(Biodem)
+vA1= c(2,0,2)
+vA2= c(1,2,3)
+vA3= c(0,1,3)
+MA = rbind(vA1, vA2, vA3)
+
+vB1= c(3,2,1)
+vB2= c(1,0,0)
+vB3= c(1,1,1)
+
+MB = rbind(vB1,vB2,vB3)
+## Producto
+MA%*%MB
+
+## Potencia MA^2 e MB^3
+mtx.exp(MA,2) 
+mtx.exp(MB,3) 
+```
+
+###### Ejercicio de vectores propios:
+
+Comprobad, con los datos del ejemplo anterior, que si *P* es la matriz de vectores propios de *M*, en columna, y *D* La matriz diagonal cuyas entradas son los valores propios de *M*, entonces se cumple la siguiente igualdad llamda descomposición canonic
+
+$M=P \cdot D \cdot P^{-1}$
+
+```{r ejercicio vectores propios y valores propios}
+M = rbind(c(2,6,-8), c(0,6,-3), c(0,2,1))
+eigen(M)
+## Determino P que son los vectores propios 
+P = eigen(M)$vectors
+  
+## Determino D que es la matriz diagonal de valores propios
+D = diag(eigen(M)$values)
+
+M1 = P%*%D%*%solve(P) ## Compruebo igualdad que la formula P*D*P^(-1) = M Se usa el porcentaje en la ecuación porque es matriz esto es debido para que arroje el resultado correcto. Recordando que solve es la inversa en esta caso P^(-1)
+M1
+```
+
+
+# Sección 9 Introducción a la representación gráfica
+
+###### Graficos con la función `plot` 
+
+```{r Ejemplo 1}
+alumnos = c(1:10)
+notas = c(2,5,7,9,8,3,5,6,10,7)
+plot(alumnos, notas)
+```
+
+  Ejemplo2
+Parametros para graficas:
+`fig.cap = `(Pie de foto)
+`fig.align = center` - Con ese se alinea en el centro el fig.cap
+```{r Ejemplo 2, fig.cap="Grafico basico explicando el pie de foto", fig.align='center'}
+x = c(3,-1,5,4,8,9,12)
+y = c(2,8,9,1,4,5,6)
+plot(x,y)
+```
+
+```{r Ejemplo 3, fig.cap= "La grafica interpreta que el primer valor va en 1 y asi..." }
+x = (2^(1:6))
+plot(x)
+## Representa el 1er valor en 1 el segundo valor en 2 el tercer valor en 3
+```
+
+```{r Ejemplo 4, fig.cap="Grafico de la función Raiz"}
+f <- function(x){ sqrt(x) }
+plot(f)
+```
+
+## Parametros de la función `plot`
+
+  * **Log**: Para indicar que queremos el grafico en la función logaritmica.
+  * **main("Titulo")**: Para poner titulo al grafico, Si en vez de un texto quieres poner una expresión matematica, usar la función `expression()`
+  * **xlab("Etiqueta")**: Para poner un nombre al eje `x`
+  * **ylab("Etiqueta")**: Para poner un nombre al eje `y`
+  * **pch=n**: Para elegir el simbolo de los puntos. n=0,1,.....,25. El valor por defecto es pch = 1.
+  * **cex**: Para elegir el tamaño de los simbolos (Tamaño del pch).
+  * **col="Color en ingles"**: Para elegir el color de los simbolos.
+  * **type**: Para elegir el grafico que queremos.
+      - **p**: Puntos, (Valor por defecto)
+      - **l**: lineas rectas que unen los puntos (dichos puntos no tienen simbolos)
+      - **b**: lineas rectas que unen los puntos (dichos puntos tienen simbolos). Las  lineas no traspasan los puntos
+      - **o**: Como el anterior pero en este caso las lineas si que traspasan los puntos.
+      - **h**: Histogramas de lineas.
+      - **s**: Histogramas de escalones.
+      - **n**: Para no dibujar los puntos.    
+  * **lty**: Para especificar el tipo de linea.
+    - **"solid":1**: Linea continua (Valor por defecto) 
+    - **"dashed":2**: Linea continua.
+    - **"dotted":3**: Linea de puntos.
+    - **"dotdashed":4**: Linea que alterna puntos y rayas.
+    
+  * **lwd**: Para especificar el grosor de las lineas.
+  * **xlim**: Para modificar el rango del eje `x`.
+  * **ylim**: Para modificar el rango del eje `y`.
+  * **xaxp**: Para modificar las posiciones de las marcas del eje `x`.
+  * **yaxp**: Para modificar las posiciones de las marcas del eje `y`.
+  
+```{r Ejemplo 5 Escala Logaritmica}
+par(mfrow = c(1,2)) ## Instrucción para poner 2 graficos en la misma linea  donde tiene 1 fila y 2 columnas de graficos 
+
+plot= plot(exp(1:20), 
+           xlab = "Indice", #Titulo en x
+           ylab = expression(e^(1:20)),  #Titulo en y
+           main = "Escala Lineal" ) #Titulo principal arriba del cuadro
+  
+plot= plot(exp(1:20), 
+           log="y", #Pinta solo la escala logaritmica en las ejes de las y
+           xlab = "Indice", 
+           ylab = expression(e^(1:20)), 
+           main = "Escala Logaritmica en el eje `y`" )
+par(mfrow = c(1,1))
+```
+
+```{r Practica de parametros, echo = FALSE, fig.align= 'center' }
+  ## Sucesion de fibonacci
+par(mfrow = c(1,2))
+n = 1:20  
+fn = (1/sqrt(5))*((1+sqrt(5))/2)^n  - (1/sqrt(5))*((1-sqrt(5))/2)^n
+fn
+
+plot(fn, #Grafica de fibonacci
+     xlab = "n", #Titulo del eje x
+     ylab = expression(f[n]), #Titulo del eje y
+     pch = 21, #Figura que quiere (parametro pch - tipos de simbolos)
+     cex= 2, #tamaño de la figura
+     col = "powderblue", #Color del borde
+     bg = "orchid", #Color del interior
+     log = "xy",  #Saca la escala logaritmica de xy - se puede hacer de 1 solo si se desea sea bien (x) solo ou (y)
+     main = "Grafica de la sucesion de fibonacci")
+
+plot(fn, 
+     xlab = "n", 
+     ylab = expression(f[n]), 
+     pch = 21, 
+     cex= 2, 
+     col = "powderblue", 
+     bg = "orchid", 
+     log = "x",  
+     main = "Grafica de la sucesion de fibonacci")
+
+par(mfrow = c(1,1))  ##Siempre colocar esa función al final
+## la escala log en xy   se puede ver que de 1 a 2 hay cierta distancia y cada vez va siendo menor conforme vai aumentando la cantidad.  
+```
+
+```{r Tipos de graficos}
+par(mfrow = c(3,2))
+#Defino parametros para grafica
+x = c(50:59)  
+y = c(2,9,25,3,100,77,62,54,19,40)
+#Empiezo a graficar con los diferentes tipos de parametros
+plot(x, y, #Puntos de x e y para la grafica
+     pch=23, #Codigo de la figura 
+     cex=2, #Tamaño del punto
+     col="blue", #Color externo del punto
+     type = "p", #Tipo de grafico P
+     main = "Grafico tipo p") #Titulo principal
+
+plot(x, y, 
+     pch=23, 
+     cex=2, 
+     col="blueviolet",
+     type = "l", 
+     main = "Grafico tipo l")
+
+plot(x, y, pch=23, cex=2, col="gold",type = "b", main = "Grafico tipo b")
+
+plot(x, y, pch=23, cex=2, col="deeppink",type = "o", main = "Grafico tipo o")
+
+plot(x, y, pch=23, cex=2, col="springgreen",type = "h", main = "Grafico tipo h")
+
+plot(x, y, pch=23, cex=2, col="firebrick1",type = "s", main = "Grafico tipo s")
+
+par(mfrow = c(1,1))  
+```
+
+```{r Ejemplo 6 Parametros}
+
+x = (2*(1:20))
+y = (-1)^(1:20)*5*(1:20)
+plot(x,y, 
+     main= "Ejemplo de parametros", 
+     pch = 8, #Tipo de pontos escogido es el 8
+     cex = 1, #tamaño del punto
+     type = "b", #Tipo de grafico b
+     lty= 4, #Linetype es el 4 que es el .-.-.- que muestra en el grafico como conexión entre puntos
+     lwd = 4, #Anchura de la linea es 4
+     
+     #Para el eje de las x hago:
+     xaxp = c(0,40, #De 0 hasta 40 es el intervalo
+              2),  #Divido el intervalo en divisiones de 2
+     
+     #Para el eje de las y hago:
+     yaxp = c(-100,100,#Intervalo desde -100 hasta 100 en Y
+              8)) #Con una separación de 8
+
+```
+
+
+```{r Ejemplo 7 marcando un punto y una linea en la grafica}
+
+x = (2*(1:20))
+y = (-1)^(1:20)*5*(1:20)
+#Defino el grafico 
+plot(x,y, 
+     main= "Poniendo un punto rojo en la recta", 
+     pch = 8, 
+     cex = 1, 
+     type = "b", 
+     lty= 4, 
+     lwd = 4, 
+     xaxp = c(0,40,2), 
+     yaxp = c(-100,100,8))
+
+#Adiciono los elementos externos que van a resaltar el grafico
+
+#El punto rojo del centro con points
+points(20,0, #Determino el punto en la coordenada x,y
+       col = "red", #Adiciono el color rojo
+       cex = 4, #Adiciono el tamaño del punto
+       pch = 16) #Adiciono el tipo de imagen este es el punto
+
+#Las lineas de color azul en recta para el eje Y
+abline(h = 0, #Adiciono la altura cuando es h= 0 para que sea el eje de y en altura 0
+       lty = 2, #Adicino el grosor de la linea
+       col = "dodgerblue") #Adiciono el color de la linea
+```
+
+```{r Ejemplo 8 tipos de lineas}
+
+f <- function(x){
+    x^2 - 2*x + sqrt(abs(x))
+}
+
+plot(f, #Grafico la función
+     xlim= c(-3,3)) #Determino un rango de valores de x desde -3 hasta 3
+
+#Adicionando los puntos en el grafico
+#punto 1 
+points(0,0,pch = 19) # Indica un punto en el eje x=0,y=0
+#punto 2
+points((-3:3), (-3:3)^2, #Coloco una colección de puntos 
+       col = "red" )
+
+#Adicionando las lineas en el grafico
+#Recta 1
+abline(2,3, #Añade una recta de forma y=ax+b donde es una pendiente 2 que pasa por 3 y la recta es infinita. 
+       lty = "dashed", #tipo de linea trazo
+       col = "blue")
+#Recta 2
+abline(v = 2, #Adiciono una recta en el eje x = 2 e y = 0 - Es decir v = AÑADE UNA RECTA VERTICAL EN 2
+       lty = "dotted", #tipo de linea trazo mas corto
+       col = "green")
+#Recta 3
+abline(h = 5, #Adiciono una recta en el eje x = 0 e y = 5 - Es decir v = AÑADE UNA RECTA HORIZONTAL EN 5
+       lty = "dotdash", #tipo de linea trazo y punto
+       col = "gray")
+
+```
+
+```{r Ejemplo 10 rejilla de fondo}
+#Hago una función
+f <- function(x){x^2}
+
+#Grafico con la funcion f
+plot(f, #Función de grafica
+     xlim = c(-3,3), #Limite del eje x
+     col = "red", #color de la linea
+     lwd = 2, #Grosor de la linea
+     ylab = expression(y^2), #Nombre del eje y
+     xlab = "x") #Nombre del eje x
+
+#Hago la rejilla del fondo
+abline(h = 0:9, #Lineas horizontales desde 0 hasta 0
+       v = -3:3, #Lineas verticales desde - hasta 3
+       lty = "dotted", #Tipo de lineas trazo corto
+       col = "grey") #Color de lineas
+  
+```
+
+```{r Ejemplo 11 graficando la tangente}
+#Grafico
+plot(tan, #Función tangente
+     xlim = c(-pi, pi), #limite de x -pi hasta pi
+     ylim = c(-5,5), #Limite de y desde -5 hasta 5
+     col = "blue")
+
+# Grafico la linea vertical 
+abline(v = c(-pi/2, pi/2), #Linea vertical o asintota
+       col = "red")
+
+```
+
+
+```{r Ejemplo 12 texto y sus posiciones}
+plot(0,0)
+text(0,0, labels = "Debajo", pos = 1)
+text(0,0, labels = "Izquierda", pos = 2)
+text(0,0, labels = "Arriba", pos = 3)
+text(0,0, labels = "Derecha", pos = 4)
+
+```
+
+```{r Ejemplo 13 Añadiendo texto en puntos determinados}
+#Defino los puntos
+alumnos = c(1:10)
+notas  = c(2,5,7,9,8,3,5,6,10,7)
+
+plot(alumnos, 
+     notas, 
+     main = "Grafico con texto")
+
+text(alumnos, 
+     notas, 
+     labels = c("S", "A", "N", "E", "N", "S", "A", "A", "E", "N"), 
+     
+     #Posición del texto
+     #Recordar que 3 = arriba del punto
+     #Recordar que 1 = abajo del punto
+     pos = c(rep(3, #Repito la posición 3 justo encima de los primeros 8 puntos que son las primeras 8 notas del eje x
+                 times = 8), #Cantidad de notas que quiero que tenga el valor en la posición 3
+             1, #Numero 1 para colocar la letra del 9no punto abajo
+             3) #Y la del ultimo es arriba otra vez por lo que lleva el numero 3
+     
+     )
+```
+
+```{r Ejemplo 14 Funcion curve y añadiendo lineas encima de otras lineas}
+
+f <- function(x){x^2} #Hago la función
+
+#Grafica original
+plot(f, #Grafica de función
+     xlim = c(-3,3),  #Limites en x
+     ylim = c(-10,10)) #Limites en y
+
+#Muestra los puntos en la grafica
+points(-3:3, #Puntos desde -3 hasta 3 en x 
+       f(-3:3)*1.5, #Función en Y desde -3 hasta 3 multiplico por 1.5 para separarla un poquito de la original
+       pch = 19 ) #tipo de imagen 
+
+#Hago una linea conectando los puntos que hice antes
+lines(-3:3, #Linea desde -3 hasta 3 en eje x
+      f(-3:3)*1.5, #Función en Y desde -3 hasta 3 multiplico por 1.5 para separarla un poquito de la original
+      lwd = 2, #Grosor de la linea
+      lty = "dotted", #Tipo de linea
+      col = "red") #Limeas rectas entre los puntos  
+
+#Añadiendo una curva a la grafica
+#Curva 1
+curve(x^3, #curva de x^3
+      add = TRUE, #Colocar TRUE para que grafique junta a la linea original
+      lty = "dashed", #Tipo de linea
+      col = "blue")
+#Curva 2
+curve(x^4, add = TRUE, lty = "dashed", col = "purple")
+```
+
+```{r Ejemplo 15 otro ejemplo de lineas y curvas a partir de una función original}
+#Determino una función
+x = c(5*(1:20))
+
+#Esta función pinta los puntos 
+plot(x, #Dertermino los puntos en x
+     c(exp(-x)+(-1)^x*x/2*sin(x)^2)) #Dertermino los puntos en y
+
+#Hago una linea junto con los puntos uniendo con vertices derterminados abajo:
+lines(c(20, 10, 40, 80, 60, 60, 20), #Eje x
+      c(20, 0, -20, -20, 40, 0, 20), #Eje y
+      lwd = 2, #Grosor de la linea
+      col = "darkslategray1") #Color de la linea
+
+#Hago una curva de Seno en la grafica
+curve(20*sin(x), 
+      add = TRUE, 
+      col = "green")
+```
+
+```{r Ejemplo 16 Añadiendo Función legend en las graficas}
+
+x = seq(0, 2*pi, 0.1)
+
+plot(x , #Grafica de x 
+     sin(x), #En y hago el seno
+     type = "l", #Tipo de linea l
+     col = "blue", 
+     lwd = 3, #Grosor de linea
+     xlab = "", ylab = "") #Sin etiquetas en los ejes x e y
+
+lines(x, cos(x), col = "green", lwd = 3)
+
+lines(x, tan(x), col = "purple", lwd = 3)
+
+legend("bottomleft", #Posición de la leyenda
+       col = c("Blue", "green", "purple"), #Representa el color de cada linea que grafica en la leyenda
+       legend = c("Seno", "Coseno", "Tangente"), #Representa el nombre de cada iten de la leyenda
+       lwd = 3, #Grosor de la linea
+       bty = "l") #Tipo de linea
+```
+
+
+```{r Ejemplo 17 Legenda de la grafica del ejemplo 14}
+f <- function(x){x^2}
+plot(f, xlim = c(-3,3), ylim = c(-10,10))
+points(-3:3, f(-3:3)*1.5, pch = 19 ) #Muestra los puntos de la conexion
+lines(-3:3, f(-3:3)*1.5, lwd = 2, lty = "dotted", col = "red") #Limeas rectas entre los puntos  
+curve(x^3, add = TRUE, lty = "dashed", col = "blue")
+curve(x^4, add = TRUE, lty = "dashed", col = "purple")
+
+#Agregando leyenda
+legend("bottomright", # Legenda en el lado derecho
+       col= c("red", "blue", "purple"), # Color de las lineas
+       lwd = 3, # Tamaño de la linea
+       lty = c("dotted", "dashed", "dashed"), #   Tipo de lineas
+       legend = c(expression(x^2), expression(x^3), expression(x^4)) #Nombre de la legenda
+       )
+```
+
+```{r Ejemplo 18 Añadiendo simbolos y poligonos en la grafica}
+x = c(5*(1:10))
+
+plot(x, 
+       c(exp(-x)+(-1)^x*x/2*sin(x)^2), 
+       xlab = "", 
+       ylab = "", 
+       main = "Grafico de elementos")
+
+#Añadiendo un segmento  (Linea crea de dos puntos)
+segments(10, 0, #Coordenada del punta 1 x=10 y = 0
+         40, 0, #Coordenada del punta 2 x=40 y = 0
+         col = "red", 
+         lwd = 4) #Grosor de la linea
+
+#Pintando flechas  
+arrows(10, 0, #Coordenada del punta 1 x=10 y =0
+       40, -10, #Coordenada del punta 2 x=40 y = -10
+       col = "blue", 
+       #Esos 3 parametros indican la forma de la flecha
+       length = 0.5, # longitud de la flecha
+       angle = 5, #Angulo que va a tener la fecha de la linea
+       code = 3) # El codigo 3 significa una flecha que esta en ambos puntos inicio y fin ou doble sentido 
+
+#Añadiendo simbolos 
+#Estrella 1
+symbols(40, 0, #Eje de coordenana original para el simbolo (el centro)
+        #Nombre del simbolo para adicionar
+        stars = cbind(1, .5, 1, .5, 1,
+                      .5, 1, .5, 1, .5), #Cada punta de la estrella, Aqui se determino que es una estrella de 5 puntas
+        add = TRUE, 
+        lwd = 3, #Grosor de la linea
+        inches = 0.5) # Reduce el tamaño de la estrella para 1/2
+
+#Estrella 2 con tamaño normal porque no especifica inches.      
+symbols(40, 0, 
+        stars = cbind(1, .5, 1, .5, 1, .5, 1, .5, 1, .5), 
+        add = TRUE, 
+        lwd = 3)
+
+#Añadiendo un poligono cerrado especificando vertices de un grafico existente.  
+polygon(c(20, 30, 40), #Eje x
+        c(10, -10, 10), #Eje y
+        col = "gold", 
+        density = 3, #Frecuencia de las lineas que va en el interior
+        angle = 90, #Angulo de 90 para indicar lineas verticales
+        lty = 4, # Tipo de linea punto raya
+        lwd = 5 #Grosor de linea
+        )
+#Para saber mas de simbolos hacer ?symbols  
+```
+
+###### Añadir elementos al grafico.
+
+* **points(x,y)**: Añade un punto de coordenadas (x,y) a un grafico ya existente.
+* **abline**: Para añadir una recta a un grafico ya existente.
+    - **abline(a,b)**: Añade la recta $y = ax+b$
+    - **abline(v= x0)**: Añade la recta vertical $x = x_{0} \cdot v$ puede estar asignado a un vector.
+    - **abline(v= y0)**: Añade la recta horizontal $y = y_{0} \cdot h$ puede estar asignado a un vector.
+* **text(x,y,labels = "....")**: Añade en el punto de coordenadas (x,y) el texto especificado como argumentos de labels.
+      - **pos**: Permite indicar la posición del texto alrededor de las coordenadas (x,y). Admite los valores siguientes:
+        - **1**: Abajo
+        - **2**: Izquierda
+        - **3**: Arriba
+        - **4**: derecha
+        - **5**: Sin especificar. el texto se situa centrado en el punto (x,y)    
+* **lines(x,y)**: Añade a un grafico existente una linea poligonal que une los puntos $x_{i} , y_{i}$ sucecivos. `x`, `y` son vectores numericos
+    
+* **curve(curva)**: Permite añadir la grafica de una curva a un grafico existente.
+      - **add = TRUE**: Si no, la curva no se añade.
+      - La curva se puede especificar mediante una expresión algebraica con variable x, o mediante su nombre si la hemos definido antes.    
+* **legend(posición, legend = ...)**: Para añadir una leyenda
+    - **Posición**: Indica donde queremos situar una legenda. Puede ser bien las coordenadas de la esquina superior izquierda de nuestra leyenda, o bien una de las palabras siguientes:
+      - "bottom" / "bottomright" / "bottomleft" $= Abajo$
+      - "top" / "topright" / "topleft" $= Arriba$
+      - "center" / "right" / "left" $= En el centro$
+* **legend**: Contiene el vector de nombres entre comillas con los que queremos identificar las curvas en la leyenda.
+* **segments**: Para añadir segmentos a un grafico existente.
+* **arrows**: Para añadir flechas a un grafico existente.
+* **symbols**: Para añadir simbolos a un grafico existente.
+* **polygon**: Para añadir poligonos cerrados especificando sus vertices a un grafico existente.
+
+
+```{r Ejercicio final Sección 11 continuación 5 Graficando las frecuencias relativas de ojos y cabellos}
+
+x = prop.table(colSums(data)) #Frecuencias relativas de ojos
+x1 = prop.table(rowSums(data)) #Frecuencias relativas de Cabello
+
+par(mfrow=c(1,2)) #2 graficos en 1 fila
+barplot(x,
+        cex.names = 0.6, #Tamaño de las etiquetas en el grafico
+        ylim = c(0,0.4),
+        col = c('burlywood', 'lightblue', 'chocolate', 'green'),
+        main = 'Frecuencias relativas \n de colores de ojos')
+
+barplot(x1,
+        cex.names = 0.6, #Tamaño de las etiquetas en el grafico
+        ylim = c(0,0.5),
+        space=0, #El espacio entre diagramas es 0
+        col = c('black', 'chocolate4', 'red', 'yellow'),
+        main = 'Frecuencias relativas \n de colores de cabello')
+par(mfrow = c(1,1))
+```
+
+```{r Ejercicio final Sección 11 continuación 5 Calculando frecuencias relativas de la tabla y diagramas de barra}
+
+male <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Male']  #aplicado para hombres solamente
+
+female <- HairEyeColor[, #Todos los colores de cabello
+                     , #Todos los colores de ojos
+                     'Female']  #aplicado para hombres solamente
+
+data <- as.table(male+female)  #Convierto en tabla bidimensional usando solo color de cabello y ojos
+
+dimnames(data) = list(
+  Cabello = c('Negro', 'Marron', 'Rojo', 'Rubio'), #Color cabello = los nombres de ingles los paso al español
+  Ojos = c('Marron', 'Azul', 'Pardos', 'Verdes') # Color de ojos = los nombres de ingles los paso al español
+                    )
+round(ftable(prop.table(data)),3)
+round(prop.table(data, margin = 1), 3) #Por fila donde el % de color de cabello influye con respecto al color de ojos 
+round(prop.table(data, margin = 2), 3) #Por fila donde el % de color de ojos influye con respecto al color de cabello
+
+#Grafico de colores de cabello en cada color de ojos
+
+barplot(prop.table(data, margin = 1),
+        ylim = c(0,0.8),
+        cex.names = 0.6,
+        beside = T,#Para separar las tablas apiladas y la                          convierte por bloques
+        col = c('black', 'chocolate4', 'red', 'yellow'),
+        main = 'Frecuencias relativas \n de colores de cabello para cada color de ojos',
+        legend.tex = T)
+
+barplot(t(prop.table(data, margin = 2)),
+        ylim = c(0,0.6),
+        cex.names = 0.6,
+        beside = T, #Para separar las tablas apiladas y la                         convierte por bloques 
+        col = c('burlywood', 'lightblue', 'chocolate', 'green'),
+        main = 'Frecuencias relativas \n de colores de ojos para cada color de cabello',
+        legend.tex = T)
+
+```
+
+# Data Frame
+
+```{r Ejemplo 1 Flor iris obteniendo información de un data frame}
+df = iris
+head(df, 5) #Primeras 5 filas
+tail(df, 5) #Ultimas 5 filas
+names(df) #Para saber los nombres de los parametros
+str(df) #Para ver como esta estructurado 
+```
+
+```{r Ejemplo 2 df Orange Obteniendo información del data frame}
+df= Orange #La cargo en el entorno con alt + Enter asi puedo llamarla para cuando la necesite. 
+
+str(Orange) #Ver estructura del df
+head(Orange, 4) #Primeras 4 variables
+tail(Orange, 4) #Ultimas 4 variables
+names(Orange) #colnames o names es la misma cosa
+rownames(Orange) #Nombre de las filas - aparece entre comillas deven considerarse como palabras
+dimnames(Orange) #Muestra que es una lista con 2 posiciónes, la primera fila da el nombre de las filas y el segunda da el nombre de las columnas
+
+dim(Orange) #Resultado es un vector con el # de filas y # de columnas en otro en este caso es 35 filas y 3 columnas
+
+#Como en la linea 64 cargue la información de arboles ahora la puedo llamar con df$ y tabulador
+df$age[1:5]  #Resultado un vector desde el 1 hasta el 5
+df$Tree[1:5] #Adiciona la palabra Levels lo cual indica que es un factor, No aparece solo los valores si no tambien los niveles
+```
+
+```{r Ejemplo 3 Acceso al DF en trozos especificos}
+df = iris
+df[1:10, ] #Fila de la 1 hasta la 10 y todas las columnas (Aparecen todas las columnas por no tener información en el otro eje)
+
+df[1:10, 2:4] #Fila de la 1 hasta la 10 y de columnas de la 2 hasta la 4 
+
+#Aqui obtengo de la especie de iris (setosa) Todos los tipos de sepalos (sepal widht) mayor a 4
+df[df$Species == "setosa" & df$Sepal.Width>4, ] #Nivel del factor setosa, y anchura de cepalos de 4 da el valor asi cumple la condicion booleana de lo que necesito
+
+#Para filtrar mas la parte que quiero puedo especificar filas y columnas sigue:
+df[df$Species == "setosa" & df$Sepal.Width>4, ][c(1,3), #Fila 1y3
+                                                c(2,5)] #Comluna 2y5
+```
+
+
+```{r Ejemplo 4 extrayendo datos de data frame}
+# Extrayendo informaciones
+dataOrange = Orange #Hago una copia y saco las partes que quiero ejempĺo:
+dataOrange[c(10:12), ] #Da las filas de 10 hasta 12 y muestra todas las columnas
+
+#Especificando posiciones para extraer datos del data frame
+dataOrange[c(2,17), #Fila 2 y 17
+           c(1,3)]  #Columnas 1 y 3
+
+dataOrange[2,3] #Extraigo la información de la fila 2 y columna 3
+
+#Haciendo filtro booleano
+dataOrange[dataOrange$circumference<= 50, ] #Todos los valores de filas de cicumference <= 50 y mostrando todas las columnas
+```
+
+```{r Llamando el data set desde el ordenador con read table}
+# Tengo que tener el archivo en txt guardado en el ordenador
+df1 = read.table("Sección 10 - Data frames/Data Sets/vowel.txt")
+
+# Una vez importado el archivo hay que conferir que que se ha importado bien lo cual para verla usamos el str y view o head
+head(df1)
+str(df1)
+#En el resultado observamos que no hay nada especificado ni en columnas ni en filas y tampoco en variables globales pero observamos que tiene factores levels y separaciones por comas por lo que es bueno agregar , sep = ',' para las separaciones y para el titulo header = 'true'
+
+```
+**Sección 12 del curso**
+```{r Jirafas Creando un data frame}
+t = sample(c('Muy.Corto','Corto','Normal','Largo','Muy.largo'), 
+                  100,
+                  replace = T)
+
+#Ordeno la muestra con la denotación de menor a mayor
+longitud = ordered(t,
+            c('Muy.Corto','Corto','Normal','Largo','Muy.largo'))
+
+#Genero las nuevas variables para agregar en el data frame con la función rep
+zonas = rep(c('A','B','C','D'),  #Los niveles
+            c(30,25,35,10)) #Cantidad por nivel donde hay 30 en A, 25 en B, 35 en C y 10 en D
+
+#Creo el data frame
+jirafas = data.frame(zonas, #Es un factor no ordenado
+                     longitud)  #Es un factor ordenado porque fue realizado con la función ordered
+str(jirafas)
+head(jirafas)
+
+# Calculando la tabla de frecuencias absolutas acumuladas
+apply(table(jirafas), #Data frame
+      MARGIN = 1, #Para que considere las filas como objeto para aplicar la función
+      FUN = cumsum) #Función para que calcule la tabla de frecuencias acumuladas
+
+# función apply y transponer
+t(apply(table(jirafas), #Data frame
+      MARGIN = 1, #Para que considere las filas como objeto para aplicar la función
+      FUN = cumsum)) #Función para que calcule la tabla de frecuencias acumuladas
+
+#frecuencia relativa acumulada con función apply y transponer
+t(apply(prop.table(table(jirafas),# prop.table del Data frame
+                   margin = 1), #El margin es del prop.table para tener las relativas acumuladas por fila.
+       MARGIN = 1, # El margin es de la función apply - Para que considere las filas como objeto para aplicar la función
+       FUN = cumsum)) #Función Fun es del apply - para que calcule la tabla de frecuencias acumuladas
+
+#Graficando el ejercicio
+Diagrama = apply(prop.table(table(jirafas),# prop.table del Data frame
+                   margin = 1), #El margin es del prop.table para tener las relativas acumuladas por fila.
+       MARGIN = 1, # El margin es de la función apply - Para que considere las filas como objeto para aplicar la función
+       FUN = cumsum) #Función Fun es del apply - para que calcule la tabla de frecuencias acumuladas
+
+#Grafico
+barplot(Diagrama,
+        beside = T,#Para separar las tablas apiladas y la                          convierte por bloques
+        legend = T,
+        main = 'Diagrama de barrasde frecuencias relativas acumuladas de longitudes por zonas',
+
+#Posicionando la leyenda 
+        args.legend=list(x = 'topleft', #Indica para Colocar las leyendas en la esquina superior izquierda
+                         cex = 0.55) #Tamaño de las letras dentro de la leyenda
+        )
+```
+
+**Sección 12 Cangrejos**
+```{r DataCrab Ejemplo 5 } 
+# Llamando el fichero desde la web.
+library(RCurl)
+df <- getURL("https://raw.githubusercontent.com/argeus47/r-basic/master/data/datacrab.txt", ssl.verifypeer = FALSE)
+
+crab <- read.csv(textConnection(df), 
+     # stringsAsFactors=FALSE,         
+      header = T, #Para que los nombres de la                                    cabecera aparescan
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal 
+crab <- crab[, #Para que aparezcan todas las filas
+              -1] #Para eliminar la primera columna que es solo un identificador para cada fila.
+str(crab)
+head(crab)
+
+table(crab$weight) 
+
+#Finalidad es convertir las variables numericas en variables ordinales.
+#Agrupo conjunto de numeros
+#Va a dividir el vector numero en intervalos que vamos establecer
+intervalos = cut(crab$width,
+                 breaks = c(21,25,29,33,Inf), #Para que funcione deve ir acompañada del right = F para que tenga los cortes
+#21 hasta 24, 
+#25 hasta 28, 
+#29 hasta 33, 
+#34 hasta el infinito
+                 right = F, #Indica para no incluir el limite de la derecha. osea del 21 al 25 no va a incluir 25, de 25 hasta 29 no incluye el 29 - NO INCLUYE EL LIMITE DE LA DERECHA 
+                 labels = c('21-25','25-29','29-33','33-...')) #Agrego las etiquetas de los intervalos ya realizados
+
+#weight.rank el nuevo nombre de la etiqueta ya ordenada.
+crab$weight.rank = ordered(intervalos) 
+str(crab)
+
+Tabla = table(crab[, #Toma todas las filas
+                   c(1,6)]) #Toma las columnas de la 1 hasta la 6
+Tabla
+
+# Freciemcoa relativa de la tabla bidimencional
+Frelativa = round(prop.table(Tabla,
+                             margin = 1), #Frecuencia relativa por filas
+                  3) #3 decimales ya que es de la función round
+Frelativa
+
+
+# Freciemcoa relativa acumulada de la tabla bidimencional
+Frelativacumulada = round(apply(prop.table(Tabla,
+                                           margin = 1),#Frecuencia relativa por filas
+                                MARGIN = 1, #Para que sea por columnas el acumulado
+                                FUN = cumsum),
+                          3) #3 decimales ya que es de la función round
+Frelativacumulada
+
+#Graficando
+azul = c('cyan','cyan4','cyan1','cyan3')
+#Frecuencia relativa
+barplot(t(Frelativa),
+        beside = T, #coloca las columnas una al lado de la otra
+        legend = T, #Legendas de cada variable
+        ylim = c(0,0.8), #Colocando las medidas de 0 hasta 1
+        col = azul, #Adicionando el color
+        main = 'Diagrama de barras de frecuencias relativas',
+        args.legend = list(x = 'topright', #Colocando la leyenda arriba a la derecha
+                           cex = 0.55)) #Alterando el tamaño para que sea mas pequeño de la leyenda
+
+
+#Frecuencia relativa acumulada
+barplot(Frelativacumulada,
+        beside = T, #coloca las columnas una al lado de la otra
+        legend = T, #Legendas de cada variable
+        col = azul, #Adicionando el color
+        main = 'Diagrama de barras de frecuencias relativas',
+        args.legend = list(x = 'topleft', #Colocando la leyenda arriba a la derecha
+                           cex = 0.50)) #Alterando el tamaño para que sea mas pequeño de la leyenda
+
+```
+
+```{r Ejemplo 2 función as vecto en un data frame}
+set.seed(162017)
+dados = sample(1:6, #Identifica las 6 caras (6 valores)
+               25, #Se lanza el dado 25 veces
+               replace = T) #Indica que puede salir varias veces la misma cara y es posible repetir los valores del 1 al 6
+
+dados
+set.seed(NULL)
+
+table(dados) #Frecuencias absolutas
+
+round(prop.table(table(dados)), #Frecuencias relativas
+      2)
+
+cumsum(table(dados)) #Frecuencia absoluta acumulada
+
+round(cumsum(prop.table(table(dados))), #Frecuencias relativas acumuladas
+      2)
+
+#Hago el data frame con los datos
+dados.df = data.frame(Puntuación = 1:6, #Numero cada fila
+                      #Convertimos los datos en vector para que no tenga las etiquetas de los niveles. Asi solo me agrega los valores
+                      fr.abs = as.vector(table(dados)), 
+fr.rel = as.vector(round(prop.table(table(dados)),2)),
+                      fr.acu = as.vector(cumsum(table(dados))),
+fr.racu = as.vector(round(cumsum(prop.table(table(dados))),2))
+  
+)
+head(dados.df)
+```
+
+#### Parametros de read.table()
+
+* **header = TRUE**: Para indicar si la tabla que importamos tiene una primera fila con los nombres de las columnas. El valor por defecto es FALSE.
+* **col.names = c(...)**: Para especificar el nombre de las columnas. No olvidar que cada nombre debe ir entre comillas.
+* **sep**: Para especificar las separaciones entre columnas en el fichero (si no es un espacio en blanco). Si es asi, hay que introducir el parametro pertinente entre comillas. 
+* **dec**: Para especificar el signo que separa la parte entera de la decimal (si no es un punto.), Si es asi, hay que introducir el parametro pertinente entre comillas.
+* **stringsAsFactors**: Por defecto, `read.table()` transforma en factores las columnas de palabras de la tabla que importa. Para prohibir la transformación de las columnas de palabras en factores debemos usar **stringsAsFactors=FALSE** 
+* **encoding**: Este parametro sirve para indicar la codificación de alfabeto del fichero que se va a importar, y se ha de usar si dicho fichero contiene palabras con letras acentuadas o caracteres especiales y su codificación no coincide con la que espera nuestro ordenador.
+
+Tenemos que especificar que:
+
+* $sep = ","$ para indicar que las separaciones entre columnas son comas. 
+* $sep= ";"$ para indicar que las separaciones entre columnas son signos de punto y coma
+* $sep = "\t"$ para indicar que las separaciones entre columnas son tabuladores.
+
+```{r mejorando el data frame con sep y header}
+df1 = read.table("Sección 10 - Data frames/Data Sets/vowel.txt", header = TRUE, sep= ',')
+#Agregando el header = true y sep = ',' ya construye nuestra matriz.
+
+head(df1)
+str(df1)
+```
+
+```{r Carga de ficheros local}
+df = read.table("Sección 10 - Data frames/Data Sets/bulls.dat", #Llamo el archivo desde el ordenador
+                header = FALSE, #Para eliminar los nombres de la cabecera
+                #Nuevos nombre de la cabecera
+                col.names = c("breed", 'sale_price', 'shoulder',  
+                          'fat_free', 'percent_ff', 'frame_scale',
+                          'back_fat', 'sale_height','sale_weight'),
+                sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+                dec = ".") #Puedo quitar el separador decimal
+                
+head(df)  
+str(df)
+```
+
+```{r Carga del data frame desde el URL}
+# df2 = read.table("https://github.com/joanby/r-basic/blob/master/data/bulls.dat") NO FUNCIONA - Si alguien sabe como puedo hacer por favor me orientar - arturocastro47@gmail.com
+
+library(RCurl)
+dfURL <- getURL("https://raw.githubusercontent.com/joanby/r-basic/master/data/bulls.dat", ssl.verifypeer = FALSE)
+
+df <- read.csv(textConnection(dfURL), 
+     # stringsAsFactors=FALSE,         
+      header = FALSE, #Para eliminar los nombres de la                                    cabecera
+      #Nuevos nombre de la cabecera
+      col.names = c("breed", 'sale_price','shoulder',
+                    'fat_free', 'percent_ff', 'frame_scale',
+                    'back_fat', 'sale_height','sale_weight'),
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal
+
+str(df)
+head(df)
+tail(df)
+```
+
+
+**En mi caso el Rstudio que tengo lee todo lo que tiene en el data frame y lo convierte al tipo de archivo que es. no aparece el factor por defecto a menos que quiera hacer el string as factor = True**
+
+```{r Ejemplo 1 del strigns as factors}
+# Aqui no funciona porque el data frame es solo de numeros por lo que no considera el codigo de strings as factors ni como verdadero ni como falso. solo da el valor de la cadena como int
+df3 <- getURL('https://raw.githubusercontent.com/argeus47/r-basic/master/data/olive.txt', ssl.verifypeer = FALSE)
+results3 <- read.table(textConnection(df3), 
+                      stringsAsFactors = T) 
+                        
+str(results3)
+```
+
+```{r Ejemplo 3 guardar un data frame en el ordenador}
+write.table(results3, file = "BajandodelaWEBOlive.txt") #Aqui tomo la información del ejemplo 1 que es leer la información de internet y bajo el archivo para mi computador con nombre de BajandoleWEBOlive
+
+df4 = read.table("BajandodelaWEBOlive.txt", 
+                 header = TRUE, 
+                 dec = ".") #lLamo el data set que baje en mi ordenador.
+head(df4)
+```
+
+```{r Ejemplo 2 uso del stringsasfactors}
+
+library(RCurl)
+df <- getURL('http://winterolympicsmedals.com/medals.csv')
+
+df1 <- read.csv(textConnection(df), 
+                      stringsAsFactors=T, #Convierto los caracteres que esta por defecto en factores 
+                       header = TRUE) 
+str(df1)
+```
+
+
+```{r Ejemplo 4 Construyendo data frames}
+#Creo 3 vectores cada uno con 10 digitos
+Algebra = c(1,2,0,5,4,6,7,5,5,8)
+Analisys = c(3,3,2,7,9,5,6,8,5,6)
+Statistics = c(4,5,4,8,8,9,6,7,9,10)
+
+#Generando el data frame
+grades = data.frame(Alg=Algebra, An =Analisys, Stat=Statistics)
+str(grades)#Viendo las caracteristicas del data frame
+
+#Agrego 1 asignatura mas calculo
+Calculus = c(5,4,6,2,1,0,7,8,9,6)
+grades2 = cbind(grades, Calculus)
+head(grades2)
+```
+
+```{r Ejemplo 5 creación de data frame y llamando las informaciones}
+gender = c('H', 'M', 'M', 'H')
+age =    c(23,   45,  20,  30)
+family = c(2,    3 ,   4,  2)
+df5 = data.frame(genero = gender, edad = age, familia = family)
+
+row.names(df5) = c('P1', 'P2', 'P3', 'P4') #Cambie los valos de 1, 2, 3 por p1,p2..p4
+df5
+
+#Creo una nueva lista Alterando los nombres iniciales es decir
+#Con dimnames puedo cambiar el nombre de las filas y las columnas a la vez.
+dimnames(df5) = list(
+  c('Antonio', 'Ricardo', 'Arturo', 'Maria'), #vector 1 = los nombres de p1,p2,p3... los cambio por los nombres abajo:
+  c('Sexo', 'Años', 'mienbrosFamilia') # vector 2 = Los nombres de gender, age, family los cambie por los valores actuales que estan en ese vector.
+                    )
+df5
+
+# Creando una nueva fila
+#Con rbind anexo una ultima fila con las siguientes informaciones:
+df5 = rbind(df5, c('H', #Sexo
+                   30, #Edad
+                   1)) #Mienbros de la familia
+df5
+
+#Cambio ahora el vector sexo para caracter(recordando que caracter es texto str)
+df5$Sexo = as.character(df5$Sexo)  
+
+#agrego una ultima columna de ingresos
+df5$Ingresos = c(10000, 12000, 15000, 12000, 15000) #Recuerda que se le agrego una 5ta columna por eso deben ser 5 valores si no da error.
+df5
+str(df5)
+```
+
+```{r Ejemplo 06 Filtrando información y haciendo subsets}
+#Creo los vectores para inserir en el data frame
+gender = c('H', 'M', 'M', 'H')
+age =    c(23,   45,  20,  30)
+family = c(2,    3 ,   4,  2)
+#Creando un data frame nuevo
+df5 = data.frame(genero = gender, edad = age, familia = family, stringsAsFactors = TRUE)
+# En este caso solo extraigo la cantidad de personas que son mujer pero va a mostrar los levels que tiene hombre y mujer
+
+df5_mujer = df5[df5$genero =='M', ]
+str(df5_mujer)
+
+#Puedo redefinir la tabla con froplevels para solo tener 1 solo factor o level en este caso la mujer
+df5_mujer = droplevels(df5_mujer)
+str(df5_mujer)
+```
+
+```{r Tidyverse Para buscar información en tablas}
+library(tidyverse)
+library(dbplyr, warn.conflicts = FALSE)
+#Para buscar una palabra que desee en una tabla en este caso es Petal, arroja como relaciona todo referente a eso
+iris_petal = select(iris, #Data frame iris
+                    starts_with('Petal')) #Columnas que acaban en                                              petal
+head(iris_petal)
+
+#Para buscar una palabra que desee en una tabla en este caso es Length, arroja como relaciona todo referente a eso
+iris_length = select(iris, #Data frame iris
+                     ends_with('Length')) #Columnas que acaban en                                              length
+head(iris_length)
+```
+
+```{r Subset ejemplo 1 Para buscar información en tablas}
+
+# Buscar las primeras 5 setosas de la flor iris
+setosa = subset(iris, #Data frame de iris
+                Species == 'setosa', #De las especies solo escogo                                        la setosa
+                selec = c(1,3)) #selecciono la columna 1 y 3 del                                     data frame
+head(setosa, 5) #Saco las primeras 5 para ver los valores
+str(setosa)
+```
+
+```{r Subset ejemplo 2}
+
+# Buscar las primeras 5 setosas de la flor iris
+versicolor = subset(iris, #Data frame iris
+                    Species == 'versicolor', #Toda la información de las especies versicolor en el data frame
+                    selec = c(1,3)) #Escogo la columna 1 y 3
+
+# Para cambiar la numeración de la posición 51,52 para 1,2...
+rownames(versicolor) = 1:nrow(versicolor)
+
+head(versicolor, 5)
+str(versicolor)
+```
+
+
+```{r Función Sapply}
+str(iris)
+#Determine la mediana donde va la función ppuedo aplicar la mediana, suma, resta y asi sucesivamente la función que yo desee
+sapply(subset(iris, #Llamo el data frame
+              select = 1:4), #Selecciono las columnas de la 1 hasta                               la 4
+              mean) #Calculo la media
+
+#Aplicando la función Sapply
+sapply(iris[ , #Como esta en blanco siginifica que escogi todas las                 filas 
+             1:4], #Escogo las columnas de la 1 hasta la 4
+       sum) #Sumo todo - Da como resultado el total de cada columna
+
+#Usando la función 
+f = function(x){sqrt(sum(x^2))} 
+
+sapply(iris[, #Escogo todas las filas
+            1:4], #Escogo las columnas de la 1 hasta la 4
+       f) #Aplico la función ya formulada antes
+#Cada valor de iris que esta en la función sapply se denomina como x para la función
+```
+
+```{r Función NARM Para elminar los NA}
+#Creo 1 data frame con 2 vectores teniendo NA
+df = data.frame(c1 = c(1,2,NA,4), 
+                C2 = c(5,NA,2,3))
+
+sapply(df, mean) #Al aplicar el sapply da valor de NA
+
+#Para tener los valores y excluir el NA hago na.rm = T
+sapply(df, #llamo el data frame
+       mean, #Calculo la media
+       na.rm = TRUE) #Excluyo el NA del data frame
+```
+
+
+```{r Ejemplo de la función AGGREGATE factores cbind}
+#Por ejemplo si quiero la media por longitud de sepalos y petalos por cada especie de flor sea setosa, versicolor ou virginica
+aggregate(cbind(Sepal.Length, Petal.Length)~Species, #Las agrupo con cbind
+          data = iris, #Llamo el data frame
+          FUN = mean, #Determino la función a realizar en este caso es la media
+          na.rm = TRUE) #Elimino los NA 
+```
+
+```{r transformando a factores variables del data frame mtcars y uso de la función aggregate con diferentes categorias}
+
+head(mtcars)
+str(mtcars)
+
+# converti los numeros a factores
+mtcars$cyl = as.factor(mtcars$cyl)
+mtcars$gear = as.factor(mtcars$gear)
+mtcars$carb = as.factor(mtcars$carb)
+str(mtcars)
+
+#Agregado con diferentes categorias
+#Los numeros van antes de la tilde (~) es decir, los factores - despues de la tilde va lo que quiero saber o determinar
+aggregate(mpg~cyl+gear+carb, #Llamo mpg en función de la cilindrada(cyl) + marcha(gear) + carbon (carb)
+          data = mtcars, #llamo el data frame
+          FUN = mean, #Calculo la media
+          na.rn = TRUE)
+```
+
+```{r Sección 12 Función ordered}
+set.seed(2018)
+#Creo la muestra de 100 variables
+longitud = sample(c('Muy.Corto','Corto','Normal','Largo','Muy.largo'), 
+                  100,
+                  replace = T)
+
+#Ordeno la muestra con la denotación de menor a mayor
+t = ordered(longitud,
+            c('Muy.Corto','Corto','Normal','Largo','Muy.largo'))
+#Convierto la muestra en factores para tener los levels definidos
+fac.long = as.factor(t)
+
+str(fac.long) #Verifico
+
+#Frecuencia absoluta
+fr.abs = table(fac.long)
+fr.abs
+
+#Frecuencia relativa 
+Fr.rel = prop.table(fr.abs)
+Fr.rel
+
+#Frecuencia absolutas acumuladas
+Fr.acum = cumsum(fr.abs)
+Fr.acum
+
+#Frecuencias relativas acumuladas
+Fr.relativaAcum = cumsum(Fr.rel)
+Fr.relativaAcum
+
+#La instrucción barplot() produce el siguiente diagrama de barras de frecuencias relativas acumuladas
+
+barplot(Fr.relativaAcum, 
+        main = 'Diagrama de frecuencias relativas acumuladas')
+
+set.seed(NULL)
+```
+
+**Sección 13**
+
+
+```{r Ejemplo 7 Función summary en data crab}
+# Llamando el fichero desde la web.
+library(RCurl)
+df <- getURL("https://raw.githubusercontent.com/argeus47/r-basic/master/data/datacrab.txt", ssl.verifypeer = FALSE)
+
+crab <- read.csv(textConnection(df), 
+     # stringsAsFactors=FALSE,         
+      header = T, #Para que los nombres de la                                    cabecera aparescan
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal 
+crab <- crab[, #Para que aparezcan todas las filas
+              -1] #Para eliminar la primera columna que es solo un identificador para cada fila.
+
+summary(crab) #Aplicando función summary
+```
+
+```{r Ejemplo 7 continuación Función de comparación peso y anchura conforme el color}
+
+#Subset es para extraer un conjunto de cangrejos
+summary(subset(crab,      #Llamo el data frame
+               color == 3, # Elijo color = 3 referente a los cangrejos de 3 colores
+               c('weight','width'))) # Peso y anchura
+
+
+#Subset es para extraer un conjunto de cangrejos
+summary(subset(crab,      #Llamo el data frame
+               color == 5, # Elijo color = 5 referente a los cangrejos de 3 colores
+               c('weight','width'))) # Peso y anchura
+```
+
+```{r Ejemplo 8 Función by}
+head(iris)
+str(iris)
+
+by(iris[,       #Todas las filas del data set de iris
+        c(1,3)], #Escogo la columna 1(sepal length) y 3(petal lenght) para el estudio
+   iris$Species, #Especifico que quiero la respuesta referente a las especies donde son 3 especies - setosa, versicolor y virginica
+   FUN = summary) #Especifico la función para hacer la comparación de la columna 1(sepal length) y 3(petal lenght) 
+
+```
+
+```{r Ejemplo 9 Función aggregate}
+
+x = aggregate(cbind(Sepal.Length,Petal.Length)~Species, #Escojo las 2 columnas a estudiar para todas las especies
+          data = iris, #Llamo el data frame
+          FUN = summary) #Aplico la función summary
+x #Colocarlo en la consola para que de el valor ou imprimir el pdf
+```
+
+```{r Ejemplo 10 NA}
+
+z = c(1,2,3,NA) #Teniendo el valor de NA no es posible calcular suma, media  otros. Para evitar eso agregamos la funcion na.rm=T
+
+sum(z) #No da el valor su respuesta es NA
+sum(z, na.rm = T) #Si es posible porque da el resultado ya que excluimos el NA
+
+```
+
+```{r Ejemplo 11 Diagrama de caja}
+set.seed(0)
+dados2 = sample(1:6,
+                15,
+                replace = T)
+summary(dados2)
+
+#Grafico:
+boxplot(dados2,
+        main = 'Un diagrama de caja')
+
+set.seed(NULL)
+```
+
+```{r Ejemplo 11 continuación Multiples diagrams de caja}
+set.seed(0)
+dado = sample(1:4, 15, replace = T)
+dados = sample(1:5, 15, replace = T)
+dados2 = sample(1:6, 15, replace = T)
+summary(dado)
+summary(dados)
+summary(dados2)
+
+boxplot(dado, dados, dados2,
+        main = 'Diagramas de caja')
+
+set.seed(NULL)
+```
+
+```{r Ejemplo 12 Diagrama de cajas de un data frame}
+# Llamando el fichero desde la web.
+library(RCurl)
+df <- getURL("https://raw.githubusercontent.com/argeus47/r-basic/master/data/bodyfat.txt", ssl.verifypeer = FALSE)
+
+body <- read.csv(textConnection(df), 
+     # stringsAsFactors=FALSE,         
+      header = T, #Para que los nombres de la                                    cabecera aparescan
+      sep = "", #Indica las separaciones de una columna con otra en el fichero, da error si el separador fue introducido equivocadamente
+      dec = ".") #Puedo quitar el separador decimal 
+
+boxplot(body)
+```
+
+```{r Ejemplo 12 Diagrama de cajas continuación separando 3 variables y nombrandolas}
+
+boxplot(body[, #Todas las filas
+             7:9], #Tomo la columna 7(Pecho), 8(Abdomen), 9(Cadera)
+        names = c('Pecho','Abdomen','Cadera')) #Las nombro
+
+```
+
+```{r Ejemplo 14 grafica de caja Continuacion agregando la media aritmetica en un punto}
+#1ra instrucción
+boxplot(Sepal.Width~Species, #Especifico que quiero saber el ancho del sepalo de cada especie que son 3 (setosa, versicolor y virginica)
+        data = iris, #Llamo el data frame que quiero estudiar
+        ylab = 'Anchura del setalo(cm)', #Especifico mi eje Y
+        notch = T, #Hago la muesca para identificar donde esta la mediana
+        col = c('cyan','cyan2','cyan4'), #Adiciono color por especies para diferenciar
+        main = 'Boxplot de iris') #Agrego el nombre a la grafica
+
+#2da Instrucción
+#Calculo la media
+medias = aggregate(Sepal.Width~Species,  #Determino que variable voy a calcular la media
+                           data = iris, #llamo el data frame de estudio
+                           FUN = mean) #Calculo la media
+
+#3ra instrucción
+#Adiciono el punto con la función points
+points(medias, #Adiciono el valor calculado antes
+       col = 'pink', #Le agrego un color
+       pch = 15) #Tipo de punto en el grafico en este caso es un cuadradito
+
+```
+
+```{r Ejemplo 16 Que insecticida funciona mejor}
+#Cargando el dato del data set de R llamado InsectSprays
+x = InsectSprays 
+# Count es la cantidad de bichos que mato el spray
+# Son 6 tipos de sprays diferentes
+head(x)
+str(x)
+
+by(x$count, #Todas las filas
+   x$spray, #Por tipo de spray diferente
+   FUN = summary) #Funcion summary ara saber algunos datos estadisticos
+
+#Calculo la desviación tipica con la función aggregate
+aggregate(count~spray, #Determino el contaje de bichos muertos en función del tipo de spray
+          data = x, #Para el data frame
+          FUN = sd) #Calculo la desviación tipica
+
+#Grafico el diagrama de caja y bigotes por tipo de spray
+boxplot(count~spray, #Estudio conforme el tipo de spray - cantidad de bichos muertos en función del spray
+        data = x, #llamo el data frame
+        col = 'lightgreen', #Agrego un color
+        #Nombro las etiquetas xlab y ylab
+        xlab = 'Tipo de spray',
+        ylab = 'Insectos muertos')
+```
+
+```{r Función Ceiling}
+n = c(3.8,2.5,8.6,7.255,6.894)
+k1 = ceiling(n) #Función ceiling cuando el valor es positivivo y tiene decimales redondea hacia arriba
+k1
+
+
+n1 = c(-3.8,-2.5,-8.6,7.255,6.894)
+k2 = ceiling(n1) #Si la función es negativa y tiene decimales redondea hacia abajo
+k2
+
+```
+
+###### Función cut y agregando columnas nuevas en un data frame
+
+```{r Ejemplo 1 Función cut}
+x = iris$Petal.Length
+
+cut(x, #Objeto de estudio. nuestro factor.
+    breaks = 5, #Intervalos de 5 numeros
+    right = FALSE) #Cerrados por la izquierda, abiertos por la derecha
+
+cut(x, 
+    breaks = ceiling(sqrt(length(x))), #Regla de la raiz cuadrada de intervalos = Hace que sea 13 niveles de estudio.
+    right = F)
+
+cut(x,
+    breaks = c(1,2,3,4,5,6,7), #Los niveles ya definidos de 1 hasta 2, de 2 hasta 3 y si va....
+    right = F)
+
+cut(x,
+    breaks = 5,
+    right = F,
+    labels = F) #Las etiquetas son numeros de 1 al 5, reemplazamos el intervalo por numero natural de total de divisiones
+
+cut(x,
+    breaks = 5, right = F,
+    labels = c('Pequeña','Normal','Grande',
+               'MuyGrande','Gigante')) #cambio los numeros por palabras en las etiquetas
+
+# Añado columnas adicionales al data Frame
+#Para eso hago lo siguiente
+#1 creo una variable
+irisdf = iris
+#2 assigno la función cut a la variable irisdf$div1 y asi con las demas para crear la nueva columna.
+irisdf$div1 = cut(x,  breaks = 5, right = FALSE) 
+irisdf$div2 = cut(x, breaks = ceiling(sqrt(length(x))), right = F)
+irisdf$div3 = cut(x, breaks = c(1,2,3,4,5,6,7), right = F)
+irisdf$div4 = cut(x,breaks = 5,right = F,labels = F) 
+irisdf$div5 = cut(x,breaks = 5, right = F,labels = c('Pequeña','Normal','Grande','MuyGrande','Gigante')) 
+
+#3 llamo mi nuevo data frame con las nuevas columnas
+irisdf
+```
+
+
+

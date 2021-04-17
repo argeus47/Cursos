@@ -1,0 +1,174 @@
+---
+title: "Tarea sección 4 Rstudio"
+author: "Arturo Castro"
+date: "27/02/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1) Si hubiéramos empezado a contar segundos a partir de las 12 campanadas que marcan el inicio de 2018, ¿a qué hora de qué día de qué año llegaríamos a los 250 millones de segundos? ¡Cuidado con los años bisiestos!
+```{r}
+# 1) Determino a cantidad de años para 250 millones de segundos con X
+# Segundos que tenemos que obtener
+
+segfinal = 250000000
+
+# Segundos referencia que representa 1 año
+
+Año = 1
+segrefe = 31536000
+
+
+# formula para determinar X
+
+X = Año*segfinal/segrefe
+print(X)
+
+
+#Determino cual año es a los 250millones de segundos sabiendo que inicia en el 2018 determinado como Añof
+
+Añof = 2018 + X
+print(Añof)
+
+# Teniendo la respuesta del año verifico cual año es bisiendo sabiendo que es todo divisible en 4 dando como resultado numero entero da año bisiesto
+
+Año2018 = 2018 / 4
+print(Año2018)
+
+Año2019 = 2019 / 4
+print(Año2019)
+
+Año2020 = 2020 / 4
+print(Año2020)
+
+Año2021 = 2021 / 4
+print(Año2021)
+
+Año2022 = 2022 / 4
+print(Año2022)
+
+Año2023 = 2023 / 4
+print(Año2023)
+
+Año2024 = 2024 / 4
+print(Año2024)
+
+Año2025 = 2025 / 4
+print(Año2025)
+
+# Ya teniendo los años bisiestos realizo una Tabla de valor con referencial sabiendo que 2020 y 2024 son bisiestos
+
+Ref= data.frame(ano = c(2018,2019,2020,2021,2022,2023,2024,2025), dias =c(365,365,366,365,365,365,366,365), horas = c(8760,8760,8784,8760,8760,8760,8784,8760), segundos = c(31536000,31536000,31622400,31536000,31536000,31536000,31622400,31536000))
+
+
+print(Ref)
+
+# Realizo la suma de cada uno para determinar un total referencial
+
+segref = sum(31536000,31536000,31622400,31536000,31536000,31536000,31622400,31536000)
+Href = sum(8760,8760,8784,8760,8760,8760,8784,8760)
+Dref = sum(365,365,366,365,365,365,366,365)
+
+Totalref = data.frame(año = c(2025), dias = c(Dref), horas = c(Href), Segundos = c(segref))
+print(Totalref)
+
+# Determino la cantidad de segundos que esta por encima del valor a determinar para calcular la cantidad de dias que no voy a necesitar va a llamr Segundos residual Segresidual
+
+Segresidual = segref - segfinal
+print(Segresidual)
+
+# Lo convierto en horas (Hresidual) y dias (Dresidual) sabiendo que 1 dia tiene 24 horas y 1 hora son 3600 seg
+
+Hresidual = Segresidual/3600
+print(Hresidual)
+Dresidual = Hresidual / 24
+print(Dresidual)
+
+# Como se que el año final es el 2025 a los 365 dias del año le resto el valor de Dresidual siendo Total de dias en 2025 (Td)
+
+Td = 365 - Dresidual
+print(Td)
+
+# como vemos son 336,5185 dias eso equivale a 11 meses y 3 dias el 0,51 son las horas por lo que la hora final es (Hf)
+
+Hf = 0.518518*24
+print(Hf)
+
+# Determino la cantidad de minutos total com el valor de 0,4444 siendo
+
+Minf = 0.44443 * 60
+print(Minf)
+
+# Dertermino la cantidad de segundos total con el valor de 0,6658 siendo
+
+Segf = 0.6658 * 60
+print(Segf)
+
+#Resultado es 12h26min39seg, 3 de Diciembre del 2025
+
+Respuesta = data.frame( año = c(2025), Mes = c("Diciembre"), dia = c(3), horas = floor(c(Hf)), Minuto = floor(c(Minf)), Segundos = floor(c(Segf)))
+
+print(Respuesta)25
+```
+
+2) Cread una función que os resuelva una ecuación de primer grado (de la forma Ax+B=0). Es decir, vosotros tendréis que introducir como parámetros los coeficientes (en orden) y la función os tiene que devolver la solución. Por ejemplo, si la ecuación es 2x+4=0, vuestra función os tendría que devolver -2.
+
+Una vez creada la función, utilizadla para resolver las siguientes ecuaciones de primer grado:
+5x+3=0
+7x+4 = 18
+x+1 = 1
+
+```{r}
+# F(x) = 2x+4
+F = function(x){2*x+4}
+F(-3)
+print(F(-3))
+
+# ejercicio 1 5t+3=0
+a=5
+b=3
+t=-b/a
+print(t) #Determino t
+F1 = function(t){5*t+3} #compruebo que el valor de t es correcto
+print(F1(t))
+
+# ejercicio 2 7x+4=18
+c=7
+d=4
+e=18
+x=(e-d)/c #Determino x
+print(x)
+F2 = function(x){7*x+4} #compruebo que el valor de x es correcto
+print(F2(x))
+
+# ejercicio 3 x1+1=1
+g=1
+h=1
+x1=h-g #Determino x1
+print(x1)
+F3 = function(x1){x1+1} #compruebo que el valor de x1 es correcto
+print(F3(x1))
+```
+
+3) Dad una expresión para calcular 3e-π y a continuación, dad el resultado que habéis obtenido con R redondeado a 3 cifras decimales.
+Dad el módulo del número complejo (2+3i)^2/(5+8i) redondeado a 3 cifras decimales.
+
+```{r}
+#Ejercicios 3 convierto la suma 3e-pi=X en parametros
+
+a=3*exp(1)
+print(a)
+b=pi
+X = a-b
+print(X,4) # respuesta con 3 cifras decimales
+#[R.] 5.013
+
+#Dad el módulo del número complejo (2+3i)^2/(5+8i) redondeado a 3 cifras decimales.
+
+X1= (2+3i)^2/(5+8i)
+Xf= Mod(X1)
+print(Xf,4)
+#[R.] 1.378
+```

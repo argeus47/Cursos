@@ -1,0 +1,337 @@
+---
+title: "Trabajando con R"
+author: "Arturo Castro"
+date: "05/02/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ficheros, Scripts y Rmarkdowns
+
+###### Ficheros: 
+Son los archivos donde se tiene la información, puede ser Rstudio, markwdowns, presentaciones, etc etc
+Se pueden acceder en File -> new file = Ahi van aparecer todos los tipos de ficheros disponibles para Rstudio.
+
+###### Scripts: 
+Son todos los codigos que se usan. Se denomina con la palabra Scripts
+
+Se utiliza para incluir instrucciones o instrucciones que se pueden ejecutar y es una alternativa muy cómodo a tener sesiones interactivas de tener que guardar constantemente el historial por un lado y los datos
+
+###### Rmarkdowns:
+
+Markdown es un lenguaje de marcado ligero creado por John Gruber. El objetivo que busca este lenguaje es mejorar la facilidad de publicación de contenido. Es decir, que escribas más rápido y obtengas un resultado final mejor. Con simples comandos mientras estás escribiendo puedes darle formato al texto final que obtendrás.
+
+## Como instalar y cargar librerias en R
+
+**Paquete** Libreria con funciones y datos que no necesariamente vienen instaladas de serie.
+
+    - install.packages("nombre_paquete", dep = TRUE) 
+.    Instala o actualiza un paquete de R
+    
+    - library(nombre_del_paquete)
+.    Carga un paquete ya instalado
+
+**Recordar que cuando sales de Rstudio y vuelves entrar las librerias que se activaron antes de cerrar no estaran mas activas. Por lo que deves volverlas activar para seguir trabajando**
+
+Para saber cuales son los paquetes que se tienen instalados solo escribes:
+
+    install.packages() 
+
+Mostrara todos los paquetes y las versiones.
+
+###### Tidyverse
+
+Para o curso instalamos **tidyverse** = esta na linha 4 do arquivo **R-Scripts**
+Para o curso ativamos **tidyverse** = Esta na linha 5 do arquivo **R-Scripts**
+
+*Tidyverse*: Es un conjunto de paquetes en R diseñados para ciencia de datos. Esto lo que significa es que ayuda en todo el proceso de importar transformar visualizar modelar y comunicar toda la información que normalmente utilizamos en procesos de ciencia de datos
+
+Paquetes que conforman la libreria de Tidyverse:
+
+![](Captura de tela de 2021-02-21 10-29-51.png)
+
+```{r echo = FALSE, message = TRUE}
+##Imagen escondida.
+##✓ggplot2 3.3.3     ✓ purrr   0.3.4
+##✓ tibble  3.0.6     ✓ dplyr   1.0.4
+##✓ tidyr   1.1.2     ✓ stringr 1.4.0
+##✓ readr   1.4.0     ✓ forcats 0.5.1
+```
+
+###### Magic
+
+Para o curso instalamos **magic** = esta na linha 8 do arquivo **R-Scripts**
+Para o curso ativamos **magic** = Esta na linha 9 do arquivo **R-Scripts**
+
+El paquete incluye métodos para crear cuadrados mágicos normales de cualquier orden mayor que 2. La intención final es que el paquete sea una encarnación computarizada de todo el conocimiento del cuadrado mágico, incluida la verificación numérica directa de las propiedades de los cuadrados mágicos (como resultados recientes sobre el determinante de cuadrados semimágicos de orden impar).
+
+## R como calculadora.
+
+Puede usarse para hacer operaciones logicas de una manera muy facil. tambien es posible hacer varias operaciones ejemplo:
+
+    1+1; 2+3; 5+12
+Donde la **;** es la separación de cada operación.
+
+###### Operaciones
+
+    + operador binario para sumar.
+    - operador binario para restar.
+    * operador binario para multiplicar.
+    / operador binario para dividir.
+    ^ operador binario para potencia.
+    %/% operador binario para obtener el cociente en una división (número entero).
+La división entera de un número por otro o lo que es lo mismo lo que llamamos el cociente entero.
+
+Ej. **7 %/% 3  # Para saber las veces que cabe 3 en 7**
+    R. 2 (Cociente entero o mejor dicho el resultado entero de la división)
+    
+    %% operador binario para obtener el residuo en una división.
+Ej. **7 %% 3  # Para saber el residuo al dividir 7 entre 3**
+    R. 1 (Residuo de la división)
+    
+Ejemplo de un ejercicio de %/% y %%
+
+Cuantas semanas possee 725 dias y cuantos dias sobran de ese periodo
+
+    725%/%7
+Determino la cantidad de semanas que da un **valor de 103 semanas**
+
+    725%%7
+Determino la cantidad de dias que sobran y da un **valor de 4 dias**
+
+Con este ejemplo se puede usar la formula de **algoritmo de Euclides**
+D = División = 725 dias
+d = diviendo = 7 dias
+q = cociente = 103 semanas
+r = resto = 4 dias
+
+    D = d * q + r
+    ou
+    D = 725/7
+    
+    r = D - d * q
+    ou
+    r = 725%%7
+    
+    q = (D-r)/d
+    ou
+    q = 725%/%7
+
+###### Funciones y combinatoria
+
+    sqrt(x) = Raiz
+    exp(x) = Exponencial
+    log(x) = ln(x)
+    log10(x) = log de base 10 de x
+    log(x,a) = log de base a de x
+    abs(x) = |x|
+    exp(1) = e
+    factorial(x) = x!
+    choose(n,m) = Coeficiente binomial de n sobre m. Es decir n representa la cantidad que va a ser sometida a un estudio y m es la cantidad de formas que puede ser sometida n
+    
+Ejemplo de choose(5,3)
+n = Cantidad diferente de platos que hay disponibles
+m = Cantidad de platos que me voy a comer
+choose(n,m) = Da como resultado la cantidad de formas que puedo hacer para comerme los 3 platos de los 5 disponibles
+
+    choose(5,3) = 10 formas en la que me los puedo comer
+
+En teoria seria: 
+
+Primero segundo con cuarto 
+primero segundo con Quinto. 
+Segundo tercero con cuarto 
+Segundo tercero con quinto
+primero tercero con cuarto
+primero tercero con quinto
+primero cuarto con quinto
+segundo cuarto con quinto. 
+tercero cuarto con quinto
+etc
+
+###### Trigonometria en radianes. Rstudio
+
+Siempre va a ser radianes. Para poderlo pasar para grados tenemos que hacer la formula matematica de radianes para grados.
+
+    sin(x) = seno
+    cos(x) = coseno
+    tan(x) = tangente
+    asin(x) = arc seno
+    acos(x) = arc coseno
+    atan(x) = arc tangente
+    
+Un ejemplo simple es para el calculo del punto (x,y) de la circunferencia goneometrica.
+
+y = sin(60*pi/180) = 0,8660254
+x = cos(60*pi/180) = 0,5
+
+Esos son los puntos de la circunfenrencia para el angulo de 60 grados.
+
+###### Redondeo y decimales en R
+
+    print(x,n) = Muestra las n cifras significativas del número x
+    round(x,n) = Redondea a n cifras signicativas un resultado o vector numérico x
+    floor(x) = [x], parte entera por defecto de x = Redondea el valor para bajo
+    ceiling(x) = |x|, parte entera por exceso de x = Redondea el valor para arriba
+    trunc(x) = Parte entera de x, eliminando la parte decimal
+    
+###### Como crear variables y funciones
+
+- nombre_variable = valor: define una variable con dicho valor
+- nombre_función = function(variable){función}: define una función.
+
+Ej. 1
+
+    x = 4
+    doble = function(x){2*x}
+    doble(x)
+
+Da como resultado **8**
+
+Ej. 2 
+
+    cuadrado = function(x){x^2}
+    cuadrado(x)
+    
+Da como resultado **16**
+
+Ej. 3 mas complejo para una función. ]
+Esto ayuda para no estar escribiendo a toda hora la formula
+
+    f = function(x){ 
+    x^3 - (3*x) * sin(x)  
+    }
+
+ahora para tener el resultado coloco un valor
+
+    f(4)
+
+Da como resultado **73,08163**
+
+Ej. 4 Una función con 2 variables 
+
+    product <- function(x, y){
+    x*y
+    }
+    product(5,7)
+    
+Da como resultado 5 x 7 = **35**
+
+Ej. 5 Una función con 3 variables
+
+    g <- function(x,y,z){
+    exp(x^2 + y^2) * sin(z)
+    }
+    g(1,2,3)
+    
+Da como resultado **20,94407**
+
+Ej. 7 Una funcion multiple, Ejemplo de un contador
+
+    
+    S1 <- function(t){ 
+    t+1
+    }
+    S1(6)
+    
+    S <- function(numero){
+    numero = S1(numero);
+    numero = S1(numero);
+    numero = S1(numero);
+    numero = S1(numero);
+    S1(numero)
+    }
+    S(3)
+    
+Para saber todas las variables que se han creado se escribe **ls()**    
+  
+    ls()
+    
+Para eliminar las variables que he creado.
+
+    rm(S)
+
+Para eliminar todos los elementos
+
+    rm(list = ls())
+    
+Ejercicio mas avanzado:
+
+Creando una función para que de como resultado todos los operadores de suma, resta, multiplicación, división y resto
+
+    ejercicio <- function(a,b){
+    print('suma')
+    print(a+b)
+    print('resta')
+    print(paste(sprintf("%i - %i = ", a,b), a-b))
+    print(paste(sprintf("%i - %i = ", b,a), b-a))
+    
+    print('Multiplicación')
+    print(a*b)
+    
+    print('División')
+    print(paste(sprintf("%i / %i = ", a,b), a/b))
+    print(paste(sprintf("%i / %i = ", b,a), b/a))
+  
+    print('Cociente de la división entera')
+    print(paste(sprintf("%i / %i = ", a,b), a%/%b))
+    print(paste(sprintf("%i / %i = ", b,a), b%/%a))
+    
+    print('Resto de la división entera')
+      print(paste(sprintf("Resto de a/b = "), a%%b))
+      print(paste(sprintf("Resto de b/a = "), b%%a))
+    }
+    resultado = ejercicio
+    resultado(5,3)
+    
+Buscarlo en el script en la linea 34
+
+###### Trabajar con numeros complejos.
+
+| **Codigo**                          | **Función**                        |
+|-------------------------------------|------------------------------------|
+| *a+bi*                              |  Número complejo                   |
+| *complex(real=...,imaginary=...)*   |  Número complejo en forma binómica |
+| *complex(mudulus=..., argument=..)* |  Número complejo en forma          |
+
+Algunas formulas
+
+| **Codigo matematico**               | **Función**                        |
+|-------------------------------------|------------------------------------|
+| *sqrt(as.complex(-x))*              |  \(\sqrt{-x}\)                     |
+| *Re(x)*                             |  Parte real de \(x\)               |
+| *Tm(x)*                             |  Parte imaginaria de \(x\)         |
+| *Mod(x)*                            |  Módulo de \(x\)                   |
+| *Arg(x)*                            |  Argumento de \(x\)                |
+| *Conj(x)*                           |  Conjugado de \(x\)                |
+
+Ejemplos.
+
+    z = 2+3i
+    z2 = complex(real = 2, imaginary = -3)
+    Re(z)
+Da como resultado **2**
+
+    Im(z)
+Da como resultado **3**
+
+    Conj(z2)
+Da como resultado **2+3i**
+
+Ejemplo de operaciones de numeros imaginarios en la *linea 60 de Rscripts*
+
+hace raiz cuadrada de un numero negativo da error pero si usas la función, as.complex se podra tener el valor con imaginario
+
+    sqrt(-5) 
+Da error
+
+    sqrt(as.complex(-5)) 
+Da un resultado con imaginario = **[1] 0+2.236068i**
+
