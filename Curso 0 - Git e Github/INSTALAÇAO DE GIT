@@ -1,0 +1,32 @@
+No terminal
+
+PASO 1
+
+instalaçao de git
+
+sudo apt install git -y
+
+verificar version
+
+git --version
+
+PASO 2
+
+Instalar visual estudio code
+
+https://code.visualstudio.com/docs/?dv=linux64_deb
+
+PASO 3
+
+baixar o git desktop
+
+https://github.com/shiftkey/desktop
+
+abaixo onde disse What is this repository for?
+
+clicar em = latest releases
+depois escolher e baixar o arquivo 
+
+
+
+

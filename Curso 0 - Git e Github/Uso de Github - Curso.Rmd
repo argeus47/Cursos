@@ -1,0 +1,558 @@
+---
+title: "Github - Curso"
+author: "Arturo Castro"
+date: "10/02/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Para o curso fiz do seguinte site:
+https://www.youtube.com/playlist?list=PLlAbYrWSYTiPA2iEiQ2PF_A9j__C4hi0A
+
+# Git - Controle de versiones
+Sistema com a finalidade de gerenciar diferentes versoes de um documento.
+
+# Github 
+Serviço de web compartilhado para projetos que utilizam o Git para versionamento
+
+# Configuraçao de Git depois de instalar
+
+Na configuraçao definir:
+1) Nome de usuario
+2) Email
+3) Stock que acostuma utilizar
+Etc...
+4) Creaçao de chave com SSH
+
+O Git guardar suas informaçoes em 3 lugares:
+a) Git config do sistema como um todo
+b) Git config do usuario (Global)
+c) Git config do projeto especifico de aquele repositorio
+
+##### ¿Cómo eliminar un repositorio de Git creado con ‘git init’ en un directorio?
+
+Git guarda todos los cambios realizados en el directorio .git de la carpeta donde se el repositorio. Para eliminarlo simplemente hay que borrar esa carpeta.
+
+Entra al archivo:  cd carpeta/
+
+    rm -rf .git
+
+###### Para este curso vamos usar o Git config do usuario (Global)
+
+##### Conseguir y eliminar url de repositorios remotos :
+    git config --list
+Va a mostrar todos los archivos que tienes:
+- Git url remotos
+- Branch
+
+Para eliminar hace:
+
+PASO 1) git remote -v
+PASO 2) git remote rm (Nombre del branch)
+
+###### Conseguir y eliminar Branch remotos y de git
+
+* Para conseguir los Branch que desea eliminar
+
+      git branch --all
+
+* para borrar la branch local
+        
+      git branch -d (Nombre del branch)
+      git branch -D (Nombre del branch) -> Obliga a eliminarla sin importa que este fusionada ou juntada, se pierde todo.
+
+* para borrar la branch remota
+
+    - git push origin --delete remoteBranchName
+    
+
+###### Para definir o nome na consola escreve:
+      
+      git config --global usar.name 'Arturo Castro'
+      
+###### Para definir o email na consola escreve:     
+ 
+      git config --global user.name 'arturocastro47@gmail.com'
+      
+###### Para configurar o editor principal 
+      
+      git config --global core.editor (Comando do editor vim,emacs, outros) 
+      
+Se nao definir vai usar o Bin por padrao. 
+
+###### Para saber quais sao as configuraçoes pode escrever:
+
+nome:
+
+      git config user.name
+email
+
+      git config user.email
+      
+para saber todo
+
+      git config --list
+      
+
+###### Connecting to GitHub with SSH (Conectar-se ao GitHub com SSH)
+Protocolo para autenticar usuario remoto a um servidor.
+
+*Checking for existing SSH keys (Verificar se há chaves SSH)*
+Antes que qualquer coisa tem que verificar se ja tem alguma chave existente 
+
+    ls -al ~/.ssh
+
+Quando instala por primeira vez nao pode ter clave
+
+**https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh**
+
+
+###### 1) Generating a new SSH key and adding it to the ssh-agent (Gerar uma nova chave SSH e adicioná-la ao ssh-agent)
+
+ - Abra Terminal.
+
+ - Cole o texto abaixo, substituindo o endereço de e-mail pelo seu GitHub.
+
+
+      ssh-keygen -t ed25519 -C "your_email@example.com"
+
+Quando adiciona para crear uma nova chave aparece o seguinte:
+Pode inserir um nome. no caso meu = (nome da pasta criada)
+
+    Generating public/private ed25519 key pair.
+    Enter file in which to save the key (/home/xxxxx/.ssh/id_ed25519):
+
+Ao fazer Enter:
+Pode inserir uma senha. noc aso meu nao fiz. deixe em branco.
+    
+    Enter passphrase (empty for no passphrase): 
+    Enter same passphrase again: 
+    Your identification has been saved in (nome da pasta criada)
+    Your public key has been saved in (nome da pasta criada).pub
+    The key fingerprint is:
+    SHA256:pJbUj1u3hE1IMA9YNLV0DkUXxEDofR2BtTILWZVA1Wc your_email@example.com
+    The key's randomart image is:
+    +--[ED25519 256]--+
+    |       +Bo==BBX*+|
+    |      .. B.*oo.oE|
+    |      . o.++oo +o|
+    |     . + o.+o = .|
+    |      + S + +o   |
+    |     .   o o .   |
+    |        .   .    |
+    |                 |
+    |                 |
+    +----[SHA256]-----+
+
+Depois vai aparecer a confirmaçao da chave nova. Segue:
+
+Acceso na pasta onde tem a chave com:
+
+    cd ~/.ssh/
+Faço o comando ls e vejo ja as chaves e agora faço **Tem que ser o que disse .pub**
+
+    cat (nome da pasta criada).pub
+    
+Assim vejo a chave com um codigo. Copio esse codigo e vou para o github do site.
+e adiciono.
+
+Lado direito superior tem settings
+depois do lado esquerdo dem **SSH and GPS keys**
+
+Clicka em **new SSH key**
+O titulo tem que ser referente ao PC que esta trablahando para facilidade
+
+Depois o Github pede para inserir novamente a senha do git e pronto. 
+
+## Creaçao de repositorios
+
+Depois de configurar se crea repositorios para os projetos
+
+1) Crear pasta para o projeto na console
+
+      mkdir git-course
+
+Entro na pasta nova
+
+      cd git-course/
+      
+Para inizializar um repositorio e de fato ser considerado parte do sistema do git é necesario usar o comando:
+
+      git init
+Vai ser o responsavel para inicializar o repositorio e realizar as mudanzas desse projeto
+
+Se faço 
+
+    ls -la
+Vai informar que *tenho um diretorio .git*
+
+Sobre esse diretorio git faço:
+
+    cd .git/
+
+Verifico as pastas que tem *dentro do diretorio .git* Sao as pastas por guardar = 
+1) Config: Configuraçao do repositorio
+2) HEAD: Branches padrao que ele tem
+3) Description: Descriçao do repositorio
+4) hooks: Gatilhos para executar certas acçoes
+Tem outras informaçoes que sao referente aos projetos que inizialisa no git
+
+    ls 
+    
+Volto para o inicial na pasta de *git-course* com = *cd ..*
+
+==========================================================
+
+#### Estatus de vida dos arquivos
+
+###### *untracked* (Nao marcado)
+Um arquivo que acabou de ser adicionado no repositorio mas ainda nao foi visto pelo git, significa que nao esta dentro do repositorio do git nehuma version e existencia desse arquivo
+
+###### *unmodified*
+1ra vez que insere no git pasa a ser considerado como *unmodified*, onde nunca ha sido modificado 
+
+###### *modified*
+1ra vez que modifica o arquivo passa a ter o nome de *modified*. Ainda nao foi salvo e nao esta em imagem 
+
+###### *staged*
+Esta pronto para ser comentado e salvo.
+Depois de modificar o arquivo pode jogar na area de creaçao de versao, que é area chamada de *staged*. Sempre que a version foi finalizada levar o arquivo para staged. e ao finalizar o **commit= Creaçao de version** levar esse novo para area de unmodified para fazer o novo proceso da outra version assim crea
+version 1
+version 1.0
+version 1.1
+.
+.
+.
+
+===========================================================
+## Comandos do git desde a terminal
+
+*1) git status* = Reporta como esta o repositorio
+*2) git add (Nome do arquivo)* = Adiciona o arquivo no repositorio git
+*3) git commit -m "Add (Nome do arquivo)"* = Aqui crea um comentario no arquivo novo do repositorio para crear sua 1ra version - È importante colocar um comentario para assim da modificaçao que fez, correçao de bug, adicionar nova informaçao, etc etc...
+
+## Videos 8 y 9 no practique nada en la consola
+
+###### comando: git log
+
+Identificaçao do commint
+author
+data
+  Mensagem do commint
+que foi adicionado novo e informa com link os arquivos. 
+quando comento, que coisas novas tem, quais arquivos novos tem. 
+  
+###### comando: git log --decorate
+
+mas especificaçoes do git
+
+###### git log --author="Argeus47"
+Aparecen todos os git do autor Argeus47
+
+###### git shortlog
+
+Aparecem em forma alfabetica quais foram os autores, quantos commint eles fizeram e quais eles foram.
+
+###### git shortlog -sn
+
+Aparecem a quantidade de commint por autor
+
+###### git log --graph
+
+Muestra em forma grafica como estao os arquivos.
+
+###### git diff
+
+Muestra as mudanças antes de salvar e informa o novo que inserio. 
+*Siempre usar antes de fazer um commint*
+*Assim consegue conferir uma ultima vez todo antes de fazer alguma mudança*
+Para mais informaçao segue o link (esta em espanhol)
+https://www.youtube.com/watch?v=kA7MkGyqw00
+
+**Depois de ver toda a informaçao só por a letra Q e automaticamente sai do git diff**
+
+###### git diff --name-only
+
+Para saber o nome do arquivo que foi modificado
+
+###### git commint -am "Edit xxxx"
+Para editar o nome do arquivo e ao fazer **git show (commit do arquivo que altero)** informara a alteraçao que fez
+
+###### git checkout (nome do arquivo)
+
+Resetar ou desfazendo coisas, com esse comando volta atras antes da ultima ediçao. 
+
+###### git reset HEAD (nome do arquivo)
+
+Esse comando é para quando ja na ultima modificaçao o status do arquivo esta pronto para finalizar a version. faz que volta atras e tira de **unstage**
+
+Lembrando que **unstage** é quando ja esta pronto para o commint e finalizar a versao.
+
+###### No comando de reset existem 3
+
+*1) git reset --soft* Pegar as modificaçoes e vai só voltar ao commint  anterior(o arquivo esta em stage e ja pronto para comentar novo)
+Só aplica quando tem mais de 1 commint tem que usar o commint 2 para que volte ao commint 1
+
+*2) git reset --mixed* apaga o ultimo commint e volta aos arquivos para antes do stage - em modo modificar
+
+*3) git reset hard*  Ignora tudo e apaga tudo do commint
+
+=========================================================
+
+## Repositorio remoto
+
+Quando entra no site de Git tem para crear um repositorio. Ao crear um novo repositorio aparece o seguinte:
+
+*1* 
+…or create a new repository on the command line = **Crear um repositorio desde a consoloa com os comandos:**
+
+    echo "# Github-Curso-Portugues" >> README.md
+    git init
+    git add README.md
+    
+Ao crear o repositorio e adicionar tudo o que esta na pasta pode usar o comando:
+
+    git add .
+    
+    git commit -m "first commit"
+    
+    git branch -M main
+    git remote add origin https://github.com/argeus47/Github-Curso-Portugues.git
+    
+    git push -u origin main
+Quando fiz o comando git push -u origin main apareceu o seguinte:
+
+    error: src refspec main does not match any
+    error: failed to push some refs to 'https://github.com/argeus47/Github-Curso-Portugues.git'
+**Soluçao:**
+Isso aconteceu porque nao fiz 1 passo que foi adicionar: git branch -M main
+Quando fiz. segui com o outro paso de fazer git remote add origin https://github.com/argeus47/Github-Curso-Portugues.git
+Depois apareceu:
+
+    fatal: remote origin already exists.
+    
+Como a mensagem de erro indica, já existe um controle remoto configurado com o mesmo nome. Portanto, você pode adicionar o novo controle remoto com um nome diferente ou atualizar o existente, caso não precise:
+
+Para adicionar um novo controle remoto, chamado, por exemplo, em **github** vez de origin(que obviamente já existe no seu sistema), faça o seguinte:
+    
+    git remote add github https://github.com/argeus47/Github-Curso-Portugues.git
+    
+Quando altere o nome de origim para github o problema sumiu. 
+    
+Vuelvo intentar el ultimo paso pero con el nuevo nombre
+
+    git push -u github main
+    
+Depois disso vai pedir teu nome de usuario e tua senha. ao inserir ele carrega tudo para o github
+    
+*2* 
+…or push an existing repository from the command line = **Agregar o repositorio ja existente ou jogar o repositorio que tem a travez da linha de comando abaixo:**
+
+    git remote add origin https://github.com/argeus47/Github-Curso-Portugues.git
+origin = Nome, pode ser trocado    
+    
+    git branch -M main
+    git push -u origin main
+
+====================================================================
+## Reforçando para subir informaçoes ao git depois de ter tudo.
+1) git init
+2) git add .
+3) git commit -m "first commit" (È importante fazer esse passo)
+4) git branch -M main
+4.1) git remote add origin https://github.com/argeus47/Github-Curso-Portugues.git **(Só aplica quando é primeira vez)**
+5) git push -u origin main
+====================================================================
+
+## Branch 
+
+È um ponteiro movel que leva para um commit 
+
+###### Para que usar o Branch? vantagem de um Branch?
+
+- Vantagens:
+
+* Poder modificar sem alterar o local principal (master)
+* Facilmente (desligavel) = Posso criar e apagar Branch bem facil.
+* Multiplas pessoas trabalhando
+* Evita conflitos
+
+#### Criando un Branch
+
+Na consola escreve:
+
+    git checkout -b (Nome do branch)
+    
+Para saber os Branch existentes só escrever:
+
+    git branch
+    
+Para entrar no Branch que precisa editar só escrever:
+
+    git checkout (nome do branch que vai editar)
+    
+Para apagar um Branch que nao vai precisar mais:
+
+    git branch -D (nome do Branch que vai apagar)
+    
+#### Unindo Branch 
+
+Para unir o Branch existe 2 metodos:
+* Merge
+* Rebase
+
+###### Entendo o Merge (Unindo Branch)
+
+*Pro*
+ - Operacão nao destrutiva
+ 
+*Contra*
+ - Commit extra
+ - Histórico poluido
+ 
+ Crea 1 commit novo para juntar depois todos os Branch
+
+###### Entendo o Rebase (Unindo Branch)
+
+*Pro*
+ - Evita commits extras
+ - Historico linear 
+
+*Contra*
+ - Perde ordem cronologica
+
+Joga as mudanças para para o inicio da fila. Por isso perde o ordem cronologica
+**Importante**
+Ter quidado porque se faz um Branch novo e outra pessoa esta usando o mesmo Branch nao vai conseguir subir as informaçoes pelo que como nao tem ordem cronologica nao sabe como evitar esse problema.
+
+**Na Pratica Unindo Branch metodo Merge e Rebase:**
+https://www.youtube.com/watch?v=lmbwADzYJew&list=PLlAbYrWSYTiPA2iEiQ2PF_A9j__C4hi0A&index=24
+
+## Criando um .gitignore
+
+Para no mostrar no git as pessoas o publico os arquivos que nao sao necessarios.
+
+1 - Creo um arquivo
+
+    vi .gitignore
+
+Aperto letra **i** Para inserir. Agora posso digitar.
+
+2 - Dentro de nosso arquivo **.gitinore** especifico as extensões que nao quero que estejam em nosso git.
+
+    *.pdf
+    
+Agora  
+Aperto **Esc** = Para sair
+Aperto **:** = Para digitar
+Digito **wq** = Para salva e fechar
+Enter
+
+===================Para conhecimento===========================
+Letra **w** = Significa escrever salvar
+Letra **q** = Significa Sair
+==============================================
+
+Agora para ignorar uma arquivo em especifico é só escrever
+
+    *(nome do arquivo completo com a extensao)
+
+Lembrando que tem que estar dentro do arquivo **.gitignore**
+
+===================================================================
+
+## Outros comandos para conhecimento do Git
+
+#### git stash
+Comando para guardar modificaçoes que ainda nao sao comentadas al alguma pasta-arquivo, onde pode ser chamado quando seja necessario.
+
+    git stash
+Aplicando esse comando ele guarda o arquivo em outra parte e nao fica rastro algum quando faz git status. È como se nao estivesse fazendo nada no arquivo original
+
+Tem que fazer um branch novo
+    
+    git branch -b "Nome do arquivo"
+
+Depois de fazer as mudanças que precisa e fique certo pode fazer juntar as modificaçoes no arquivo original fazen:
+
+    
+    git stash apply
+
+
+Para ver la lista de stash que tem na PC
+
+    git stash list
+    
+Para limpar a lista de stash
+
+    git stash clear
+    
+#### Criando alias (Atalhos para os comandos em git)
+Exemplo
+
+Ao inves de escrever **git status** é melhor escrever *git s*, para fazer isso:
+
+    git config --global alias.s status
+    
+*alias.s* = Esse é para que o novo comando seja **s**
+*status* = Esse é o comando que voce quer alterar o nome
+
+
+#### Criando tags
+Quando se crea bibliotecas ou sistemas grandes, a gente tem que definir as versiones do que se esta fazendo. Pode ter varios commits e quer fazer um delimitados, exemplo
+
+- Tem 6 commits foram feitos, 
+- Uma nova versión foi criada, 
+- Fez varios commits para construir uma pagina
+- Etc, etc
+
+Para tudo isso é util os tags, para criar segue:
+
+    git tag -a 1.0.0 -m "nome que identifique o proceso"
+    git push github main --tags
+    
+Lembrando que no meu casso **github** nome para efeitos deste curso e me origin esta de nome **main**
+    
+    git push github main --tags
+    
+Esse comando sube todas a tags se tiver varias creadas.
+
+#### git revert
+Se esta trabalhando normal faz os procedimentos de guardar subindo o commits e por tudo certinho. Mas depois quando voce vai por correr o programa nao da certo e nao esta achando o que esta acontecendo.
+
+Usa o **git revert** e esse comando volta o passo atras do ultimo commits que fez. Mas nao elimina o commits, se faz um **git log** ele vai mostrar a ultima modificaçao que nao dio certo. 
+
+Assim que tiver mais tempo pode voltar abrir o arquivo que nao opero certo e arruma o que precisa para que fique bem certinho.
+
+#### Apagar tags e branch
+
+1) Tem que saber quais sao os branch que tem na pc com:
+    
+    `git branch -a`
+Habrá un asterisco (*) junto a la rama en la que te encuentras actualmente.
+
+Para saber todos los branch que hay remotamente solo escribir:
+
+    git branch --remotes
+
+En el caso si tienes muchas ramas/branch y quieres cambiar para otra escribir:
+
+    git checkout (Nombre del branch)
+
+Para apagar tags
+
+    git tag -d (codigo ou nome)
+    
+Mas assim nao apago as tag do remoto do site de git. Para isso faz:
+
+    git push github :(codigo ou nome)
+    
+Para apagar o branch faz da mesma forma:
+    
+    git push github :(nome do branch)
+    
+    
+
+
